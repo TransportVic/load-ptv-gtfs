@@ -1,5 +1,12 @@
 import { expect } from 'chai'
-import GTFSStops from '../lib/gtfs-parser/GTFSStops.mjs'
+import GTFSStopsReader from '../lib/gtfs-parser/GTFSStops.mjs'
+import path from 'path'
+import url from 'url'
+
+const __filename = url.fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'sample_stops.txt')
 
 let stopInput = {
   stop_id: '1000',
@@ -18,7 +25,7 @@ let stopInput2 = {
 describe('The GTFSStops class', () => {
   describe('The initialProcess function', () => {
     it('Should take in the raw CSV line and process it', () => {
-      let stopData = GTFSStops.initialProcess(stopInput)
+      let stopData = GTFSStopsReader.getStop(stopInput)
 
       expect(stopData.originalName).to.equal(stopInput.stop_name)
       expect(stopData.stopGTFSID).to.equal(stopInput.stop_id)
@@ -29,7 +36,7 @@ describe('The GTFSStops class', () => {
     })
 
     it('Should populate the suburb and stop number', () => {
-      let stopData = GTFSStops.initialProcess({
+      let stopData = GTFSStopsReader.getStop({
         ...stopInput2,
         stop_name: '51a-Rex St/Taylors Rd (Kings Park)'
       })
@@ -38,17 +45,42 @@ describe('The GTFSStops class', () => {
       expect(stopData.stopNumber).to.equal('51A')
     })
   })
+
+  describe('The getNextStop function', () => {
+    it('Should read the CSV file and return the next stop', async () => {
+      let stopReader = new GTFSStopsReader(stopsFile)
+      await stopReader.open()
+
+      let stopData = await stopReader.getNextStop()
+
+      expect(stopData.rawStopName).to.equal('Dole Ave/Cheddar Rd')
+      expect(stopData.stopGTFSID).to.equal('1000')
+    })
+  })
+
+  describe('The available function', () => {
+    it('Should return true if there is more data, and false otherwise', async () => {
+      let stopReader = new GTFSStopsReader(stopsFile)
+      await stopReader.open()
+
+      for (let i = 0; i < 6; i++) await stopReader.getNextStop()
+      expect(stopReader.available()).to.be.true
+    
+      await stopReader.getNextStop()
+      expect(stopReader.available()).to.be.false
+    })
+  })
 })
 
 describe('The GTFSStop class', () => {
   describe('The requiresSuburb function', () => {
     it('Should return false if the stop name already has a suburb', async () => {
-      let stopData = GTFSStops.initialProcess(stopInput)
+      let stopData = GTFSStopsReader.getStop(stopInput)
       expect(stopData.requiresSuburb()).to.be.false
     })
 
     it('Should return false if the stop name is missing the suburb', async () => {
-      let stopData = GTFSStops.initialProcess({
+      let stopData = GTFSStopsReader.getStop({
         ...stopInput,
         stop_name: 'Dole Ave/Cheddar Rd'
       })
@@ -58,14 +90,14 @@ describe('The GTFSStop class', () => {
 
   describe('The getSuburbFromName function', () => {
     it('Should extract the stop suburb from its name', () => {
-      let stopData = GTFSStops.initialProcess(stopInput)
+      let stopData = GTFSStopsReader.getStop(stopInput)
       expect(stopData.getSuburbFromName()).to.equal('Reservoir')
     })
   })
 
   describe('The getStopNameWithoutSuburb function', () => {
     it('Should strip the suburb from the stop name', () => {
-      let stopData = GTFSStops.initialProcess(stopInput)
+      let stopData = GTFSStopsReader.getStop(stopInput)
 
       expect(stopData.getStopNameWithoutSuburb()).to.equal('Dole Ave/Cheddar Rd')
     })
@@ -73,7 +105,7 @@ describe('The GTFSStop class', () => {
 
   describe('The matchStopNumber function', () => {
     it('Should match stop numbers in the format XXX-STOPNAME', () => {
-      let stopData = GTFSStops.initialProcess({
+      let stopData = GTFSStopsReader.getStop({
         ...stopInput,
         stop_name: '125-Yuille St/Centenary Ave (Melton)'
       })
@@ -89,7 +121,7 @@ describe('The GTFSStop class', () => {
     // Seems to be caused when they set some flag incorrectly as this seems to match the stop names on the printed timetables.
     // Weird huh.
     it('Should match stop numbers in the format STOPNAME - Stop XXX', () => {
-      let stopData = GTFSStops.initialProcess({
+      let stopData = GTFSStopsReader.getStop({
         ...stopInput,
         stop_name: 'Yuille St - Stop D99'
       })
@@ -101,7 +133,7 @@ describe('The GTFSStop class', () => {
     })
 
     it('Should ensure the stop numbers are all uppercase', () => {
-      let stopData = GTFSStops.initialProcess({
+      let stopData = GTFSStopsReader.getStop({
         ...stopInput,
         stop_name: '125a-Southbank Tram Depot (South Melbourne)'
       })
@@ -113,7 +145,7 @@ describe('The GTFSStop class', () => {
     })
 
     it('Should return null if there is no stop number', () => {
-      let stopData = GTFSStops.initialProcess({
+      let stopData = GTFSStopsReader.getStop({
         ...stopInput,
         stop_name: 'Southbank Tram Depot (South Melbourne)'
       })
