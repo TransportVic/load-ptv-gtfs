@@ -84,6 +84,10 @@ describe('The GTFSStop class', () => {
       })
     })
 
+    // Can randomly happen when PTV exports the data without suburb names or secondary street names
+    // See 25 Jan 2021 archive
+    // Seems to be caused when they set some flag incorrectly as this seems to match the stop names on the printed timetables.
+    // Weird huh.
     it('Should match stop numbers in the format STOPNAME - Stop XXX', () => {
       let stopData = GTFSStops.initialProcess({
         ...stopInput,
