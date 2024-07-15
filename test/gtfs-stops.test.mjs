@@ -219,5 +219,10 @@ describe('The GTFSStop class', () => {
       let original = 'Newman Cres (north side)'
       expect(GTFSStop.amendStopDirection(original)).to.equal('Newman Cres - North')
     })
+
+    it('Should handle the prefix Direction of Name Rd', () => {
+      let original = 'east of Pechell St'
+      expect(GTFSStop.amendStopDirection(original)).to.equal('Pechell St - East')
+    })
   })
 })
