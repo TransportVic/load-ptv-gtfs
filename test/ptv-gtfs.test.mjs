@@ -67,6 +67,8 @@ describe('The PTVGTFS class', () => {
 
       let stat = await fs.stat(path.join(tmp.path, '1', 'google_transit.zip'))
       expect(stat).to.not.be.null
+
+      await tmp.cleanup()
     })
 
     it('Should unzip the google_transit.zip files in the numbered folders as well', async () => {
@@ -78,6 +80,27 @@ describe('The PTVGTFS class', () => {
         let stat = await fs.stat(path.join(tmp.path, i.toString(), 'stops.txt'))
         expect(stat).to.not.be.null
       }
+
+      await tmp.cleanup()
+    })
+  })
+
+  describe('The cleanup function', () => {
+    it('Should remove the zip files, keeping the CSV files intact', async () => {
+      let { gtfs, tmp } = await downloadGTFS()
+      await gtfs.unzip()
+      await gtfs.cleanup()
+
+      let mainStat = await fs.stat(path.join(tmp.path, 'gtfs.zip')).catch(e => e)
+      expect(mainStat).to.be.instanceof(Error)
+
+      for (let i = 1; i <= 11; i++) {
+        if (i === 9) continue
+        let stat = await fs.stat(path.join(tmp.path, i.toString(), 'google_transit.zip')).catch(e => e)
+        expect(stat).to.be.instanceof(Error)
+      }
+
+      await tmp.cleanup()
     })
   })
 })
