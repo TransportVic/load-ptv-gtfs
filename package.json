@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@turf/turf": "^7.0.0",
     "adm-zip": "^0.5.14",
     "line-reader": "^0.4.0",
     "node-fetch": "^3.3.2"

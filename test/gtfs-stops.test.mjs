@@ -1,14 +1,21 @@
 import { expect } from 'chai'
 import GTFSStops from '../lib/gtfs-parser/GTFSStops.mjs'
 
-describe('The GTFSStops class', () => {
-  let stopInput = {
-    stop_id: '1000',
-    stop_name: 'Dole Ave/Cheddar Rd (Reservoir)',
-    stop_lat: '-37.7007748061827',
-    stop_lon: '145.018951051008'
-  }
+let stopInput = {
+  stop_id: '1000',
+  stop_name: 'Dole Ave/Cheddar Rd (Reservoir)',
+  stop_lat: '-37.7007748061827',
+  stop_lon: '145.018951051008'
+}
 
+let stopInput2 = {
+  stop_id: '10001',
+  stop_name: 'Rex St/Taylors Rd (Kings Park)',
+  stop_lat: '-37.7269752097338',
+  stop_lon: '144.776152425766'
+}
+
+describe('The GTFSStops class', () => {
   describe('The initialProcess function', () => {
     it('Should take in the raw CSV line and process it', () => {
       let stopData = GTFSStops.initialProcess(stopInput)
@@ -20,8 +27,16 @@ describe('The GTFSStops class', () => {
         coordinates: [145.018951051008, -37.7007748061827]
       })
     })
-  })
 
+    it('Should populate the suburb and stop number', () => {
+      let stopData = GTFSStops.initialProcess(stopInput2)
+      expect(stopData.suburb).to.equal('Kings Park')
+      expect(stopData.stopNumber).to.equal(null)
+    })
+  })
+})
+
+describe('The GTFSStop class', () => {
   describe('The requiresSuburb function', () => {
     it('Should return false if the stop name already has a suburb', async () => {
       let stopData = GTFSStops.initialProcess(stopInput)
@@ -44,9 +59,11 @@ describe('The GTFSStops class', () => {
     })
   })
 
-  // describe('The addSuburb function', () => {
-  //   it('Should identify the suburb a stop is in and append the suburb to the name', async () => {
-  //     expect(GTFSStops.addSuburb('Moffat St/Main Rd West')).to.equal()
-  //   })
-  // })
+  describe('The getSuburbFromLocation function', () => {
+    it('Should identify the suburb a stop is in', async () => {
+      let stopData = GTFSStops.initialProcess(stopInput)
+
+      expect(stopData.getSuburbFromLocation()).to.equal('Reservoir')
+    })
+  })
 })
