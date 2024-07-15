@@ -20,6 +20,18 @@ let responseHeaders = {
 
 const stubGTFSUnzipping = (await fs.readFile(path.join(__dirname, 'sample-data', 'gtfs-unzipping', 'gtfs.zip')))
 
+async function downloadGTFS() {
+  nock(gtfsHost).get(gtfsURL).reply(200, stubGTFSUnzipping)
+  let tmp = await tmpdir({ unsafeCleanup: true })
+
+  let gtfs = new PTVGTFS(gtfsHost + gtfsURL)
+  await gtfs.download(tmp.path)
+
+  return {
+    gtfs, tmp
+  }
+}
+
 describe('The PTVGTFS class', () => {
   describe('The getPublishedDate function', () => {
     it('Should read the last-modified header and return that', async () => {
@@ -34,16 +46,27 @@ describe('The PTVGTFS class', () => {
 
   describe('The download function', () => {
     it('Should save the gtfs file to the given folder, with the filename as gtfs.zip', async () => {
-      nock(gtfsHost).get(gtfsURL).reply(200, stubGTFSUnzipping)
-      let tmp = await tmpdir({ unsafeCleanup: true })
-
-      let gtfs = new PTVGTFS(gtfsHost + gtfsURL)
-      await gtfs.download(tmp.path)
+      let { gtfs, tmp } = await downloadGTFS()
 
       let stat = await fs.stat(path.join(tmp.path, 'gtfs.zip'))
       expect(stat.size).to.equal(23408)
 
       await tmp.cleanup()
+    })
+  })
+
+  describe('The unzip function', () => {
+    it('Should throw and error if the file has not been downloaded first', async () => {
+      let gtfs = new PTVGTFS(gtfsHost + gtfsURL)
+      expect((await gtfs.unzip().catch(e => e)).message).to.equal('Need to download GTFS file first!')
+    })
+
+    it('Should unzip gtfs.zip, producing the numbered folders', async () => {
+      let { gtfs, tmp } = await downloadGTFS()
+      await gtfs.unzip()
+
+      let stat = await fs.stat(path.join(tmp.path, '1', 'google_transit.zip'))
+      expect(stat).to.not.be.null
     })
   })
 })
