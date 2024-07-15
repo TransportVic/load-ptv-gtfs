@@ -1,0 +1,8 @@
+stop_id,stop_name,stop_lat,stop_lon
+"1000","Dole Ave/Cheddar Rd (Reservoir)","-37.7007748061827","145.018951051008"
+"10001","Rex St/Taylors Rd (Kings Park)","-37.7269752097338","144.776152425766"
+"10002","Yuille St/Centenary Ave (Melton)","-37.676159502415","144.595789405034"
+"10009","Gum Rd/Main Rd West (Albanvale)","-37.7414971143105","144.775899388911"
+"1001","Lloyd Ave/Cheddar Rd (Reservoir)","-37.6991830099559","145.019685286526"
+"10010","Kings Rd/Main Rd West (St Albans)","-37.7419455261301","144.78008474429"
+"10011","Moffat St/Main Rd West (St Albans)","-37.7423246041343","144.783466504334"
