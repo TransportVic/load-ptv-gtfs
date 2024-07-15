@@ -9,11 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "adm-zip": "^0.5.14",
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "chai": "^5.1.0",
     "mocha": "^10.3.0",
-    "nock": "^14.0.0-beta.5"
+    "nock": "^14.0.0-beta.5",
+    "tmp-promise": "^3.0.3"
   }
 }
