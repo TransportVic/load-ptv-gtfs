@@ -107,5 +107,17 @@ describe('The GTFSStop class', () => {
         stopName: 'Southbank Tram Depot'
       })
     })
+
+    it('Should return null if there is no stop number', () => {
+      let stopData = GTFSStops.initialProcess({
+        ...stopInput,
+        stop_name: 'Southbank Tram Depot (South Melbourne)'
+      })
+
+      expect(stopData.matchStopNumber()).to.deep.equal({
+        stopNumber: null,
+        stopName: 'Southbank Tram Depot'
+      })
+    })
   })
 })
