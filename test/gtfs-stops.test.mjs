@@ -25,7 +25,7 @@ describe('The GTFSStops class', () => {
   describe('The requiresSuburb function', () => {
     it('Should return false if the stop name already has a suburb', async () => {
       let stopData = GTFSStops.initialProcess(stopInput)
-      expect(GTFSStops.requiresSuburb(stopData)).to.be.false
+      expect(stopData.requiresSuburb()).to.be.false
     })
 
     it('Should return false if the stop name is missing the suburb', async () => {
@@ -33,7 +33,14 @@ describe('The GTFSStops class', () => {
         ...stopInput,
         stop_name: 'Dole Ave/Cheddar Rd'
       })
-      expect(GTFSStops.requiresSuburb(stopData)).to.be.true
+      expect(stopData.requiresSuburb()).to.be.true
+    })
+  })
+
+  describe('The getSuburbFromName function', () => {
+    it('Should extract the stop suburb from its name', () => {
+      let stopData = GTFSStops.initialProcess(stopInput)
+      expect(stopData.getSuburbFromName()).to.equal('Reservoir')
     })
   })
 
