@@ -68,5 +68,16 @@ describe('The PTVGTFS class', () => {
       let stat = await fs.stat(path.join(tmp.path, '1', 'google_transit.zip'))
       expect(stat).to.not.be.null
     })
+
+    it('Should unzip the google_transit.zip files in the numbered folders as well', async () => {
+      let { gtfs, tmp } = await downloadGTFS()
+      await gtfs.unzip()
+
+      for (let i = 1; i <= 11; i++) {
+        if (i === 9) continue
+        let stat = await fs.stat(path.join(tmp.path, i.toString(), 'stops.txt'))
+        expect(stat).to.not.be.null
+      }
+    })
   })
 })
