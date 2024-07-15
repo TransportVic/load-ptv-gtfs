@@ -25,7 +25,7 @@ let stopInput2 = {
 describe('The GTFSStops class', () => {
   describe('The initialProcess function', () => {
     it('Should take in the raw CSV line and process it', () => {
-      let stopData = GTFSStopsReader.getStop(stopInput)
+      let stopData = GTFSStopsReader.processStop(stopInput)
 
       expect(stopData.originalName).to.equal(stopInput.stop_name)
       expect(stopData.stopGTFSID).to.equal(stopInput.stop_id)
@@ -36,7 +36,7 @@ describe('The GTFSStops class', () => {
     })
 
     it('Should populate the suburb and stop number', () => {
-      let stopData = GTFSStopsReader.getStop({
+      let stopData = GTFSStopsReader.processStop({
         ...stopInput2,
         stop_name: '51a-Rex St/Taylors Rd (Kings Park)'
       })
@@ -75,12 +75,12 @@ describe('The GTFSStops class', () => {
 describe('The GTFSStop class', () => {
   describe('The requiresSuburb function', () => {
     it('Should return false if the stop name already has a suburb', async () => {
-      let stopData = GTFSStopsReader.getStop(stopInput)
+      let stopData = GTFSStopsReader.processStop(stopInput)
       expect(stopData.requiresSuburb()).to.be.false
     })
 
     it('Should return false if the stop name is missing the suburb', async () => {
-      let stopData = GTFSStopsReader.getStop({
+      let stopData = GTFSStopsReader.processStop({
         ...stopInput,
         stop_name: 'Dole Ave/Cheddar Rd'
       })
@@ -90,14 +90,14 @@ describe('The GTFSStop class', () => {
 
   describe('The getSuburbFromName function', () => {
     it('Should extract the stop suburb from its name', () => {
-      let stopData = GTFSStopsReader.getStop(stopInput)
+      let stopData = GTFSStopsReader.processStop(stopInput)
       expect(stopData.getSuburbFromName()).to.equal('Reservoir')
     })
   })
 
   describe('The getStopNameWithoutSuburb function', () => {
     it('Should strip the suburb from the stop name', () => {
-      let stopData = GTFSStopsReader.getStop(stopInput)
+      let stopData = GTFSStopsReader.processStop(stopInput)
 
       expect(stopData.getStopNameWithoutSuburb()).to.equal('Dole Ave/Cheddar Rd')
     })
@@ -105,7 +105,7 @@ describe('The GTFSStop class', () => {
 
   describe('The matchStopNumber function', () => {
     it('Should match stop numbers in the format XXX-STOPNAME', () => {
-      let stopData = GTFSStopsReader.getStop({
+      let stopData = GTFSStopsReader.processStop({
         ...stopInput,
         stop_name: '125-Yuille St/Centenary Ave (Melton)'
       })
@@ -121,7 +121,7 @@ describe('The GTFSStop class', () => {
     // Seems to be caused when they set some flag incorrectly as this seems to match the stop names on the printed timetables.
     // Weird huh.
     it('Should match stop numbers in the format STOPNAME - Stop XXX', () => {
-      let stopData = GTFSStopsReader.getStop({
+      let stopData = GTFSStopsReader.processStop({
         ...stopInput,
         stop_name: 'Yuille St - Stop D99'
       })
@@ -133,7 +133,7 @@ describe('The GTFSStop class', () => {
     })
 
     it('Should ensure the stop numbers are all uppercase', () => {
-      let stopData = GTFSStopsReader.getStop({
+      let stopData = GTFSStopsReader.processStop({
         ...stopInput,
         stop_name: '125a-Southbank Tram Depot (South Melbourne)'
       })
@@ -145,7 +145,7 @@ describe('The GTFSStop class', () => {
     })
 
     it('Should return null if there is no stop number', () => {
-      let stopData = GTFSStopsReader.getStop({
+      let stopData = GTFSStopsReader.processStop({
         ...stopInput,
         stop_name: 'Southbank Tram Depot (South Melbourne)'
       })
@@ -154,6 +154,52 @@ describe('The GTFSStop class', () => {
         stopNumber: null,
         stopName: 'Southbank Tram Depot'
       })
+    })
+  })
+
+  describe('The getPrimaryStopName function', () => {
+    it('Should return the stop name up to the last instance of "/"', () => {
+      let stopData = GTFSStopsReader.processStop(stopInput)
+      expect(stopData.getPrimaryStopName()).to.equal('Dole Ave')
+    })
+
+    it('Should handle / appearing in a stop name', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: '124A-Casino/MCEC/Clarendon St (Southbank)'
+      })
+      expect(stopData.getPrimaryStopName()).to.equal('Casino/MCEC')
+    })
+
+    it('Should return the full name if there is no /', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: 'Southbank Tram Depot (Southbank)'
+      })
+      expect(stopData.getPrimaryStopName()).to.equal('Southbank Tram Depot')
+    })
+  })
+
+  describe('The getSecondaryStopName function', () => {
+    it('Should return the stop name up to the last instance of "/"', () => {
+      let stopData = GTFSStopsReader.processStop(stopInput)
+      expect(stopData.getSecondaryStopName()).to.equal('Cheddar Rd')
+    })
+
+    it('Should handle / appearing in a stop name', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: '124A-Casino/MCEC/Clarendon St (Southbank)'
+      })
+      expect(stopData.getSecondaryStopName()).to.equal('Clarendon St')
+    })
+
+    it('Should return the full name if there is no /', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: 'Southbank Tram Depot (Southbank)'
+      })
+      expect(stopData.getSecondaryStopName()).to.equal('')
     })
   })
 })
