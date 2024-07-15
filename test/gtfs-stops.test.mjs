@@ -2,6 +2,7 @@ import { expect } from 'chai'
 import GTFSStopsReader from '../lib/gtfs-parser/GTFSStops.mjs'
 import path from 'path'
 import url from 'url'
+import GTFSStop from '../lib/gtfs-parser/GTFSStop.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -200,6 +201,23 @@ describe('The GTFSStop class', () => {
         stop_name: 'Southbank Tram Depot (Southbank)'
       })
       expect(stopData.getSecondaryStopName()).to.equal('')
+    })
+  })
+
+  describe('The amendStopDirection function', () => {
+    it('Should amend the direction if it appears as "Name (Direction) Rd"', () => {
+      let original = 'Station (East) St'
+      expect(GTFSStop.amendStopDirection(original)).to.equal('Station St - East')
+    })
+
+    it('Should amend the direction if it appears as "Name Rd (Direction)"', () => {
+      let original = 'Station St (East)'
+      expect(GTFSStop.amendStopDirection(original)).to.equal('Station St - East')
+    })
+
+    it('Should handle the word side appearing', () => {
+      let original = 'Newman Cres (north side)'
+      expect(GTFSStop.amendStopDirection(original)).to.equal('Newman Cres - North')
     })
   })
 })
