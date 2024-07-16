@@ -121,6 +121,22 @@ describe('The GTFSStop class', () => {
       })
       expect(stopData.getSuburbFromName()).to.equal('Glenroy, NSW')
     })
+
+    it('Should expand St in the suburb name', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: 'Dundas St/Market St (St Arnaud)'
+      })
+      expect(stopData.getSuburbFromName()).to.equal('St. Arnaud')
+    })
+
+    it('Should expand St in the suburb name', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: 'Tourist Information Centre/Jubilee Hwy East (Mt Gambier (SA))'
+      })
+      expect(stopData.getSuburbFromName()).to.equal('Mount Gambier, SA')
+    })
   })
 
   describe('The getStopNameWithoutSuburb function', () => {
