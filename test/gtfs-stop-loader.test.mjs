@@ -47,4 +47,21 @@ describe('The GTFS Stops Loader', () => {
     expect(wavWarrigal.stopName).to.equal('Waverley Road/Warrigal Road')
     expect(wavWarrigal.bays.length).to.equal(2)
   })
+
+  it('Should merge non street stops, and keep the secondary stop name if they are the same', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    let loader = new StopsLoader(stopsFile, 'bus', database)
+    await loader.loadStops()
+
+    let stop = await stops.findDocument({
+      'bays.stopGTFSID': '19580'
+    })
+
+    expect(stop).to.not.be.null
+    expect(stop.bays.length).to.equal(3)
+    expect(stop.stopName).to.equal('Belgrave Railway Station/Belgrave-Gembrook Road')
+  })
+
 })

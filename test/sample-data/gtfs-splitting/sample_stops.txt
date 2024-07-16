@@ -13,3 +13,6 @@ stop_id,stop_name,stop_lat,stop_lon
 "19580","Belgrave Station/Belgrave-Gembrook Rd (Belgrave)","-37.9096818213337","145.354857507576"
 "19581","Belgrave Station/Belgrave-Gembrook Rd (Belgrave)","-37.9095756173024","145.354996370113"
 "19582","Belgrave Station/Belgrave-Gembrook Rd (Belgrave)","-37.9094159930233","145.355181920791"
+"28191","Lilydale Station/West William St (Lilydale)","-37.7570490306183","145.345723747959"
+"28196","Lilydale Station/East William St (Lilydale)","-37.7575706259904","145.345644021564"
+"28198","Lilydale Station/Main St (Lilydale)","-37.756739520712","145.345503616316"
