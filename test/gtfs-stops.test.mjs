@@ -94,6 +94,33 @@ describe('The GTFSStop class', () => {
       let stopData = GTFSStopsReader.processStop(stopInput)
       expect(stopData.getSuburbFromName()).to.equal('Reservoir')
     })
+
+    describe('The getSuburbState function', () => {
+      it('Should extract the state form a suburb in the form (Suburb (State))', () => {
+        let stopName = 'Albury Botanic Gardens/Wodonga Pl (Albury (NSW))'
+        let stopData = GTFSStopsReader.processStop({
+          ...stopInput,
+          stop_name: stopName
+        })
+        expect(stopData.getSuburbState(stopName.lastIndexOf('('))).to.equal('NSW')
+      })
+    })
+
+    it('Should process interstate suburbs in the format (Suburb (State))', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: 'Albury Botanic Gardens/Wodonga Pl (Albury (NSW))'
+      })
+      expect(stopData.getSuburbFromName()).to.equal('Albury, NSW')
+    })
+
+    it('Should process interstate suburbs in the format (Suburb (Local Area - State))', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: 'Emma Way/Wright St (Glenroy (Albury - NSW))'
+      })
+      expect(stopData.getSuburbFromName()).to.equal('Glenroy, NSW')
+    })
   })
 
   describe('The getStopNameWithoutSuburb function', () => {
