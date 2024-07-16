@@ -6,7 +6,7 @@ import CSVLineReader from '../lib/gtfs-parser/line-reader.mjs'
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'sample_stops.txt')
+const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'line_reader_test.txt')
 
 describe('The CSVLineReader class', () => {
   it('Should open a CSV file and identify the headers', async () => {
