@@ -8,6 +8,8 @@ stop_id,stop_name,stop_lat,stop_lon
 "10011","Moffat St/Main Rd West (St Albans)","-37.7423246041343","144.783466504334"
 "16074","Waverley Rd/Watsons Rd (Glen Waverley)","-37.8900764627378","145.170243673036"
 "15064","Waverley Rd/Watsons Rd (Glen Waverley)","-37.8901951633874","145.170343077835"
+"9662","Waverley Rd/Warrigal Rd (Chadstone)","-37.879427459666","145.091009789504"
+"9379","Waverley Rd/Warrigal Rd (Chadstone)","-37.8795658733597","145.090653754117"
 "19580","Belgrave Station/Belgrave-Gembrook Rd (Belgrave)","-37.9096818213337","145.354857507576"
 "19581","Belgrave Station/Belgrave-Gembrook Rd (Belgrave)","-37.9095756173024","145.354996370113"
 "19582","Belgrave Station/Belgrave-Gembrook Rd (Belgrave)","-37.9094159930233","145.355181920791"

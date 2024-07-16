@@ -9,11 +9,11 @@ const __dirname = path.dirname(__filename)
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'sample_stops.txt')
 
-const database = new LokiDatabaseConnection('test-db')
-const stops = await database.createCollection('stops')
-
 describe('The GTFS Stops Loader', () => {
   it('Should process the stops and add them to the database', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
     let loader = new StopsLoader(stopsFile, 'bus', database)
     await loader.loadStops()
 
@@ -22,5 +22,29 @@ describe('The GTFS Stops Loader', () => {
     })
     expect(stop).to.not.be.null
     expect(stop.stopName).to.equal('Moffat Street/Main Road West')
+  })
+
+  it('Should merge street-level stops matching with the exact same name', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    let loader = new StopsLoader(stopsFile, 'bus', database)
+    await loader.loadStops()
+
+    let wavWatson = await stops.findDocument({
+      'bays.stopGTFSID': '16074'
+    })
+
+    expect(wavWatson).to.not.be.null
+    expect(wavWatson.stopName).to.equal('Waverley Road/Watsons Road')
+    expect(wavWatson.bays.length).to.equal(2)
+
+    let wavWarrigal = await stops.findDocument({
+      'bays.stopGTFSID': '9379'
+    })
+    
+    expect(wavWarrigal).to.not.be.null
+    expect(wavWarrigal.stopName).to.equal('Waverley Road/Warrigal Road')
+    expect(wavWarrigal.bays.length).to.equal(2)
   })
 })
