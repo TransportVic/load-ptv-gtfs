@@ -204,25 +204,26 @@ describe('The GTFSStop class', () => {
     })
   })
 
-  describe('The amendStopDirection function', () => {
-    it('Should amend the direction if it appears as "Name (Direction) Rd"', () => {
-      let original = 'Station (East) St'
-      expect(GTFSStop.amendStopDirection(original)).to.equal('Station St - East')
+  describe('The getFullStopName function', () => {
+    it('Should expand the stop name', () => {
+      let stopData = GTFSStopsReader.processStop(stopInput2)
+      expect(stopData.getFullStopName()).to.equal('Rex Street/Taylors Road')
     })
 
-    it('Should amend the direction if it appears as "Name Rd (Direction)"', () => {
-      let original = 'Station St (East)'
-      expect(GTFSStop.amendStopDirection(original)).to.equal('Station St - East')
+    it('Should handle stops with only a primary name', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: 'Knox City SC (Knoxfield)'
+      })
+      expect(stopData.getFullStopName()).to.equal('Knox City Shopping Centre')      
     })
 
-    it('Should handle the word side appearing', () => {
-      let original = 'Newman Cres (north side)'
-      expect(GTFSStop.amendStopDirection(original)).to.equal('Newman Cres - North')
-    })
-
-    it('Should handle the prefix Direction of Name Rd', () => {
-      let original = 'east of Pechell St'
-      expect(GTFSStop.amendStopDirection(original)).to.equal('Pechell St - East')
+    it('Should handle the direction appearing as well', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: 'Newman Cres (north side)/east of Pechell St (Made Up Suburb)'
+      })
+      expect(stopData.getFullStopName()).to.equal('Newman Crescent - North/Pechell Street - East')      
     })
   })
 })
