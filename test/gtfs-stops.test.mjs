@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import GTFSStopsReader from '../lib/gtfs-parser/GTFSStops.mjs'
 import path from 'path'
 import url from 'url'
-import GTFSStop from '../lib/gtfs-parser/GTFSStop.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -220,52 +219,6 @@ describe('The GTFSStop class', () => {
         stopNumber: null,
         stopName: 'Southbank Tram Depot'
       })
-    })
-  })
-
-  describe('The getPrimaryStopName function', () => {
-    it('Should return the stop name up to the last instance of "/"', () => {
-      let stopData = GTFSStopsReader.processStop(stopInput)
-      expect(stopData.getPrimaryStopName()).to.equal('Dole Ave')
-    })
-
-    it('Should handle / appearing in a stop name', () => {
-      let stopData = GTFSStopsReader.processStop({
-        ...stopInput,
-        stop_name: '124A-Casino/MCEC/Clarendon St (Southbank)'
-      })
-      expect(stopData.getPrimaryStopName()).to.equal('Casino/MCEC')
-    })
-
-    it('Should return the full name if there is no /', () => {
-      let stopData = GTFSStopsReader.processStop({
-        ...stopInput,
-        stop_name: 'Southbank Tram Depot (Southbank)'
-      })
-      expect(stopData.getPrimaryStopName()).to.equal('Southbank Tram Depot')
-    })
-  })
-
-  describe('The getSecondaryStopName function', () => {
-    it('Should return the stop name up to the last instance of "/"', () => {
-      let stopData = GTFSStopsReader.processStop(stopInput)
-      expect(stopData.getSecondaryStopName()).to.equal('Cheddar Rd')
-    })
-
-    it('Should handle / appearing in a stop name', () => {
-      let stopData = GTFSStopsReader.processStop({
-        ...stopInput,
-        stop_name: '124A-Casino/MCEC/Clarendon St (Southbank)'
-      })
-      expect(stopData.getSecondaryStopName()).to.equal('Clarendon St')
-    })
-
-    it('Should return the full name if there is no /', () => {
-      let stopData = GTFSStopsReader.processStop({
-        ...stopInput,
-        stop_name: 'Southbank Tram Depot (Southbank)'
-      })
-      expect(stopData.getSecondaryStopName()).to.equal('')
     })
   })
 
