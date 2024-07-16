@@ -16,3 +16,5 @@ stop_id,stop_name,stop_lat,stop_lon
 "28191","Lilydale Station/West William St (Lilydale)","-37.7570490306183","145.345723747959"
 "28196","Lilydale Station/East William St (Lilydale)","-37.7575706259904","145.345644021564"
 "28198","Lilydale Station/Main St (Lilydale)","-37.756739520712","145.345503616316"
+"51586","Huntingdale Station/Haughton Rd (Oakleigh)","-37.9111998619901","145.103064853799"
+"22440","Huntingdale Station/Huntingdale Rd (Huntingdale)","-37.911010298723","145.103604328761"

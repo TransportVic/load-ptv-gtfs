@@ -79,4 +79,21 @@ describe('The GTFS Stops Loader', () => {
     expect(stop.bays.length).to.equal(3)
     expect(stop.stopName).to.equal('Lilydale Railway Station')
   })
+
+  it('Should update the suburb list as well', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    let loader = new StopsLoader(stopsFile, 'bus', database)
+    await loader.loadStops()
+
+    let stop = await stops.findDocument({
+      'bays.stopGTFSID': '51586'
+    })
+
+    expect(stop).to.not.be.null
+    expect(stop.bays.length).to.equal(2)
+    expect(stop.stopName).to.equal('Huntingdale Railway Station')
+    expect(stop.suburb).to.deep.equal(['Huntingdale', 'Oakleigh'])
+  })
 })
