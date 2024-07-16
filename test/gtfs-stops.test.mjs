@@ -130,12 +130,34 @@ describe('The GTFSStop class', () => {
       expect(stopData.getSuburbFromName()).to.equal('St. Arnaud')
     })
 
-    it('Should expand St in the suburb name', () => {
+    it('Should expand Mt in the suburb name', () => {
       let stopData = GTFSStopsReader.processStop({
         ...stopInput,
         stop_name: 'Tourist Information Centre/Jubilee Hwy East (Mt Gambier (SA))'
       })
       expect(stopData.getSuburbFromName()).to.equal('Mount Gambier, SA')
+    })
+  })
+
+  describe('The getSuburbFromLocation function', () => {
+    it('Should expand St in the suburb name', () => {
+      let stopData = GTFSStopsReader.processStop({
+        stop_id: '912',
+        stop_name: 'Princes St/Barkly St',
+        stop_lat: '-37.8597466731382',
+        stop_lon: '144.98247799877'
+      })
+      expect(stopData.getSuburbFromLocation()).to.equal('St. Kilda')
+    })
+
+    it('Should return a generic Interstate suburb if it cannot identify the suburb', () => {
+      let stopData = GTFSStopsReader.processStop({
+        stop_id: '20815',
+        stop_name: '85 Franklin St',
+        stop_lat: '-34.9274852283649',
+        stop_lon: '138.595751207359'
+      })
+      expect(stopData.getSuburbFromLocation()).to.equal('Interstate')
     })
   })
 
