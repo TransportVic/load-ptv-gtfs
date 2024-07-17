@@ -220,6 +220,18 @@ describe('The GTFSStop class', () => {
         stopName: 'Southbank Tram Depot'
       })
     })
+
+    it('Should not match street numbers spanning multiple units', () => {
+      let stopData = GTFSStopsReader.processStop({
+        ...stopInput,
+        stop_name: '227-243 Wellington Rd (Mulgrave)'
+      })
+
+      expect(stopData.matchStopNumber()).to.deep.equal({
+        stopNumber: null,
+        stopName: '227-243 Wellington Rd'
+      })
+    })
   })
 
   describe('The getFullStopName function', () => {
