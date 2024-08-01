@@ -1,0 +1,7 @@
+stop_id,stop_name,stop_lat,stop_lon
+"16830","Melbourne University/Royal Pde (Parkville)","-37.7984297818238","144.957855928775"
+"28670","Melbourne University/Grattan St (Carlton)","-37.8001309323072","144.961897703257"
+"28671","Melbourne University/Grattan St (Carlton)","-37.8002400593444","144.962996363755"
+"28673","Melbourne University/Grattan St (Carlton)","-37.8000452422121","144.960071535123"
+"28675","Melbourne University/Grattan St (Carlton)","-37.800110297337","144.960705753974"
+"87","Melbourne University/Swanston St (Carlton)","-37.7999508835265","144.963992391723"

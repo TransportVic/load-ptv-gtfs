@@ -8,6 +8,8 @@ const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'sample_stops.txt')
+const uniqueStopsBus = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'force_unique_stops_bus.txt')
+const uniqueStopsTram = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'force_unique_stops_tram.txt')
 
 describe('The GTFS Stops Loader', () => {
   it('Should process the stops and add them to the database', async () => {
@@ -95,5 +97,37 @@ describe('The GTFS Stops Loader', () => {
     expect(stop.bays.length).to.equal(2)
     expect(stop.stopName).to.equal('Huntingdale Railway Station')
     expect(stop.suburb).to.deep.equal(['Huntingdale', 'Oakleigh'])
+  })
+
+  it('Should not merge stops that are forced to be unique and would otherwise be merged', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    await (new StopsLoader(uniqueStopsBus, 'bus', database)).loadStops()
+    await (new StopsLoader(uniqueStopsTram, 'tram', database)).loadStops()
+
+    let melbRoyal = await stops.findDocument({
+      'bays.stopGTFSID': '16830'
+    })
+
+    expect(melbRoyal).to.not.be.null
+    expect(melbRoyal.bays.length).to.equal(1)
+    expect(melbRoyal.stopName).to.equal('Melbourne University/Royal Parade')
+
+    let melbGrattan = await stops.findDocument({
+      'bays.stopGTFSID': '28670'
+    })
+
+    expect(melbGrattan).to.not.be.null
+    expect(melbGrattan.bays.length).to.equal(4)
+    expect(melbGrattan.stopName).to.equal('Melbourne University/Grattan Street')
+
+    let melbSwanston = await stops.findDocument({
+      'bays.stopGTFSID': '87'
+    })
+
+    expect(melbSwanston).to.not.be.null
+    expect(melbSwanston.bays.length).to.equal(3)
+    expect(melbSwanston.stopName).to.equal('Melbourne University/Swanston Street')
   })
 })

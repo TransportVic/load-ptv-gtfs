@@ -1,0 +1,3 @@
+stop_id,stop_name,stop_lat,stop_lon
+"19489","1-Melbourne University/Swanston St (Carlton)","-37.7993054833284","144.964191828973"
+"19696","1-Melbourne University/Swanston St (Carlton)","-37.7987656217477","144.96424072282"
