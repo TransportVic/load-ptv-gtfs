@@ -1,0 +1,4 @@
+stop_id,stop_name,stop_lat,stop_lon
+"49016","Ballarat Bus Interchange (Soldiers Hill)","-37.5583880170257","143.859870505315"
+"49017","Ballarat Bus Interchange (Soldiers Hill)","-37.558622046041","143.860200212639"
+"49020","Ballarat Bus Interchange (Soldiers Hill)","-37.558397045775","143.860209663324"

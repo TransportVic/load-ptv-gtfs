@@ -8,8 +8,11 @@ const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'sample_stops.txt')
+
 const uniqueStopsBus = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'force_unique_stops_bus.txt')
 const uniqueStopsTram = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'force_unique_stops_tram.txt')
+
+const stopNameOverrides = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'name_overrides.txt')
 
 describe('The GTFS Stops Loader', () => {
   it('Should process the stops and add them to the database', async () => {
@@ -129,5 +132,21 @@ describe('The GTFS Stops Loader', () => {
     expect(melbSwanston).to.not.be.null
     expect(melbSwanston.bays.length).to.equal(3)
     expect(melbSwanston.stopName).to.equal('Melbourne University/Swanston Street')
+  })
+
+  it('Should override stop names if required', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    await (new StopsLoader(stopNameOverrides, 'bus', database)).loadStops()
+
+    let ballarat = await stops.findDocument({
+      'bays.stopGTFSID': '49020'
+    })
+
+    expect(ballarat).to.not.be.null
+    expect(ballarat.bays.length).to.equal(3)
+    expect(ballarat.stopName).to.equal('Ballarat Railway Station')
+    expect(ballarat.bays[0].originalName).to.equal('Ballarat Bus Interchange (Soldiers Hill)')
   })
 })
