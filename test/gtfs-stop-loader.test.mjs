@@ -14,6 +14,8 @@ const uniqueStopsTram = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'f
 
 const stopNameOverrides = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'name_overrides.txt')
 
+const specialHeader = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'special_chars_stops_csv.txt')
+
 describe('The GTFS Stops Loader', () => {
   it('Should process the stops and add them to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
@@ -148,5 +150,19 @@ describe('The GTFS Stops Loader', () => {
     expect(ballarat.bays.length).to.equal(3)
     expect(ballarat.stopName).to.equal('Ballarat Railway Station')
     expect(ballarat.bays[0].originalName).to.equal('Ballarat Bus Interchange (Soldiers Hill)')
+  })
+
+  it('Should handle CSV blank spaces and other unicode junk', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    await (new StopsLoader(stopNameOverrides, 'bus', database)).loadStops()
+
+    let gumRd = await stops.findDocument({
+      'bays.stopGTFSID': '10009'
+    })
+
+    expect(gumRd).to.not.be.null
+    expect(ballarat.stopName).to.equal('Gum Road/Main Road West')
   })
 })
