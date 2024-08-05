@@ -3,3 +3,4 @@
 "10001","Rex St/Taylors Rd (Kings Park)","-37.7269752097338","144.776152425766"
 "10002","Yuille St/Centenary Ave (Melton)","-37.676159502415","144.595789405034"
 "10009","Gum Rd/Main Rd West (Albanvale)","-37.7414971143105","144.775899388911"
+"28675","Melbourne University/Grattan St (Carlton)","-37.800110297337","144.960705753974"

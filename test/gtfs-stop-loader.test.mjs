@@ -156,13 +156,13 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    await (new StopsLoader(stopNameOverrides, 'bus', database)).loadStops()
+    await (new StopsLoader(specialHeader, 'bus', database)).loadStops()
 
     let gumRd = await stops.findDocument({
       'bays.stopGTFSID': '10009'
     })
 
     expect(gumRd).to.not.be.null
-    expect(ballarat.stopName).to.equal('Gum Road/Main Road West')
+    expect(gumRd.stopName).to.equal('Gum Road/Main Road West')
   })
 })
