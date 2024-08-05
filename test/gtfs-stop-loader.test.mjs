@@ -45,6 +45,8 @@ describe('The GTFS Stops Loader', () => {
     expect(wavWatson).to.not.be.null
     expect(wavWatson.stopName).to.equal('Waverley Road/Watsons Road')
     expect(wavWatson.bays.length).to.equal(2)
+    expect(wavWatson.suburb).to.deep.equal(['Glen Waverley'])
+    expect(wavWatson.cleanSuburbs).to.deep.equal(['glen-waverley'])
 
     let wavWarrigal = await stops.findDocument({
       'bays.stopGTFSID': '9379'
