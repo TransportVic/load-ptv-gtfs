@@ -22,6 +22,13 @@ let stopInput2 = {
   stop_lon: '144.776152425766'
 }
 
+let stopInput3 = {
+  stop_id: '13486',
+  stop_name: 'Narre Warren, Fountain Gate Primary School/Victoria Rd',
+  stop_lat: '-38.0093755011572',
+  stop_lon: '145.296182027229'
+}
+
 describe('The GTFSStops class', () => {
   describe('The initialProcess function', () => {
     it('Should take in the raw CSV line and process it', () => {
@@ -89,53 +96,59 @@ describe('The GTFSStop class', () => {
   })
 
   describe('The getSuburbFromName function', () => {
-    it('Should extract the stop suburb from its name', () => {
+    it('Should extract the stop suburb from its name in brackets', () => {
       let stopData = GTFSStopsReader.processStop(stopInput)
       expect(stopData.getSuburbFromName()).to.equal('Reservoir')
     })
 
-    describe('The getSuburbState function', () => {
-      it('Should extract the state form a suburb in the form (Suburb (State))', () => {
-        let stopName = 'Albury Botanic Gardens/Wodonga Pl (Albury (NSW))'
-        let stopData = GTFSStopsReader.processStop({
-          ...stopInput,
-          stop_name: stopName
-        })
-        expect(stopData.getSuburbState(stopName.lastIndexOf('('))).to.equal('NSW')
-      })
+    it('Should extract the stop suburb from its name if it appears at the front', () => {
+      let stopData = GTFSStopsReader.processStop(stopInput3)
+      expect(stopData.suburbIsInFront()).to.be.true
+      expect(stopData.getSuburbFromName()).to.equal('Narre Warren')
     })
+  })
 
-    it('Should process interstate suburbs in the format (Suburb (State))', () => {
+  describe('The getSuburbState function', () => {
+    it('Should extract the state form a suburb in the form (Suburb (State))', () => {
+      let stopName = 'Albury Botanic Gardens/Wodonga Pl (Albury (NSW))'
       let stopData = GTFSStopsReader.processStop({
         ...stopInput,
-        stop_name: 'Albury Botanic Gardens/Wodonga Pl (Albury (NSW))'
+        stop_name: stopName
       })
-      expect(stopData.getSuburbFromName()).to.equal('Albury, NSW')
+      expect(stopData.getSuburbState(stopName.lastIndexOf('('))).to.equal('NSW')
     })
+  })
 
-    it('Should process interstate suburbs in the format (Suburb (Local Area - State))', () => {
-      let stopData = GTFSStopsReader.processStop({
-        ...stopInput,
-        stop_name: 'Emma Way/Wright St (Glenroy (Albury - NSW))'
-      })
-      expect(stopData.getSuburbFromName()).to.equal('Glenroy, NSW')
+  it('Should process interstate suburbs in the format (Suburb (State))', () => {
+    let stopData = GTFSStopsReader.processStop({
+      ...stopInput,
+      stop_name: 'Albury Botanic Gardens/Wodonga Pl (Albury (NSW))'
     })
+    expect(stopData.getSuburbFromName()).to.equal('Albury, NSW')
+  })
 
-    it('Should expand St in the suburb name', () => {
-      let stopData = GTFSStopsReader.processStop({
-        ...stopInput,
-        stop_name: 'Dundas St/Market St (St Arnaud)'
-      })
-      expect(stopData.getSuburbFromName()).to.equal('St. Arnaud')
+  it('Should process interstate suburbs in the format (Suburb (Local Area - State))', () => {
+    let stopData = GTFSStopsReader.processStop({
+      ...stopInput,
+      stop_name: 'Emma Way/Wright St (Glenroy (Albury - NSW))'
     })
+    expect(stopData.getSuburbFromName()).to.equal('Glenroy, NSW')
+  })
 
-    it('Should expand Mt in the suburb name', () => {
-      let stopData = GTFSStopsReader.processStop({
-        ...stopInput,
-        stop_name: 'Tourist Information Centre/Jubilee Hwy East (Mt Gambier (SA))'
-      })
-      expect(stopData.getSuburbFromName()).to.equal('Mount Gambier, SA')
+  it('Should expand St in the suburb name', () => {
+    let stopData = GTFSStopsReader.processStop({
+      ...stopInput,
+      stop_name: 'Dundas St/Market St (St Arnaud)'
     })
+    expect(stopData.getSuburbFromName()).to.equal('St. Arnaud')
+  })
+
+  it('Should expand Mt in the suburb name', () => {
+    let stopData = GTFSStopsReader.processStop({
+      ...stopInput,
+      stop_name: 'Tourist Information Centre/Jubilee Hwy East (Mt Gambier (SA))'
+    })
+    expect(stopData.getSuburbFromName()).to.equal('Mount Gambier, SA')
   })
 
   describe('The getSuburbFromLocation function', () => {
@@ -161,10 +174,16 @@ describe('The GTFSStop class', () => {
   })
 
   describe('The getStopNameWithoutSuburb function', () => {
-    it('Should strip the suburb from the stop name', () => {
+    it('Should strip the suburb from the stop name if the suburb appears behind', () => {
       let stopData = GTFSStopsReader.processStop(stopInput)
 
       expect(stopData.getStopNameWithoutSuburb()).to.equal('Dole Ave/Cheddar Rd')
+    })
+
+    it('Should strip the suburb from the stop name if the suburb is in front', () => {
+      let stopData = GTFSStopsReader.processStop(stopInput3)
+
+      expect(stopData.getStopNameWithoutSuburb()).to.equal('Fountain Gate Primary School/Victoria Rd')
     })
   })
 
