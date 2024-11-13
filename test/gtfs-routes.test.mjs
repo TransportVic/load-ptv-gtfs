@@ -35,7 +35,7 @@ describe('The GTFSRouteReader class', () => {
       await routeReader.getNextRoute()
       let routeData = await routeReader.getNextRoute()
 
-      expect(routeData.routeGTFSID).to.equal('6-13')
+      expect(routeData.routeGTFSID).to.equal('6-013')
       expect(routeData.agencyID).to.equal('99')
       expect(routeData.routeNumber).to.equal('13')
       expect(routeData.routeName).to.equal('Paynesville - Bairnsdale Via Paynesville')
