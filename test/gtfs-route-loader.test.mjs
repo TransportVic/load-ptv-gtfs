@@ -41,4 +41,17 @@ describe('The GTFS Routes Loader', () => {
     expect(bal10.routeNumber).to.equal('10')
     expect(bal10.operators).to.equal(['Christians Bus Company (Bendigo)'])
   })
+
+  it('Should open the agency.txt file and load all operators', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let routes = await database.createCollection('routes')
+
+    let loader = new RouteLoader(routesFile, agencyFile, 'bus', database)
+    await loader.loadAgencies()
+    
+    let paynesville = loader.getOperator('99')
+
+    expect(paynesville).to.not.be.undefined
+    expect(paynesville.name).to.equal('Paynesville Bus Lines')
+  })
 })
