@@ -9,7 +9,8 @@ import { expect } from 'chai'
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const routesFile = path.join(__dirname, 'sample-data', 'routes', 'regional_bus_routes.txt')
+const regionalRoutesFile = path.join(__dirname, 'sample-data', 'routes', 'regional_bus_routes.txt')
+const metroRoutesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_bus_routes.txt')
 const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
 
 describe('The GTFS Agency Reader', () => {
@@ -30,7 +31,7 @@ describe('The GTFS Routes Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let routes = await database.createCollection('routes')
 
-    let loader = new RouteLoader(routesFile, agencyFile, 'bus', database)
+    let loader = new RouteLoader(regionalRoutesFile, agencyFile, 'bus', database)
     await loader.loadRoutes()
 
     let bal10 = await routes.findDocument({
@@ -44,14 +45,30 @@ describe('The GTFS Routes Loader', () => {
 
   it('Should open the agency.txt file and load all operators', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let routes = await database.createCollection('routes')
+    await database.createCollection('routes')
 
-    let loader = new RouteLoader(routesFile, agencyFile, 'bus', database)
+    let loader = new RouteLoader(regionalRoutesFile, agencyFile, 'bus', database)
     await loader.loadAgencies()
     
     let paynesville = loader.getOperator('99')
 
     expect(paynesville).to.not.be.undefined
     expect(paynesville.name).to.equal('Paynesville Bus Lines')
+  })
+
+  it('Should handle smartrak routes', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let routes = await database.createCollection('routes')
+
+    let loader = new RouteLoader(metroRoutesFile, agencyFile, 'bus', database)
+    await loader.loadRoutes()
+
+    let smart900 = await routes.findDocument({
+      routeGTFSID: '4-900'
+    })
+
+    expect(smart900).to.not.be.null
+    expect(smart900.routeNumber).to.equal('900')
+    expect(smart900.operators).to.have.members(['CDC', 'Ventura Bus Lines'])
   })
 })
