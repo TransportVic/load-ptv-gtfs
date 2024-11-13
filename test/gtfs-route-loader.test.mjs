@@ -39,7 +39,7 @@ describe('The GTFS Routes Loader', () => {
 
     expect(bal10).to.not.be.null
     expect(bal10.routeNumber).to.equal('10')
-    expect(bal10.operators).to.equal(['Christians Bus Company (Bendigo)'])
+    expect(bal10.operators).to.deep.equal(['CDC Ballarat'])
   })
 
   it('Should open the agency.txt file and load all operators', async () => {
