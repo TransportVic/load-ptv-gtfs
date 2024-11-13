@@ -20,7 +20,7 @@ describe('The GTFS Agency Reader', () => {
   it('Should read the agencies one line at a time', async () => {
     let reader = new GTFSAgencyReader(agencyFile)
     await reader.open()
-    let operator = await reader.getNextAgency()
+    let operator = await reader.getNextEntity()
 
     expect(operator.id).to.equal('43')
     expect(operator.name).to.equal('CDC Ballarat')
