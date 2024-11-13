@@ -4,3 +4,4 @@ route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route
 "6-14B-mjp-1","43","14","Black Hill - Ballarat Station Via Black Hill","3","FF8200","FFFFFF"
 "6-14-mjp-1","168","14","Omeo - Bairnsdale Via Bruthen, Swifts Creek","3","FF8200","FFFFFF"
 "6-BN5-mjp-1","68","WN05","Bendigo","3","FF8200","FFFFFF"
+"6-MLH-mjp-1","94","","Horsham - Mildura Via Ouyen, Warracknabeal","3","FF8200","FFFFFF"
