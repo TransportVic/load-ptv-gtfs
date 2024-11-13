@@ -1,0 +1,4 @@
+route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color
+"41-900-aus-1","32","900","Stud Park SC - Caulfield","3","FF8200","FFFFFF"
+"49-900-aus-1","38","900","Caulfield - Stud Park SC (Rowville)","3","FF8200","FFFFFF"
+"49-601-aus-1","38","601","Huntingdale Station - Monash University (Clayton)","3","FF8200","FFFFFF"
