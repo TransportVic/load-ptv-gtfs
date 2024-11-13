@@ -29,13 +29,13 @@ describe('The GTFSRouteReader class', () => {
     })
   })
 
-  describe('The getNextRoute function', () => {
+  describe('The getNextEntity function', () => {
     it('Should read the CSV file and return the next stop', async () => {
       let routeReader = new GTFSRouteReader(regionalRoutesFile, TRANSIT_MODES.bus)
       await routeReader.open()
 
-      await routeReader.getNextRoute()
-      let routeData = await routeReader.getNextRoute()
+      await routeReader.getNextEntity()
+      let routeData = await routeReader.getNextEntity()
 
       expect(routeData.agencyID).to.equal('99')
       expect(routeData.routeNumber).to.equal('13')
@@ -50,7 +50,7 @@ describe('The GTFSRoute class', () => {
       let routeReader = new GTFSRouteReader(regionalRoutesFile, TRANSIT_MODES.bus)
       await routeReader.open()
 
-      let routeData = await routeReader.getNextRoute()
+      let routeData = await routeReader.getNextEntity()
       
       expect(routeData.routeGTFSID).to.equal('6-10x')
     })
@@ -59,8 +59,8 @@ describe('The GTFSRoute class', () => {
       let routeReader = new GTFSRouteReader(regionalRoutesFile, TRANSIT_MODES.bus)
       await routeReader.open()
 
-      await routeReader.getNextRoute()
-      let routeData = await routeReader.getNextRoute()
+      await routeReader.getNextEntity()
+      let routeData = await routeReader.getNextEntity()
       
       expect(routeData.routeGTFSID).to.equal('6-013')
     })
@@ -69,9 +69,9 @@ describe('The GTFSRoute class', () => {
       let routeReader = new GTFSRouteReader(metroRoutesFile, TRANSIT_MODES.bus)
       await routeReader.open()
 
-      expect((await routeReader.getNextRoute()).routeGTFSID).to.equal('4-900')
-      expect((await routeReader.getNextRoute()).routeGTFSID).to.equal('4-900')
-      expect((await routeReader.getNextRoute()).routeGTFSID).to.equal('4-601')
+      expect((await routeReader.getNextEntity()).routeGTFSID).to.equal('4-900')
+      expect((await routeReader.getNextEntity()).routeGTFSID).to.equal('4-900')
+      expect((await routeReader.getNextEntity()).routeGTFSID).to.equal('4-601')
     })
   })
 })
