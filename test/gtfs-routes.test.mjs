@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import GTFSRouteReader from '../lib/gtfs-parser/GTFSRouteReader.mjs'
+import { TRANSIT_MODES } from '../lib/constants.mjs'
 import path from 'path'
 import url from 'url'
 
@@ -19,7 +20,7 @@ let regionalBusRoute = {
 describe('The GTFSRouteReader class', () => {
   describe('The processRoute function', () => {
     it('Should take in the raw CSV line and process it', () => {
-      let routeData = GTFSRouteReader.processRoute(regionalBusRoute)
+      let routeData = GTFSRouteReader.processRoute(regionalBusRoute, TRANSIT_MODES.bus)
 
       expect(routeData.routeGTFSID).to.equal('6-10x')
       expect(routeData.agencyID).to.equal(regionalBusRoute.agency_id)
@@ -30,7 +31,7 @@ describe('The GTFSRouteReader class', () => {
 
   describe('The getNextRoute function', () => {
     it('Should read the CSV file and return the next stop', async () => {
-      let routeReader = new GTFSRouteReader(regionalRoutesFile)
+      let routeReader = new GTFSRouteReader(regionalRoutesFile, TRANSIT_MODES.bus)
       await routeReader.open()
 
       await routeReader.getNextRoute()
@@ -46,7 +47,7 @@ describe('The GTFSRouteReader class', () => {
 describe('The GTFSRoute class', () => {
   describe('The route ID parsing', () => {
     it('Should parse a regular route ID and remove the -mjp- portion', async () => {
-      let routeReader = new GTFSRouteReader(regionalRoutesFile)
+      let routeReader = new GTFSRouteReader(regionalRoutesFile, TRANSIT_MODES.bus)
       await routeReader.open()
 
       let routeData = await routeReader.getNextRoute()
@@ -55,7 +56,7 @@ describe('The GTFSRoute class', () => {
     })
 
     it('Should parse a regular route ID and pad with 0s as needed', async () => {
-      let routeReader = new GTFSRouteReader(regionalRoutesFile)
+      let routeReader = new GTFSRouteReader(regionalRoutesFile, TRANSIT_MODES.bus)
       await routeReader.open()
 
       await routeReader.getNextRoute()
@@ -65,7 +66,7 @@ describe('The GTFSRoute class', () => {
     })
 
     it('Should detect a smartrak route ID and convert to a legacy 4-XXX trip', async () => {
-      let routeReader = new GTFSRouteReader(metroRoutesFile)
+      let routeReader = new GTFSRouteReader(metroRoutesFile, TRANSIT_MODES.bus)
       await routeReader.open()
 
       expect((await routeReader.getNextRoute()).routeGTFSID).to.equal('4-900')

@@ -1,5 +1,6 @@
 import { LokiDatabaseConnection } from '@sbs9642p/database'
 import StopsLoader from '../lib/loader/StopsLoader.mjs'
+import { TRANSIT_MODES } from '../lib/constants.mjs'
 import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
@@ -14,7 +15,7 @@ describe('The GTFS Stops Loader (Testing on the projected Nov 2024 data)', () =>
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    let loader = new StopsLoader(stopsFile, 'metro train', database)
+    let loader = new StopsLoader(stopsFile, TRANSIT_MODES.metroTrain, database)
     await loader.loadStops()
 
     let stop = await stops.findDocument({
@@ -28,7 +29,7 @@ describe('The GTFS Stops Loader (Testing on the projected Nov 2024 data)', () =>
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    let loader = new StopsLoader(stopsFile, 'metro train', database)
+    let loader = new StopsLoader(stopsFile, TRANSIT_MODES.metroTrain, database)
     await loader.loadStops()
 
     let stop = await stops.findDocument({

@@ -2,6 +2,8 @@ import { LokiDatabaseConnection } from '@sbs9642p/database'
 import RouteLoader from '../lib/loader/RouteLoader.mjs'
 import GTFSAgencyReader from '../lib/gtfs-parser/GTFSAgencyReader.mjs'
 
+import { TRANSIT_MODES } from '../lib/constants.mjs'
+
 import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
@@ -32,7 +34,7 @@ describe('The GTFS Routes Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let routes = await database.createCollection('routes')
 
-    let loader = new RouteLoader(regionalRoutesFile, agencyFile, 'bus', database)
+    let loader = new RouteLoader(regionalRoutesFile, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadRoutes()
 
     let bal10 = await routes.findDocument({
@@ -48,7 +50,7 @@ describe('The GTFS Routes Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     await database.createCollection('routes')
 
-    let loader = new RouteLoader(regionalRoutesFile, agencyFile, 'bus', database)
+    let loader = new RouteLoader(regionalRoutesFile, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadAgencies()
     
     let paynesville = loader.getOperator('99')
@@ -61,7 +63,7 @@ describe('The GTFS Routes Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let routes = await database.createCollection('routes')
 
-    let loader = new RouteLoader(metroRoutesFile, agencyFile, 'bus', database)
+    let loader = new RouteLoader(metroRoutesFile, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadRoutes()
 
     let smart900 = await routes.findDocument({
@@ -69,7 +71,7 @@ describe('The GTFS Routes Loader', () => {
     })
 
     expect(smart900).to.not.be.null
-    expect(smart900.mode).to.equal('bus')
+    expect(smart900.mode).to.equal(TRANSIT_MODES.bus)
     expect(smart900.routeNumber).to.equal('900')
     expect(smart900.operators).to.have.members(['CDC', 'Ventura Bus Lines'])
   })
