@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import GTFSStopsReader from '../lib/gtfs-parser/GTFSStopsReader.mjs'
+import GTFSStopsReader from '../lib/gtfs-parser/readers/GTFSStopsReader.mjs'
 import path from 'path'
 import url from 'url'
 

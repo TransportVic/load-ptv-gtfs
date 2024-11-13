@@ -1,6 +1,6 @@
 import { LokiDatabaseConnection } from '@sbs9642p/database'
 import RouteLoader from '../lib/loader/RouteLoader.mjs'
-import GTFSAgencyReader from '../lib/gtfs-parser/GTFSAgencyReader.mjs'
+import GTFSAgencyReader from '../lib/gtfs-parser/readers/GTFSAgencyReader.mjs'
 
 import { TRANSIT_MODES } from '../lib/constants.mjs'
 

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import GTFSRouteReader from '../lib/gtfs-parser/GTFSRouteReader.mjs'
+import GTFSRouteReader from '../lib/gtfs-parser/readers/GTFSRouteReader.mjs'
 import { TRANSIT_MODES } from '../lib/constants.mjs'
 import path from 'path'
 import url from 'url'

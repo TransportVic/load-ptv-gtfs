@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import path from 'path'
 import url from 'url'
-import CSVLineReader from '../lib/gtfs-parser/line-reader.mjs'
+import CSVLineReader from '../lib/gtfs-parser/readers/line-reader.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
