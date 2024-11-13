@@ -1,0 +1,5 @@
+stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,platform_code
+"11207","Camberwell Station","-37.82672159","145.05877266","","ParentCAM","1"
+"11208","Camberwell Station","-37.82656845","145.05877667","","ParentCAM","2"
+"11209","Camberwell Station","-37.82653224","145.05876626","","ParentCAM","3"
+"Parentvic:rail:CAM","Camberwell Station","-37.82656714","145.05869718","1","",""
