@@ -11,6 +11,7 @@ const __dirname = path.dirname(__filename)
 
 const regionalRoutesFile = path.join(__dirname, 'sample-data', 'routes', 'regional_bus_routes.txt')
 const metroRoutesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_bus_routes.txt')
+const metroLinesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_lines.txt')
 const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
 
 describe('The GTFS Agency Reader', () => {
@@ -71,5 +72,23 @@ describe('The GTFS Routes Loader', () => {
     expect(smart900.mode).to.equal('bus')
     expect(smart900.routeNumber).to.equal('900')
     expect(smart900.operators).to.have.members(['CDC', 'Ventura Bus Lines'])
+  })
+
+  it('Should handle metro train routes', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let routes = await database.createCollection('routes')
+
+    let loader = new RouteLoader(metroLinesFile, agencyFile, 'metro train', database)
+    await loader.loadRoutes()
+
+    let stony = await routes.findDocument({
+      routeGTFSID: '2-STY'
+    })
+
+    expect(stony).to.not.be.null
+    expect(stony.mode).to.equal('metro train')
+    expect(stony.routeNumber).to.be.null
+    expect(stony.routeName).to.equal('Stony Point')
+    expect(stony.operators).to.have.members(['Metro'])
   })
 })
