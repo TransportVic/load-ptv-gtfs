@@ -32,7 +32,7 @@ let stopInput3 = {
 describe('The GTFSStops class', () => {
   describe('The initialProcess function', () => {
     it('Should take in the raw CSV line and process it', () => {
-      let stopData = GTFSStopsReader.processEntity(stopInput)
+      let stopData = new GTFSStopsReader('').processEntity(stopInput)
 
       expect(stopData.originalName).to.equal(stopInput.stop_name)
       expect(stopData.stopGTFSID).to.equal(stopInput.stop_id)
@@ -43,7 +43,7 @@ describe('The GTFSStops class', () => {
     })
 
     it('Should populate the suburb and stop number', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput2,
         stop_name: '51a-Rex St/Taylors Rd (Kings Park)'
       })
@@ -82,12 +82,12 @@ describe('The GTFSStops class', () => {
 describe('The GTFSStop class', () => {
   describe('The requiresSuburb function', () => {
     it('Should return false if the stop name already has a suburb', async () => {
-      let stopData = GTFSStopsReader.processEntity(stopInput)
+      let stopData = new GTFSStopsReader('').processEntity(stopInput)
       expect(stopData.requiresSuburb()).to.be.false
     })
 
     it('Should return false if the stop name is missing the suburb', async () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput,
         stop_name: 'Dole Ave/Cheddar Rd'
       })
@@ -97,12 +97,12 @@ describe('The GTFSStop class', () => {
 
   describe('The getSuburbFromName function', () => {
     it('Should extract the stop suburb from its name in brackets', () => {
-      let stopData = GTFSStopsReader.processEntity(stopInput)
+      let stopData = new GTFSStopsReader('').processEntity(stopInput)
       expect(stopData.getSuburbFromName()).to.equal('Reservoir')
     })
 
     it('Should extract the stop suburb from its name if it appears at the front', () => {
-      let stopData = GTFSStopsReader.processEntity(stopInput3)
+      let stopData = new GTFSStopsReader('').processEntity(stopInput3)
       expect(stopData.suburbIsInFront()).to.be.true
       expect(stopData.getSuburbFromName()).to.equal('Narre Warren')
     })
@@ -111,7 +111,7 @@ describe('The GTFSStop class', () => {
   describe('The getSuburbState function', () => {
     it('Should extract the state form a suburb in the form (Suburb (State))', () => {
       let stopName = 'Albury Botanic Gardens/Wodonga Pl (Albury (NSW))'
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput,
         stop_name: stopName
       })
@@ -120,7 +120,7 @@ describe('The GTFSStop class', () => {
   })
 
   it('Should process interstate suburbs in the format (Suburb (State))', () => {
-    let stopData = GTFSStopsReader.processEntity({
+    let stopData = new GTFSStopsReader('').processEntity({
       ...stopInput,
       stop_name: 'Albury Botanic Gardens/Wodonga Pl (Albury (NSW))'
     })
@@ -128,7 +128,7 @@ describe('The GTFSStop class', () => {
   })
 
   it('Should process interstate suburbs in the format (Suburb (Local Area - State))', () => {
-    let stopData = GTFSStopsReader.processEntity({
+    let stopData = new GTFSStopsReader('').processEntity({
       ...stopInput,
       stop_name: 'Emma Way/Wright St (Glenroy (Albury - NSW))'
     })
@@ -136,7 +136,7 @@ describe('The GTFSStop class', () => {
   })
 
   it('Should expand St in the suburb name', () => {
-    let stopData = GTFSStopsReader.processEntity({
+    let stopData = new GTFSStopsReader('').processEntity({
       ...stopInput,
       stop_name: 'Dundas St/Market St (St Arnaud)'
     })
@@ -144,7 +144,7 @@ describe('The GTFSStop class', () => {
   })
 
   it('Should expand Mt in the suburb name', () => {
-    let stopData = GTFSStopsReader.processEntity({
+    let stopData = new GTFSStopsReader('').processEntity({
       ...stopInput,
       stop_name: 'Tourist Information Centre/Jubilee Hwy East (Mt Gambier (SA))'
     })
@@ -153,7 +153,7 @@ describe('The GTFSStop class', () => {
 
   describe('The getSuburbFromLocation function', () => {
     it('Should expand St in the suburb name', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         stop_id: '912',
         stop_name: 'Princes St/Barkly St',
         stop_lat: '-37.8597466731382',
@@ -163,7 +163,7 @@ describe('The GTFSStop class', () => {
     })
 
     it('Should return a generic Interstate suburb if it cannot identify the suburb', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         stop_id: '20815',
         stop_name: '85 Franklin St',
         stop_lat: '-34.9274852283649',
@@ -175,13 +175,13 @@ describe('The GTFSStop class', () => {
 
   describe('The getStopNameWithoutSuburb function', () => {
     it('Should strip the suburb from the stop name if the suburb appears behind', () => {
-      let stopData = GTFSStopsReader.processEntity(stopInput)
+      let stopData = new GTFSStopsReader('').processEntity(stopInput)
 
       expect(stopData.getStopNameWithoutSuburb()).to.equal('Dole Ave/Cheddar Rd')
     })
 
     it('Should strip the suburb from the stop name if the suburb is in front', () => {
-      let stopData = GTFSStopsReader.processEntity(stopInput3)
+      let stopData = new GTFSStopsReader('').processEntity(stopInput3)
 
       expect(stopData.getStopNameWithoutSuburb()).to.equal('Fountain Gate Primary School/Victoria Rd')
     })
@@ -189,7 +189,7 @@ describe('The GTFSStop class', () => {
 
   describe('The matchStopNumber function', () => {
     it('Should match stop numbers in the format XXX-STOPNAME', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput,
         stop_name: '125-Yuille St/Centenary Ave (Melton)'
       })
@@ -205,7 +205,7 @@ describe('The GTFSStop class', () => {
     // Seems to be caused when they set some flag incorrectly as this seems to match the stop names on the printed timetables.
     // Weird huh.
     it('Should match stop numbers in the format STOPNAME - Stop XXX', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput,
         stop_name: 'Yuille St - Stop D99'
       })
@@ -217,7 +217,7 @@ describe('The GTFSStop class', () => {
     })
 
     it('Should ensure the stop numbers are all uppercase', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput,
         stop_name: '125a-Southbank Tram Depot (South Melbourne)'
       })
@@ -229,7 +229,7 @@ describe('The GTFSStop class', () => {
     })
 
     it('Should return null if there is no stop number', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput,
         stop_name: 'Southbank Tram Depot (South Melbourne)'
       })
@@ -241,7 +241,7 @@ describe('The GTFSStop class', () => {
     })
 
     it('Should not match street numbers spanning multiple units', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput,
         stop_name: '227-243 Wellington Rd (Mulgrave)'
       })
@@ -255,12 +255,12 @@ describe('The GTFSStop class', () => {
 
   describe('The getFullStopName function', () => {
     it('Should expand the stop name', () => {
-      let stopData = GTFSStopsReader.processEntity(stopInput2)
+      let stopData = new GTFSStopsReader('').processEntity(stopInput2)
       expect(stopData.getFullStopName()).to.equal('Rex Street/Taylors Road')
     })
 
     it('Should handle stops with only a primary name', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput,
         stop_name: 'Knox City SC (Knoxfield)'
       })
@@ -268,7 +268,7 @@ describe('The GTFSStop class', () => {
     })
 
     it('Should handle the direction appearing as well', () => {
-      let stopData = GTFSStopsReader.processEntity({
+      let stopData = new GTFSStopsReader('').processEntity({
         ...stopInput,
         stop_name: 'Newman Cres (north side)/east of Pechell St (Made Up Suburb)'
       })

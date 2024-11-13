@@ -20,7 +20,7 @@ let regionalBusRoute = {
 describe('The GTFSRouteReader class', () => {
   describe('The processRoute function', () => {
     it('Should take in the raw CSV line and process it', () => {
-      let routeData = GTFSRouteReader.processRoute(regionalBusRoute, TRANSIT_MODES.bus)
+      let routeData = new GTFSRouteReader('', TRANSIT_MODES.bus).processEntity(regionalBusRoute)
 
       expect(routeData.routeGTFSID).to.equal('6-10x')
       expect(routeData.agencyID).to.equal(regionalBusRoute.agency_id)
