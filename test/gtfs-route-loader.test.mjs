@@ -68,6 +68,7 @@ describe('The GTFS Routes Loader', () => {
     })
 
     expect(smart900).to.not.be.null
+    expect(smart900.mode).to.equal('bus')
     expect(smart900.routeNumber).to.equal('900')
     expect(smart900.operators).to.have.members(['CDC', 'Ventura Bus Lines'])
   })
