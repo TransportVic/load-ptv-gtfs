@@ -30,4 +30,15 @@ describe('The GTFSCalendar class', () => {
       "20241125", "20241126", "20241127", "20241128", "20241129"
     ])
   })
+
+  it('Be inclusive of the end date', () => {
+    expect(new GTFScalendar({
+      id: 'T1',
+      startDay: '20241122',
+      endDay: '20241122',
+      daysOfWeek: ["1","1","1","1","1","1","1"]
+    }).operationDays).to.have.members([
+      "20241122"
+    ])
+  })
 })
