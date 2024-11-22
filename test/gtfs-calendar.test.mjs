@@ -52,14 +52,12 @@ describe('The GTFSCalendar class', () => {
       startDay: '20241122',
       endDay: '20241122',
       daysOfWeek: ["1","1","1","1","1","1","1"]
-    })
-    
-    cal.processCalendarDate(new GTFSCalendarDate({
+    }, [new GTFSCalendarDate({
       id: 'T1',
       date: '20241125',
       type: CALENDAR_DATES.ADDED
-    }))
-
+    })])
+    
     expect(cal.getOperationDays()).to.have.members([
       "20241122", "20241125"
     ])
@@ -71,13 +69,11 @@ describe('The GTFSCalendar class', () => {
       startDay: '20241224',
       endDay: '20241226',
       daysOfWeek: ["1","1","1","1","1","1","1"]
-    })
-    
-    cal.processCalendarDate(new GTFSCalendarDate({
+    }, [new GTFSCalendarDate({
       id: 'T1',
       date: '20241225',
       type: CALENDAR_DATES.REMOVED
-    }))
+    })])
 
     expect(cal.getOperationDays()).to.deep.equal([
       "20241224", "20241226"
@@ -90,13 +86,11 @@ describe('The GTFSCalendar class', () => {
       startDay: '20241122',
       endDay: '20241122',
       daysOfWeek: ["1","1","1","1","1","1","1"]
-    })
-    
-    cal.processCalendarDate(new GTFSCalendarDate({
+    }, [new GTFSCalendarDate({
       id: 'T1',
       date: '20241122',
       type: CALENDAR_DATES.ADDED
-    }))
+    })])
 
     expect(cal.getOperationDays()).to.deep.equal([
       "20241122"
@@ -109,13 +103,11 @@ describe('The GTFSCalendar class', () => {
       startDay: '20241224',
       endDay: '20241226',
       daysOfWeek: ["1","1","1","1","1","1","1"]
-    })
-    
-    cal.processCalendarDate(new GTFSCalendarDate({
+    }, [new GTFSCalendarDate({
       id: 'T1',
       date: '20241227',
       type: CALENDAR_DATES.REMOVED
-    }))
+    })])
 
     expect(cal.getOperationDays()).to.deep.equal([
       "20241224", "20241225", "20241226"
