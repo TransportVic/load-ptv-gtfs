@@ -62,7 +62,7 @@ describe('The GTFSCalendar class', () => {
     ])
   })
 
-  it('Should allow removing of a specific date into the calendar', () => {
+  it('Should allow removing of a specific date from the calendar', () => {
     let cal = new GTFSCalendar({
       id: 'T1',
       startDay: '20241224',
@@ -78,6 +78,44 @@ describe('The GTFSCalendar class', () => {
 
     expect(cal.getOperationDays()).to.deep.equal([
       "20241224", "20241226"
+    ])
+  })
+
+  it('Should ensure that adding an extra date into the calendar does not introduce duplicates', () => {
+    let cal = new GTFSCalendar({
+      id: 'T1',
+      startDay: '20241122',
+      endDay: '20241122',
+      daysOfWeek: ["1","1","1","1","1","1","1"]
+    })
+    
+    cal.processCalendarDate(new GTFSCalendarDate({
+      id: 'T1',
+      date: '20241122',
+      type: CALENDAR_DATES.ADDED
+    }))
+
+    expect(cal.getOperationDays()).to.deep.equal([
+      "20241122"
+    ])
+  })
+
+  it('Should ensure that the date exists when removing a specific date from the calendar', () => {
+    let cal = new GTFSCalendar({
+      id: 'T1',
+      startDay: '20241224',
+      endDay: '20241226',
+      daysOfWeek: ["1","1","1","1","1","1","1"]
+    })
+    
+    cal.processCalendarDate(new GTFSCalendarDate({
+      id: 'T1',
+      date: '20241227',
+      type: CALENDAR_DATES.REMOVED
+    }))
+
+    expect(cal.getOperationDays()).to.deep.equal([
+      "20241224", "20241225", "20241226"
     ])
   })
 })
