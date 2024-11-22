@@ -141,3 +141,23 @@ describe('The GTFSCalendarDatesReader class', () => {
     expect(date2.type).to.equal(CALENDAR_DATES.REMOVED)
   })
 })
+
+describe('The GTFSCalendarReader class', () => {
+  it('Should read both a calendar dates and calendar file and return a GTFSCalendar object with the appropriate exceptions filled', async () => {
+    let reader = new GTFSCalendarReader(calendarFile, calendarDatesFile)
+    await reader.open()
+
+    let allCalendars = {}
+    while (reader.available()) {
+      let calendar = await reader.getNextEntity()
+      allCalendars[calendar.id] = calendar
+    }
+
+    expect(allCalendars['T2'].getOperationDays()).to.deep.equal(["20241108"])
+
+    expect(allCalendars['T3_2'].getOperationDays()).to.contain("20241124")
+    expect(allCalendars['T3_2'].getOperationDays()).to.contain("20241201")
+    expect(allCalendars['T3_2'].getOperationDays()).to.contain("20250209")
+    expect(allCalendars['T3_2'].getOperationDays()).to.not.contain("20250126")
+  })
+})
