@@ -153,7 +153,7 @@ describe('The GTFSCalendarReader class', () => {
       allCalendars[calendar.id] = calendar
     }
 
-    expect(allCalendars['T2'].getOperationDays()).to.deep.equal(["20241108"])
+    expect(allCalendars['T2'].getOperationDays()).to.deep.equal(["20241109"])
 
     expect(allCalendars['T3_2'].getOperationDays()).to.contain("20241124")
     expect(allCalendars['T3_2'].getOperationDays()).to.contain("20241201")
