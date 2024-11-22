@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import GTFSCalendarReader from '../lib/gtfs-parser/readers/GTFSCalendarReader.mjs'
 import GTFScalendar from '../lib/gtfs-parser/GTFSCalendar.mjs'
-import GTFScalendarDate from '../lib/gtfs-parser/GTFSCalendarDate.mjs'
+import GTFSCalendarDate from '../lib/gtfs-parser/GTFSCalendarDate.mjs'
 import path from 'path'
 import url from 'url'
 
@@ -17,7 +17,7 @@ describe('The GTFSCalendar class', () => {
       startDay: '20241122',
       endDay: '20241129',
       daysOfWeek: ["0","0","0","0","1","1","0"]
-    }).operationDays).to.have.members([
+    }).getOperationDays()).to.have.members([
       "20241122", "20241123", "20241129"
     ])
 
@@ -26,7 +26,7 @@ describe('The GTFSCalendar class', () => {
       startDay: '20241123',
       endDay: '20241130',
       daysOfWeek: ["1","1","1","1","1","0","0"]
-    }).operationDays).to.have.members([
+    }).getOperationDays()).to.have.members([
       "20241125", "20241126", "20241127", "20241128", "20241129"
     ])
   })
@@ -37,7 +37,7 @@ describe('The GTFSCalendar class', () => {
       startDay: '20241122',
       endDay: '20241122',
       daysOfWeek: ["1","1","1","1","1","1","1"]
-    }).operationDays).to.have.members([
+    }).getOperationDays()).to.have.members([
       "20241122"
     ])
   })
