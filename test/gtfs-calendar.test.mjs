@@ -1,15 +1,18 @@
 import { expect } from 'chai'
 import GTFSCalendarReader from '../lib/gtfs-parser/readers/GTFSCalendarReader.mjs'
+import GTFSCalendarDateReader from '../lib/gtfs-parser/readers/GTFSCalendarDatesReader.mjs'
 import GTFSCalendar from '../lib/gtfs-parser/GTFSCalendar.mjs'
 import GTFSCalendarDate from '../lib/gtfs-parser/GTFSCalendarDate.mjs'
 import path from 'path'
 import url from 'url'
 import { CALENDAR_DATES } from '../lib/constants.mjs'
+import { toGTFSDate } from '../lib/utils.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const calendarFile = path.join(__dirname, 'sample-data', 'calendar', 'calendar.txt')
+const calendarDatesFile = path.join(__dirname, 'sample-data', 'calendar', 'calendar_dates.txt')
 
 describe('The GTFSCalendar class', () => {
   it('Should process the calendar data to a list of operation days', () => {
@@ -127,5 +130,22 @@ describe('The GTFSCalendarDate class', () => {
       date: '20241125',
       type: CALENDAR_DATES.ADDED
     }).date.toUTC().toISO()).to.equal('2024-11-24T13:00:00.000Z')
+  })
+})
+
+describe('The GTFSCalendarDatesReader class', () => {
+  it('Should read a calendar dates and return a GTFSCalendarDate object', async () => {
+    let reader = new GTFSCalendarDateReader(calendarDatesFile)
+    await reader.open()
+
+    let date = await reader.getNextEntity()
+    expect(date.id).to.equal('T3_2')
+    expect(toGTFSDate(date.date)).to.equal('20250126')
+    expect(date.type).to.equal(CALENDAR_DATES.REMOVED)
+
+    let date2 = await reader.getNextEntity()
+    expect(date2.id).to.equal('T5_2')
+    expect(toGTFSDate(date2.date)).to.equal('20241225')
+    expect(date2.type).to.equal(CALENDAR_DATES.REMOVED)
   })
 })
