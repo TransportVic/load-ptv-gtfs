@@ -102,6 +102,11 @@ describe('The GTFS Routes Loader', () => {
     let loader = new RouteLoader(wgtFile, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadRoutes({
       processRoute: route => {
+        if (route.routeGTFSID.match(/6-w\d\d/)) {
+          route.routeGTFSID = '6-WGT'
+          route.routeName = 'West Gippsland Transit'
+        }
+
         return route
       }
     })
@@ -123,5 +128,14 @@ describe('The GTFS Routes Loader', () => {
     expect(await routes.findDocument({
       routeGTFSID: '6-w41'
     }), 'Expected 6-w41 Warragul - Pakenham to not exist').to.be.null
+
+    let nojee = await routes.findDocument({
+      routeGTFSID: '6-W89'
+    })
+    expect(nojee, 'Expected 6-W89 Warragul - Nojee to exist and not be modified').to.not.be.null
+    expect(nojee.mode).to.equal('bus')
+    expect(nojee.routeNumber).to.equal('89')
+    expect(nojee.routeName).to.equal('Noojee - Warragul Station Via Buln Buln')
+    expect(nojee.operators).to.have.members(['Warragul Bus Lines'])
   })
 })
