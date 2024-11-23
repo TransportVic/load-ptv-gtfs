@@ -16,6 +16,7 @@ const metroRoutesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_bus
 const metroLinesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_lines.txt')
 const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
 const wgtFile = path.join(__dirname, 'sample-data', 'routes', 'west_gipp_transit.txt')
+const vlineFile = path.join(__dirname, 'sample-data', 'routes', 'vline.txt')
 
 describe('The GTFS Agency Reader', () => {
   it('Should read the agencies one line at a time', async () => {
@@ -137,5 +138,31 @@ describe('The GTFS Routes Loader', () => {
     expect(nojee.routeNumber).to.equal('89')
     expect(nojee.routeName).to.equal('Noojee - Warragul Station Via Buln Buln')
     expect(nojee.operators).to.have.members(['Warragul Bus Lines'])
+  })
+
+  it('Should allow for dropping of unwanted routes', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let routes = await database.createCollection('routes')
+
+    let loader = new RouteLoader(vlineFile, agencyFile, TRANSIT_MODES.regionalTrain, database)
+    await loader.loadRoutes({
+      processRoute: route => {
+        if (route.routeGTFSID === '1-vPK') return null
+        return route
+      }
+    })
+
+    expect(await routes.findDocument({
+      routeGTFSID: '1-vPK'
+    }), 'Expected 1-vPK V/Line Dandenong Metro Services to not exist').to.be.null
+
+    let traralgon = await routes.findDocument({
+      routeGTFSID: '1-TRN'
+    })
+    expect(traralgon, 'Expected 1-TRN Warragul - Nojee to exist and not be modified').to.not.be.null
+    expect(traralgon.mode).to.equal('regional train')
+    expect(traralgon.routeNumber).to.be.null
+    expect(traralgon.routeName).to.equal('Traralgon - Melbourne Via Pakenham, Moe & Morwell')
+    expect(traralgon.operators).to.have.members(['V/Line'])
   })
 })

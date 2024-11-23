@@ -1,0 +1,7 @@
+route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route_text_color
+"1-TRN-mjp-7","33","","Traralgon - Melbourne Via Pakenham, Moe & Morwell","2","8F1A95","FFFFFF"
+"1-TRN-mjp-8","33","","Traralgon - Melbourne Via Pakenham, Moe & Morwell","2","8F1A95","FFFFFF"
+"1-TRN-mjp-9","33","","Traralgon - Melbourne Via Pakenham, Moe & Morwell","2","8F1A95","FFFFFF"
+"1-vPK-mjp-10","33","Pakenham","Pakenham - City Via Pakenham","2","8F1A95","FFFFFF"
+"1-vPK-mjp-11","33","Pakenham","Pakenham - City Via Pakenham","2","8F1A95","FFFFFF"
+"1-vPK-mjp-12","33","Pakenham","Pakenham - City Via Pakenham","2","8F1A95","FFFFFF"
