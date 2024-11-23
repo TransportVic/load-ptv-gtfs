@@ -15,6 +15,7 @@ const regionalRoutesFile = path.join(__dirname, 'sample-data', 'routes', 'region
 const metroRoutesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_bus_routes.txt')
 const metroLinesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_lines.txt')
 const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
+const wgtFile = path.join(__dirname, 'sample-data', 'routes', 'west_gipp_transit.txt')
 
 describe('The GTFS Agency Reader', () => {
   it('Should read the agencies one line at a time', async () => {
@@ -80,7 +81,7 @@ describe('The GTFS Routes Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let routes = await database.createCollection('routes')
 
-    let loader = new RouteLoader(metroLinesFile, agencyFile, 'metro train', database)
+    let loader = new RouteLoader(metroLinesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
     await loader.loadRoutes()
 
     let stony = await routes.findDocument({
@@ -92,5 +93,35 @@ describe('The GTFS Routes Loader', () => {
     expect(stony.routeNumber).to.be.null
     expect(stony.routeName).to.equal('Stony Point')
     expect(stony.operators).to.have.members(['Metro'])
+  })
+
+  it('Should allow for custom route rewriting', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let routes = await database.createCollection('routes')
+
+    let loader = new RouteLoader(wgtFile, agencyFile, TRANSIT_MODES.bus, database)
+    await loader.loadRoutes({
+      processRoute: route => {
+        return route
+      }
+    })
+
+    let wgt = await routes.findDocument({
+      routeGTFSID: '6-WGT'
+    })
+
+    expect(wgt, 'Expected West Gippsland Transit route 6-WGT to be created').to.not.be.null
+    expect(wgt.mode).to.equal('bus')
+    expect(wgt.routeNumber).to.be.null
+    expect(wgt.routeName).to.equal('West Gippsland Transit')
+    expect(wgt.operators).to.have.members(['Warragul Bus Lines'])
+
+    expect(await routes.findDocument({
+      routeGTFSID: '6-w40'
+    }), 'Expected 6-w40 Moe - Garfield to not exist').to.be.null
+
+    expect(await routes.findDocument({
+      routeGTFSID: '6-w41'
+    }), 'Expected 6-w41 Warragul - Pakenham to not exist').to.be.null
   })
 })
