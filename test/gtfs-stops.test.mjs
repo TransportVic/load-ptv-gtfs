@@ -29,7 +29,7 @@ let stopInput3 = {
   stop_lon: '145.296182027229'
 }
 
-describe('The GTFSStops class', () => {
+describe('The GTFSStopReader class', () => {
   describe('The initialProcess function', () => {
     it('Should take in the raw CSV line and process it', () => {
       let stopData = new GTFSStopsReader('').processEntity(stopInput)
@@ -115,6 +115,7 @@ describe('The GTFSStop class', () => {
         ...stopInput,
         stop_name: stopName
       })
+
       expect(stopData.getSuburbState(stopName.lastIndexOf('('))).to.equal('NSW')
     })
   })
@@ -178,6 +179,16 @@ describe('The GTFSStop class', () => {
       let stopData = new GTFSStopsReader('').processEntity(stopInput)
 
       expect(stopData.getStopNameWithoutSuburb()).to.equal('Dole Ave/Cheddar Rd')
+    })
+
+    it('Should strip the suburb from the stop name for NSW/SA stops', () => {
+      let stopName = 'Albury Railway Station (Albury (NSW))'
+      let stopData = new GTFSStopsReader('').processEntity({
+        ...stopInput,
+        stop_name: stopName
+      })
+
+      expect(stopData.getStopNameWithoutSuburb()).to.equal('Albury Railway Station')
     })
 
     it('Should strip the suburb from the stop name if the suburb is in front', () => {
