@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { parseDate, toGTFSDate } from '../lib/utils.mjs'
+import { hhmmToMinutesPastMidnight, parseDate, toGTFSDate } from '../lib/utils.mjs'
 
 describe('The utils class', () => {
   describe('The parseDate function', () => {
@@ -13,6 +13,14 @@ describe('The utils class', () => {
     it('Should convert a Luxon date back into a GTFS date', () => {
       let date = parseDate('20241122')
       expect(toGTFSDate(date.plus({ day: 3 }))).to.equal('20241125')
+    })
+  })
+
+  describe('The hhmmToMinutesPastMidnight function', () => {
+    it('Should convert a HH:MM timestamp into the minutes past midnight', () => {
+      expect(hhmmToMinutesPastMidnight('06:05')).to.equal(6 * 60 + 5)
+      expect(hhmmToMinutesPastMidnight('24:00')).to.equal(1440)
+      expect(hhmmToMinutesPastMidnight('25:00')).to.equal(1500)
     })
   })
 })
