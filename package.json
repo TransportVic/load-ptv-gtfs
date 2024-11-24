@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sbs9642p/database": "^1.0.0",
+    "@sbs9642p/database": "^1.0.2",
     "@turf/turf": "^7.0.0",
     "adm-zip": "^0.5.14",
     "async": "^3.2.6",
