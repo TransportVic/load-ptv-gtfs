@@ -1,3 +1,4 @@
 /node_modules
 .DS_Store
-/load-all.mjs
+/load-all*.mjs
+routes.json
