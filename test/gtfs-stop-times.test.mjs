@@ -22,5 +22,16 @@ describe('The GTFSStopTimesReader class', () => {
 
     expect(stopTimes.stops[6].stopID).to.equal('19853')
     expect(stopTimes.stops[6].departureTime).to.equal('05:08:00')
+
+    await reader.getNextEntity()
+    await reader.getNextEntity()
+
+    let lastTrip = await reader.getNextEntity()
+    expect(lastTrip.tripID).to.equal('101.T2.2-ALM-vpt-1.2.H')
+    expect(lastTrip.stops.length).to.equal(7)
+    expect(lastTrip.stops[0].stopID).to.equal('19853')
+    expect(lastTrip.stops[0].departureTime).to.equal('23:31:00')
+    
+    expect(reader.available()).to.be.false
   })
 })
