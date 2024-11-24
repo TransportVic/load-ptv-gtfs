@@ -10,6 +10,9 @@ import GTFSTripReader from '../lib/gtfs-parser/readers/GTFSTripReader.mjs'
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+const routesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_lines.txt')
+const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
+
 const tripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips.txt')
 
 describe('The GTFSTrip class', () => {
@@ -50,13 +53,15 @@ describe('The GTFSTripReader class', () => {
       })
     }
 
-    let reader = new GTFSTripReader(tripsFile, calendars)
+    let routeMappings = { '2-ALM-vpt-1': '2-ALM' }
+
+    let reader = new GTFSTripReader(tripsFile, calendars, routeMappings)
     await reader.open()
 
     let trip = await reader.getNextEntity()
 
     expect(trip.tripID).to.equal('1.T2.2-ALM-vpt-1.1.R')
-    expect(trip.routeGTFSID).to.equal('2-ALM-vpt-1')
+    expect(trip.routeGTFSID).to.equal('2-ALM')
     expect(trip.headsign).to.equal('Camberwell')
     expect(trip.operationDays).to.deep.equal(['20241122'])
   })
