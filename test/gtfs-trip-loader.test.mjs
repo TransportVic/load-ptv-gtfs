@@ -45,5 +45,21 @@ describe('The TripLoader class', () => {
 
     let trip = await trips.findDocument({ tripID: '1.T2.2-ALM-vpt-1.1.R' })
     expect(trip).to.not.be.null
+    
+    expect(trip.routeName).to.equal('Alamein')
+    expect(trip.routeNumber).to.be.null
+    expect(trip.operationDays.length).to.equal(12)
+    expect(trip.operationDays[0]).to.equal('20241123')
+
+    expect(trip.shapeID).to.equal('2-ALM-vpt-1.1.R')
+    expect(trip.block).to.be.null
+    expect(trip.gtfsDirection).to.equal(1)
+
+    expect(trip.stopTimings.length).to.equal(7)
+    expect(trip.stopTimings[0].stopName).to.equal('Alamein Railway Station')
+    expect(trip.stopTimings[0].departureTime).to.equal('04:57:00')
+
+    expect(trip.stopTimings[6].stopName).to.equal('Camberwell Railway Station')
+    expect(trip.stopTimings[6].arrivalTime).to.equal('05:08:00')
   })
 })
