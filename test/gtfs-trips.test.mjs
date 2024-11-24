@@ -2,16 +2,11 @@ import { expect } from 'chai'
 import path from 'path'
 import url from 'url'
 import GTFSCalendar from '../lib/gtfs-parser/GTFSCalendar.mjs'
-import GTFSRoute from '../lib/gtfs-parser/GTFSRoute.mjs'
-import { TRANSIT_MODES } from '../lib/constants.mjs'
 import GTFSTrip from '../lib/gtfs-parser/GTFSTrip.mjs'
 import GTFSTripReader from '../lib/gtfs-parser/readers/GTFSTripReader.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
-const routesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_lines.txt')
-const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
 
 const tripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips.txt')
 

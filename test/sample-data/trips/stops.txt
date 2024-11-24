@@ -1,0 +1,8 @@
+stop_id,stop_name,stop_lat,stop_lon
+"19847","Alamein Railway Station (Ashburton)","-37.8683203919916","145.079655668512"
+"19848","Ashburton Railway Station (Ashburton)","-37.8619675331742","145.081343759057"
+"19849","Burwood Railway Station (Glen Iris)","-37.8515632823222","145.080511068965"
+"19850","Hartwell Railway Station (Camberwell)","-37.8439845657224","145.075559591232"
+"19851","Willison Railway Station (Camberwell)","-37.835715650541","145.070297555358"
+"19852","Riversdale Railway Station (Camberwell)","-37.8315054341774","145.069645982205"
+"19853","Camberwell Railway Station (Camberwell)","-37.8265671441721","145.058697177155"
