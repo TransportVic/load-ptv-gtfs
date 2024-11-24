@@ -5,6 +5,9 @@ import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
 
+import uniqueStops from '../transportvic-data/excel/stops/unique-stops.json' with { type: 'json' }
+import nameOverrides from '../transportvic-data/excel/stops/name-overrides.json' with { type: 'json' }
+
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -111,8 +114,12 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    await (new StopsLoader(uniqueStopsBus, TRANSIT_MODES.bus, database)).loadStops()
-    await (new StopsLoader(uniqueStopsTram, 'tram', database)).loadStops()
+    function getMergeName(stop) {
+      if (uniqueStops.includes(stop.fullStopName)) return stop.fullStopName
+    }
+
+    await (new StopsLoader(uniqueStopsBus, TRANSIT_MODES.bus, database)).loadStops({ getMergeName })
+    await (new StopsLoader(uniqueStopsTram, 'tram', database)).loadStops({ getMergeName })
 
     let melbRoyal = await stops.findDocument({
       'bays.stopGTFSID': '16830'
@@ -143,7 +150,14 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    await (new StopsLoader(stopNameOverrides, TRANSIT_MODES.bus, database)).loadStops()
+    await (new StopsLoader(stopNameOverrides, TRANSIT_MODES.bus, database)).loadStops({
+      processStop: stop => {
+        let updatedName = nameOverrides[TRANSIT_MODES.bus][stop.fullStopName]
+        if (updatedName) stop.fullStopName = updatedName
+
+        return stop
+      }
+    })
 
     let ballarat = await stops.findDocument({
       'bays.stopGTFSID': '49020'
