@@ -7,6 +7,7 @@ const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'line_reader_test.txt')
+const oneLineFile = path.join(__dirname, 'sample-data', 'one_line.csv')
 
 describe('The CSVLineReader class', () => {
   it('Should open a CSV file and identify the headers', async () => {
@@ -66,5 +67,28 @@ describe('The CSVLineReader class', () => {
     reader.unreadLine()
 
     expect(await reader.nextLine()).to.deep.equal(expectedLine)
+  })
+
+  it('Should be unable to unread the last line from the file, then read it again', async () => {
+    let reader = new CSVLineReader(oneLineFile)
+
+    await reader.open()
+    let expectedLine = {
+      trip_id: '1.T2.2-ALM-vpt-1.1.R'
+    }
+
+    expect(reader.available()).to.be.true
+    let line = await reader.nextLine()
+    expect(line).to.deep.equal(expectedLine)
+    
+    expect(reader.available(), 'No more data should be available').to.be.false
+
+    reader.unreadLine()
+
+    expect(reader.available(), 'More data should be available after unreading the last line').to.be.true
+
+    expect(await reader.nextLine()).to.deep.equal(expectedLine)
+
+    expect(reader.available()).to.be.false
   })
 })
