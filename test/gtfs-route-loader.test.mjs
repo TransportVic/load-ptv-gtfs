@@ -140,6 +140,28 @@ describe('The GTFS Routes Loader', () => {
     expect(nojee.operators).to.have.members(['Warragul Bus Lines'])
   })
 
+
+  it('Should return a route ID map', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let routes = await database.createCollection('routes')
+
+    let loader = new RouteLoader(wgtFile, agencyFile, TRANSIT_MODES.bus, database)
+    await loader.loadRoutes({
+      processRoute: route => {
+        if (route.routeGTFSID.match(/6-w\d\d/)) {
+          route.routeGTFSID = '6-WGT'
+          route.routeName = 'West Gippsland Transit'
+        }
+
+        return route
+      }
+    })
+
+    let map = loader.getRouteIDMap()
+    expect(map['6-w19-mjp-1']).to.equal('6-WGT')
+    expect(map['6-W89-mjp-1']).to.equal('6-W89')
+  })
+
   it('Should allow for dropping of unwanted routes', async () => {
     let database = new LokiDatabaseConnection('test-db')
     let routes = await database.createCollection('routes')
