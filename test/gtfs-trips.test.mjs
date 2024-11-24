@@ -50,13 +50,13 @@ describe('The GTFSTripReader class', () => {
       })
     }
 
-    let reader = new GTFSTripReader(tripsFile)
+    let reader = new GTFSTripReader(tripsFile, calendars)
     await reader.open()
 
     let trip = await reader.getNextEntity()
 
     expect(trip.tripID).to.equal('1.T2.2-ALM-vpt-1.1.R')
-    expect(trip.routeID).to.equal('2-ALM-vpt-1')
+    expect(trip.routeGTFSID).to.equal('2-ALM-vpt-1')
     expect(trip.headsign).to.equal('Camberwell')
     expect(trip.operationDays).to.deep.equal(['20241122'])
   })
