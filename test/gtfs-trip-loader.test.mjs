@@ -61,12 +61,17 @@ describe('The TripLoader class', () => {
     expect(trip.stopTimings[0].arrivalTimeMinutes).to.be.null
     expect(trip.stopTimings[0].departureTime).to.equal('04:57')
     expect(trip.stopTimings[0].departureTimeMinutes).to.equal(4 * 60 + 57)
+    expect(trip.stopTimings[0].platform).to.equal('1')
+
+    expect(trip.stopTimings[5].stopName).to.equal('Riversdale Railway Station')
+    expect(trip.stopTimings[5].platform).to.equal('2')
 
     expect(trip.stopTimings[6].stopName).to.equal('Camberwell Railway Station')
     expect(trip.stopTimings[6].arrivalTime).to.equal('05:08')
     expect(trip.stopTimings[6].arrivalTimeMinutes).to.equal(5 * 60 + 8)
     expect(trip.stopTimings[6].departureTime).to.be.null
     expect(trip.stopTimings[6].departureTimeMinutes).to.be.null
+    expect(trip.stopTimings[6].platform).to.equal('3')
 
     expect(trip.origin).to.equal('Alamein Railway Station')
     expect(trip.destination).to.equal('Camberwell Railway Station')
