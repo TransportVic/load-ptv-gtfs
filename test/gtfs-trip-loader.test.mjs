@@ -59,6 +59,8 @@ describe('The TripLoader class', () => {
     expect(trip.stopTimings[0].stopName).to.equal('Alamein Railway Station')
     expect(trip.stopTimings[0].arrivalTime).to.be.null
     expect(trip.stopTimings[0].arrivalTimeMinutes).to.be.null
+    expect(trip.stopTimings[0].stopConditions.dropoff).to.equal(1)
+    expect(trip.stopTimings[0].stopConditions.pickup).to.equal(0)
     expect(trip.stopTimings[0].departureTime).to.equal('04:57')
     expect(trip.stopTimings[0].departureTimeMinutes).to.equal(4 * 60 + 57)
     expect(trip.stopTimings[0].platform).to.equal('1')
@@ -71,6 +73,8 @@ describe('The TripLoader class', () => {
     expect(trip.stopTimings[6].arrivalTimeMinutes).to.equal(5 * 60 + 8)
     expect(trip.stopTimings[6].departureTime).to.be.null
     expect(trip.stopTimings[6].departureTimeMinutes).to.be.null
+    expect(trip.stopTimings[6].stopConditions.dropoff).to.equal(0)
+    expect(trip.stopTimings[6].stopConditions.pickup).to.equal(1)
     expect(trip.stopTimings[6].platform).to.equal('3')
 
     expect(trip.origin).to.equal('Alamein Railway Station')
