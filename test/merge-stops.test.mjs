@@ -347,4 +347,30 @@ describe('The stop merger', () => {
       ]
     )
   })
+
+  it('Should merge a route that runs in halves only', () => {
+    let firstHalf = [
+      { "stopName" : "Knox City Shopping Centre/Burwood Highway", "stopGTFSID" : "19629" },
+      { "stopName" : "Burwood Highway/Stud Road", "stopGTFSID" : "15219" },
+      { "stopName" : "Swinburne TAFE - Wantirna/Stud Road", "stopGTFSID" : "14191" },
+      { "stopName" : "High Street Road/Stud Road", "stopGTFSID" : "14190" },
+      { "stopName" : "Harcrest Boulevard/Stud Road", "stopGTFSID" : "14189" },
+      { "stopName" : "Mockridge Street/Stud Road", "stopGTFSID" : "14188" },
+    ]
+    let secondHalf = [
+      { "stopName" : "Mockridge Street/Stud Road", "stopGTFSID" : "14188" },
+      { "stopName" : "Armin Street/Stud Road", "stopGTFSID" : "14187" },
+      { "stopName" : "Evans Street/Stud Road", "stopGTFSID" : "14186" },
+      { "stopName" : "Glenifer Avenue/Stud Road", "stopGTFSID" : "14184" },
+      { "stopName" : "Scoresby Village Shopping Centre/Stud Road", "stopGTFSID" : "14183" },
+      { "stopName" : "Ferntree Gully Road/Stud Road", "stopGTFSID" : "14182" },
+      { "stopName" : "Centre Road/Stud Road", "stopGTFSID" : "14181" },
+      { "stopName" : "Kingsley Close/Stud Road", "stopGTFSID" : "14180" }
+    ]
+
+    expect(merge([ firstHalf, secondHalf ])).to.deep.equal([
+      ...firstHalf,
+      ...secondHalf.slice(1)
+    ])
+  })
 })
