@@ -18,5 +18,6 @@ describe('The GTFSShapeReader class', () => {
     expect(shape.shapeID).to.equal('49-601-aus-1.2.R')
     expect(shape.points.length).to.equal(46)
     expect(shape.shapeLength).to.equal(3069.43)
+    expect(shape.hash).to.equal(`3069.43-145.102663,-37.910905-145.131911,-37.913896`)
   })
 })
