@@ -226,4 +226,125 @@ describe('The stop merger', () => {
       { "stopName" : "Macaulay Railway Station", "stopGTFSID" : "19972" },
     ])
   })
+
+  it('Should handle a branch that is also an alternate destination (681)', () => {
+    let commonStops = [
+      { "stopName" : "Knox City Shopping Centre/Burwood Highway", "stopGTFSID" : "19629" },
+      { "stopName" : "Burwood Highway/Stud Road", "stopGTFSID" : "15219" },
+      { "stopName" : "Swinburne TAFE - Wantirna/Stud Road", "stopGTFSID" : "14191" },
+      { "stopName" : "High Street Road/Stud Road", "stopGTFSID" : "14190" },
+      { "stopName" : "Harcrest Boulevard/Stud Road", "stopGTFSID" : "14189" },
+      { "stopName" : "Mockridge Street/Stud Road", "stopGTFSID" : "14188" },
+      { "stopName" : "Armin Street/Stud Road", "stopGTFSID" : "14187" },
+      { "stopName" : "Evans Street/Stud Road", "stopGTFSID" : "14186" },
+      { "stopName" : "Glenifer Avenue/Stud Road", "stopGTFSID" : "14184" },
+      { "stopName" : "Scoresby Village Shopping Centre/Stud Road", "stopGTFSID" : "14183" },
+      { "stopName" : "Ferntree Gully Road/Stud Road", "stopGTFSID" : "14182" },
+      { "stopName" : "Centre Road/Stud Road", "stopGTFSID" : "14181" },
+      { "stopName" : "Kingsley Close/Stud Road", "stopGTFSID" : "14180" },
+      { "stopName" : "Kelletts Road/Stud Road", "stopGTFSID" : "14179" },
+      { "stopName" : "Lakeside Boulevard/Stud Road", "stopGTFSID" : "14178" },
+      { "stopName" : "Stud Park Shopping Centre", "stopGTFSID" : "21314" },
+      { "stopName" : "Rowville Community Centre/Fulham Road", "stopGTFSID" : "13339" },
+      { "stopName" : "Erie Avenue/Bridgewater Way", "stopGTFSID" : "13346" },
+      { "stopName" : "Kelletts Road/Taylors Lane", "stopGTFSID" : "15227" },
+      { "stopName" : "Valleyview Drive/Karoo Road", "stopGTFSID" : "15242" },
+      { "stopName" : "Oakdene Court/Landsborough Avenue", "stopGTFSID" : "15243" },
+      { "stopName" : "Kellbourne Drive/Landsborough Avenue", "stopGTFSID" : "15244" },
+      { "stopName" : "Karoo Primary School/Karoo Road", "stopGTFSID" : "15245" },
+      { "stopName" : "Camley Court/Karoo Road", "stopGTFSID" : "15246" },
+      { "stopName" : "Sovereign Manors Crescent/Karoo Road", "stopGTFSID" : "15247" },
+      { "stopName" : "Langhorne Crescent/Victoria Knox Avenue", "stopGTFSID" : "15248" },
+      { "stopName" : "Sovereign Crest Boulevard/Victoria Knox Avenue", "stopGTFSID" : "15249" },
+      { "stopName" : "Greenhaven Court/Sovereign Crest Boulevard", "stopGTFSID" : "15250" },
+      { "stopName" : "Lakesfield Drive/Napoleon Road", "stopGTFSID" : "15251" },
+      { "stopName" : "Lakesfield Drive/Kelletts Road", "stopGTFSID" : "15252" },
+      { "stopName" : "Rosewood Boulevard/Heritage Way", "stopGTFSID" : "15202" },
+      { "stopName" : "Windsor Drive/Heritage Way", "stopGTFSID" : "15201" },
+      { "stopName" : "Windsor Drive/Rosewood Boulevard", "stopGTFSID" : "15200" },
+      { "stopName" : "Heritage Way/Rosewood Boulevard", "stopGTFSID" : "15198" },
+      { "stopName" : "Kelletts Road/Rosewood Boulevard", "stopGTFSID" : "15199" },
+      { "stopName" : "Grenfell Place/Major Crescent", "stopGTFSID" : "15258" },
+      { "stopName" : "Malata Way/Major Crescent", "stopGTFSID" : "15259" },
+      { "stopName" : "Regency Terrace/Major Crescent", "stopGTFSID" : "15260" },
+      { "stopName" : "Major Crescent/Sullivan Avenue", "stopGTFSID" : "15261" },
+      { "stopName" : "Barry Reserve/Anthony Drive", "stopGTFSID" : "15262" },
+      { "stopName" : "Napoleon Road/Anthony Drive", "stopGTFSID" : "15263" },
+      { "stopName" : "Gill Court/Napoleon Road", "stopGTFSID" : "15264" },
+      { "stopName" : "Park Road/Napoleon Road", "stopGTFSID" : "15265" },
+      { "stopName" : "Teofilo Drive/Napoleon Road", "stopGTFSID" : "15266" },
+      { "stopName" : "Wetherby Court/Dandelion Drive", "stopGTFSID" : "15267" },
+      { "stopName" : "Peregrine Reserve/Dandelion Drive", "stopGTFSID" : "15268" },
+      { "stopName" : "Armstrong Drive/Dandelion Drive", "stopGTFSID" : "15269" },
+      { "stopName" : "Wellington Village Shopping Centre/Braeburn Parade", "stopGTFSID" : "15271" },
+      { "stopName" : "Ada Street/Braeburn Parade", "stopGTFSID" : "41177" },
+      { "stopName" : "Dalmatia Court/Gearon Avenue", "stopGTFSID" : "15272" },
+      { "stopName" : "Suzana Place/Pia Drive", "stopGTFSID" : "15273" },
+      { "stopName" : "Pia Drive/Trisha Drive", "stopGTFSID" : "15275" },
+      { "stopName" : "Koombahla Court/Liviana Drive", "stopGTFSID" : "23180" },
+      { "stopName" : "Fowler Road/Shearer Drive", "stopGTFSID" : "23038" },
+      { "stopName" : "Liberty Avenue/Shearer Drive", "stopGTFSID" : "15277" },
+      { "stopName" : "Buckingham Drive/Liberty Avenue", "stopGTFSID" : "15278" },
+      { "stopName" : "Liberty Avenue Reserve/Liberty Avenue", "stopGTFSID" : "15279" },
+      { "stopName" : "Virgilia Court/Liberty Avenue", "stopGTFSID" : "23037" },
+      { "stopName" : "Liberty Avenue/Clauscen Drive", "stopGTFSID" : "15281" },
+      { "stopName" : "McKay Road/Taylors Lane", "stopGTFSID" : "15282" },
+      { "stopName" : "Taylors Lane/Bernard Hamilton Way", "stopGTFSID" : "15283" },
+      { "stopName" : "Turramurra Drive/Bridgewater Way", "stopGTFSID" : "15284" },
+      { "stopName" : "Simon Avenue/Bridgewater Way", "stopGTFSID" : "15285" },
+      { "stopName" : "Rowville Community Centre/Fulham Road", "stopGTFSID" : "15184" },
+      { "stopName" : "Stud Park Shopping Centre", "stopGTFSID" : "21314" },
+      { "stopName" : "Stud Park Shopping Centre/Stud Road", "stopGTFSID" : "15149" }
+    ]
+
+    let studKnox = [
+      { "stopName" : "Lakeside Boulevard/Stud Road", "stopGTFSID" : "15150" },
+      { "stopName" : "Kelletts Road/Stud Road - West", "stopGTFSID" : "15151" },
+      { "stopName" : "Kingsley Close/Stud Road", "stopGTFSID" : "15152" },
+      { "stopName" : "Centre Road/Stud Road", "stopGTFSID" : "15153" },
+      { "stopName" : "Scoresby Village Shopping Centre/Stud Road", "stopGTFSID" : "15154" },
+      { "stopName" : "The Close/Stud Road", "stopGTFSID" : "15155" },
+      { "stopName" : "Sheppard Drive/Stud Road", "stopGTFSID" : "15156" },
+      { "stopName" : "Evans Street/Stud Road", "stopGTFSID" : "15157" },
+      { "stopName" : "George Street/Stud Road", "stopGTFSID" : "15158" },
+      { "stopName" : "Mockridge Street/Stud Road", "stopGTFSID" : "15159" },
+      { "stopName" : "Harcrest Boulevard/Stud Road", "stopGTFSID" : "15160" },
+      { "stopName" : "High Street Road/Stud Road", "stopGTFSID" : "15161" },
+      { "stopName" : "Swinburne TAFE - Wantirna/Stud Road", "stopGTFSID" : "15162" },
+      { "stopName" : "Knox City Shopping Centre/Burwood Highway", "stopGTFSID" : "19629" }
+    ]
+
+    let studWav = [
+      { "stopName" : "Turramurra Drive/Stud Road", "stopGTFSID" : "14176" },
+      { "stopName" : "Stud Road/Wellington Road", "stopGTFSID" : "16505" },
+      { "stopName" : "Viewtech Place/Wellington Road", "stopGTFSID" : "16506" },
+      { "stopName" : "Jaydee Court/Wellington Road", "stopGTFSID" : "16507" },
+      { "stopName" : "Eastlink/Wellington Road", "stopGTFSID" : "16508" },
+      { "stopName" : "Haverbrack Drive/Wellington Road", "stopGTFSID" : "2351" },
+      { "stopName" : "Wellington Road/Jacksons Road", "stopGTFSID" : "22714" },
+      { "stopName" : "Stirling Theological College/Jacksons Road", "stopGTFSID" : "22715" },
+      { "stopName" : "Carboni Court/Jacksons Road", "stopGTFSID" : "22716" },
+      { "stopName" : "Gladeswood Drive/Jacksons Road", "stopGTFSID" : "21327" },
+      { "stopName" : "Waverley Gardens Shopping Centre/Hansworth Street", "stopGTFSID" : "21310" }
+    ]
+
+    let variants = [
+      [
+        ...commonStops,
+        ...studKnox
+      ],
+      [
+        ...commonStops,
+        ...studWav
+      ]
+    ]
+
+    expect(merge(variants)).to.deep.equal(
+      [
+        ...commonStops,
+        ...studWav,
+        ...studKnox
+      ]
+    )
+  })
 })
