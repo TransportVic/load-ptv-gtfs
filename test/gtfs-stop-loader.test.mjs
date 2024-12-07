@@ -7,6 +7,7 @@ import { expect } from 'chai'
 
 import uniqueStops from '../transportvic-data/excel/stops/unique-stops.json' with { type: 'json' }
 import nameOverrides from '../transportvic-data/excel/stops/name-overrides.json' with { type: 'json' }
+import GTFSStopsReader from '../lib/gtfs-parser/readers/GTFSStopsReader.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -181,5 +182,41 @@ describe('The GTFS Stops Loader', () => {
 
     expect(gumRd).to.not.be.null
     expect(gumRd.stopName).to.equal('Gum Road/Main Road West')
+  })
+
+  it('Should allow for individual stops to be loaded in', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    let loader = new StopsLoader(specialHeader, TRANSIT_MODES.bus, database)
+    let reader = new GTFSStopsReader('')
+
+    await loader.loadStop(reader.processEntity({
+      stop_id: '51586',
+      stop_name: 'Huntingdale Station/Haughton Road (Oakleigh)',
+      stop_lat: '-37.9111998619901',
+      stop_lon: '145.103064853799'
+    }))
+
+    let huntingdale = await stops.findDocument({
+      'bays.stopGTFSID': '51586'
+    })
+
+    expect(huntingdale).to.not.be.null
+    expect(huntingdale.stopName).to.equal('Huntingdale Railway Station/Haughton Road')
+
+    await loader.loadStop(reader.processEntity({
+      stop_id: '22440',
+      stop_name: 'Huntingdale Station/Huntingdale Road (Oakleigh)',
+      stop_lat: '-37.911010298723',
+      stop_lon: '145.103604328761'
+    }))
+
+    huntingdale = await stops.findDocument({
+      'bays.stopGTFSID': '22440'
+    })
+
+    expect(huntingdale).to.not.be.null
+    expect(huntingdale.stopName).to.equal('Huntingdale Railway Station')
   })
 })
