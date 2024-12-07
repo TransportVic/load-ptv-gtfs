@@ -47,4 +47,37 @@ describe('The stop merger', () => {
       { "stopName" : "Werribee", "stopGTFSID" : "19921" }
     ])
   })
+
+  it('Should merge 2 different branches', () => {
+    let variants = [
+      [
+        { "stopName" : "Blackburn Road/Ferntree Gully Road", "stopGTFSID" : "13038" },
+				{ "stopName" : "Blackburn Road/Normanby Road", "stopGTFSID" : "15418" },
+				{ "stopName" : "Howleys Road/Normanby Road", "stopGTFSID" : "15419" },
+				{ "stopName" : "Monash University/Research Way", "stopGTFSID" : "22447" },
+				{ "stopName" : "Hilltop Avenue/Gardiner Road", "stopGTFSID" : "22445" },
+				{ "stopName" : "Ferntree Gully Road/Gardiner Road", "stopGTFSID" : "22442" },
+				{ "stopName" : "Gardiner Road/Ferntree Gully Road", "stopGTFSID" : "13043" }
+      ], 
+      [
+        { "stopName" : "Blackburn Road/Ferntree Gully Road", "stopGTFSID" : "13038" },
+				{ "stopName" : "Blackburn Road/Normanby Road", "stopGTFSID" : "15418" },
+				{ "stopName" : "Howleys Road/Normanby Road", "stopGTFSID" : "15419" },
+				{ "stopName" : "CSIRO/Normanby Road", "stopGTFSID" : "40973" },
+				{ "stopName" : "Ferntree Gully Road/Gardiner Road", "stopGTFSID" : "22442" },
+				{ "stopName" : "Gardiner Road/Ferntree Gully Road", "stopGTFSID" : "13043" }
+      ]
+    ]
+
+    expect(merge(variants)).to.deep.equal([
+      { "stopName" : "Blackburn Road/Ferntree Gully Road", "stopGTFSID" : "13038" },
+      { "stopName" : "Blackburn Road/Normanby Road", "stopGTFSID" : "15418" },
+      { "stopName" : "Howleys Road/Normanby Road", "stopGTFSID" : "15419" },
+      { "stopName" : "Monash University/Research Way", "stopGTFSID" : "22447" },
+      { "stopName" : "Hilltop Avenue/Gardiner Road", "stopGTFSID" : "22445" },
+      { "stopName" : "CSIRO/Normanby Road", "stopGTFSID" : "40973" },
+      { "stopName" : "Ferntree Gully Road/Gardiner Road", "stopGTFSID" : "22442" },
+      { "stopName" : "Gardiner Road/Ferntree Gully Road", "stopGTFSID" : "13043" }
+    ])
+  })
 })
