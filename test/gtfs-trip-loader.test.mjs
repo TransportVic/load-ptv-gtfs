@@ -83,4 +83,30 @@ describe('The TripLoader class', () => {
     expect(trip.departureTime).to.equal('04:57')
     expect(trip.destinationArrivalTime).to.equal('05:08')
   })
+
+  it('It should return a mapping of Shape IDs to Route IDs', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+    let routes = await database.createCollection('routes')
+    let trips = await database.createCollection('gtfs timetables')
+
+    let stopLoader = new StopsLoader(stopsFile, TRANSIT_MODES.metroTrain, database)
+    await stopLoader.loadStops()
+
+    let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+    await routeLoader.loadRoutes()
+
+    let routeIDMap = routeLoader.getRouteIDMap()
+
+    let tripLoader = new TripLoader({
+      tripsFile, stopTimesFile,
+      calendarFile, calendarDatesFile
+    }, TRANSIT_MODES.metroTrain, database)
+    
+    let shapeIDMap = await tripLoader.loadTrips({
+      routeIDMap
+    })
+
+    expect(shapeIDMap['2-ALM-vpt-1.1.R']).to.equal('2-ALM')
+  })
 })
