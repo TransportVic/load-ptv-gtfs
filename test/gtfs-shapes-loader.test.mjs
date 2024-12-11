@@ -42,7 +42,8 @@ describe('The ShapeLoader class', () => {
       calendarFile, calendarDatesFile
     }, TRANSIT_MODES.metroBus, database)
    
-    let shapeIDMap = await tripLoader.loadTrips({ routeIDMap })
+    await tripLoader.loadTrips({ routeIDMap })
+    let shapeIDMap = tripLoader.getShapeIDMap()
 
     let shapeLoader = new ShapeLoader(shapeFile, database)
 
@@ -78,7 +79,8 @@ describe('The ShapeLoader class', () => {
       calendarFile, calendarDatesFile
     }, TRANSIT_MODES.metroBus, database)
 
-    let shapeIDMap = await tripLoader.loadTrips({ routeIDMap })
+    await tripLoader.loadTrips({ routeIDMap })
+    let shapeIDMap = tripLoader.getShapeIDMap()
 
     let shapeLoader = new ShapeLoader(shapeFile, database)
 

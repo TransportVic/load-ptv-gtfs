@@ -103,9 +103,8 @@ describe('The TripLoader class', () => {
       calendarFile, calendarDatesFile
     }, TRANSIT_MODES.metroTrain, database)
     
-    let shapeIDMap = await tripLoader.loadTrips({
-      routeIDMap
-    })
+    await tripLoader.loadTrips({ routeIDMap })
+    let shapeIDMap = tripLoader.getShapeIDMap()
 
     expect(shapeIDMap['2-ALM-vpt-1.1.R']).to.equal('2-ALM')
   })
