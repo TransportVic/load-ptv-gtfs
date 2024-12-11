@@ -1,0 +1,4 @@
+stop_id,stop_name,stop_lat,stop_lon
+"21611","Monash University (Clayton)","-37.9139064388162","145.131978988767"
+"7098","Milgate St/North Rd (Oakleigh South)","-37.912515519291","145.109218966528"
+"51587","Huntingdale Station/Haughton Rd (Oakleigh)","-37.910940302153","145.102616537489"
