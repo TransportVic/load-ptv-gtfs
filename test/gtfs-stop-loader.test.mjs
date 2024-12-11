@@ -153,7 +153,7 @@ describe('The GTFS Stops Loader', () => {
 
     await (new StopsLoader(stopNameOverrides, TRANSIT_MODES.bus, database)).loadStops({
       processStop: stop => {
-        let updatedName = nameOverrides[TRANSIT_MODES.bus][stop.fullStopName]
+        let updatedName = nameOverrides[stop.fullStopName]
         if (updatedName) stop.fullStopName = updatedName
 
         return stop
