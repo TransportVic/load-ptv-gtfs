@@ -58,6 +58,8 @@ describe('The ShapeLoader class', () => {
     expect(monashHuntingdale).to.exist
     expect(monashHuntingdale.length).to.equal(2848.26)
     expect(monashHuntingdale.path.coordinates.length).to.equal(38)
+
+    expect(monashHuntingdale.path.coordinates[0]).to.deep.equal([ 145.132081, -37.913926 ])
   })
 
   it('Should merge duplicate shapes with the same length and start/end coordinates', async () => {
