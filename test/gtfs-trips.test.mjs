@@ -102,8 +102,8 @@ describe('The GTFSTripReader class', () => {
     trip = await reader.getNextEntity()
 
     expect(trip).to.be.instanceOf(SmartrakTrip)
-    expect(trip.getTripID()).to.equal('56-83--1-MF2-57586310')
-    expect(trip.getDepotID()).to.equal(56)
+    expect(trip.getTripID()).to.equal('57-83--1-MF2-57586310')
+    expect(trip.getDepotID()).to.equal(57)
     // expect(trip.getRouteGTFSID()).to.equal('6-083')
   })
 })
