@@ -20,6 +20,9 @@ const stopsFile = path.join(__dirname, 'sample-data', 'trips', 'stops.txt')
 const stopTimesFile = path.join(__dirname, 'sample-data', 'trips', 'stop_times.txt')
 const tripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips.txt')
 
+const newStopTimesFile = path.join(__dirname, 'sample-data', 'trips', 'stop_times_new.txt')
+const newTripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips_new.txt')
+
 describe('The TripLoader class', () => {
   it('Should process the trip and add it to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
@@ -107,5 +110,32 @@ describe('The TripLoader class', () => {
     let shapeIDMap = tripLoader.getShapeIDMap()
 
     expect(shapeIDMap['2-ALM-vpt-1.1.R']).to.equal('2-ALM')
+  })
+
+  it('It should accept trip IDs in the new format and extract the TDN from there', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+    let routes = await database.createCollection('routes')
+    let trips = await database.createCollection('gtfs timetables')
+
+    let stopLoader = new StopsLoader(stopsFile, TRANSIT_MODES.metroTrain, database)
+    await stopLoader.loadStops()
+
+    let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+    await routeLoader.loadRoutes()
+
+    let routeIDMap = routeLoader.getRouteIDMap()
+
+    let tripLoader = new TripLoader({
+      tripsFile: newTripsFile, stopTimesFile: newStopTimesFile,
+      calendarFile, calendarDatesFile
+    }, TRANSIT_MODES.metroTrain, database)
+    
+    await tripLoader.loadTrips({ routeIDMap })
+
+    let trip = await trips.findDocument({ tripID: '02-ALM--1-T2-2302' })
+    console.log(trip)
+    expect(trip).to.not.be.null
+    expect(trip.runID).to.equal('2302')
   })
 })
