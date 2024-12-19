@@ -96,12 +96,14 @@ describe('The GTFSTripReader class', () => {
 
     expect(trip).to.be.instanceOf(SmartrakTrip)
     expect(trip.getTripID()).to.equal('58-G01--1-MF1-9942214')
+    expect(trip.getDepotID()).to.equal(58)
     // expect(trip.getRouteGTFSID()).to.equal('6-G01') // Not entirely sure how to handle duplicates
 
     trip = await reader.getNextEntity()
 
     expect(trip).to.be.instanceOf(SmartrakTrip)
     expect(trip.getTripID()).to.equal('56-83--1-MF2-57586310')
+    expect(trip.getDepotID()).to.equal(56)
     // expect(trip.getRouteGTFSID()).to.equal('6-083')
   })
 })
