@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import path from 'path'
 import url from 'url'
 import GTFSCalendar from '../lib/gtfs-parser/GTFSCalendar.mjs'
-import GTFSTrip from '../lib/gtfs-parser/GTFSTrip.mjs'
+import GTFSTrip, { SmartrakTrip } from '../lib/gtfs-parser/GTFSTrip.mjs'
 import GTFSTripReader from '../lib/gtfs-parser/readers/GTFSTripReader.mjs'
 import { TRANSIT_MODES } from '../lib/constants.mjs'
 
@@ -10,6 +10,7 @@ const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const tripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips.txt')
+const busTripsFile = path.join(__dirname, 'sample-data', 'trips', 'bus_trips.txt')
 
 describe('The GTFSTrip class', () => {
   it('Should process the skeleton trip data and populate the operation days', () => {
@@ -60,5 +61,28 @@ describe('The GTFSTripReader class', () => {
     expect(trip.getRouteGTFSID()).to.equal('2-ALM')
     expect(trip.getHeadsign()).to.equal('Camberwell')
     expect(trip.getOperationDays()).to.deep.equal(['20241122'])
+  })
+
+  it('Should return a Smartrak bus trip instance where appropriate', async () => {
+    let calendars = {
+      'T2_2': new GTFSCalendar({
+        id: 'T2_2',
+        startDay: '20241122',
+        endDay: '20241122',
+        daysOfWeek: ["0","0","0","0","1","0","0"]
+      })
+    }
+
+    let routeMappings = { '43-490-aus-1': '4-490', '6-wr9-mjp-1': '6-wr9' }
+
+    let reader = new GTFSTripReader(busTripsFile, calendars, routeMappings, TRANSIT_MODES.bus)
+    await reader.open()
+
+    let trip = await reader.getNextEntity()
+
+    expect(trip).to.be.instanceOf(SmartrakTrip)
+    expect(trip.getTripID()).to.equal('43-490--1-MF4-1111914')
+    expect(trip.getRouteGTFSID()).to.equal('4-490')
+    expect(trip.getDepotID()).to.equal(43)
   })
 })
