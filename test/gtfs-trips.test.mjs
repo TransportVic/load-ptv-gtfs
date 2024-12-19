@@ -32,7 +32,7 @@ describe('The GTFSTrip class', () => {
       block: ''
     })
 
-    expect(trip.operationDays).to.have.members([
+    expect(trip.getOperationDays()).to.have.members([
       '20241122', '20241123', '20241129'
     ])
   })
@@ -56,9 +56,9 @@ describe('The GTFSTripReader class', () => {
 
     let trip = await reader.getNextEntity()
 
-    expect(trip.tripID).to.equal('1.T2.2-ALM-vpt-1.1.R')
-    expect(trip.routeGTFSID).to.equal('2-ALM')
-    expect(trip.headsign).to.equal('Camberwell')
-    expect(trip.operationDays).to.deep.equal(['20241122'])
+    expect(trip.getTripID()).to.equal('1.T2.2-ALM-vpt-1.1.R')
+    expect(trip.getRouteGTFSID()).to.equal('2-ALM')
+    expect(trip.getHeadsign()).to.equal('Camberwell')
+    expect(trip.getOperationDays()).to.deep.equal(['20241122'])
   })
 })
