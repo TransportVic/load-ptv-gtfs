@@ -84,5 +84,24 @@ describe('The GTFSTripReader class', () => {
     expect(trip.getTripID()).to.equal('43-490--1-MF4-1111914')
     expect(trip.getRouteGTFSID()).to.equal('4-490')
     expect(trip.getDepotID()).to.equal(43)
+
+    trip = await reader.getNextEntity()
+
+    expect(trip).to.not.be.instanceOf(SmartrakTrip)
+    expect(trip.getTripID()).to.equal('5.T3.6-wr9-mjp-1.2.R')
+    expect(trip.getRouteGTFSID()).to.equal('6-wr9')
+
+    // EXPERIMENTAL DATA:
+    trip = await reader.getNextEntity()
+
+    expect(trip).to.be.instanceOf(SmartrakTrip)
+    expect(trip.getTripID()).to.equal('58-G01--1-MF1-9942214')
+    // expect(trip.getRouteGTFSID()).to.equal('6-G01') // Not entirely sure how to handle duplicates
+
+    trip = await reader.getNextEntity()
+
+    expect(trip).to.be.instanceOf(SmartrakTrip)
+    expect(trip.getTripID()).to.equal('56-83--1-MF2-57586310')
+    // expect(trip.getRouteGTFSID()).to.equal('6-083')
   })
 })

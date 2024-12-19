@@ -1,3 +1,5 @@
 route_id,service_id,trip_id,shape_id,trip_headsign,direction_id,block_id
 "43-490-aus-1","T2_2","43-490--1-MF4-1111914","43-490-aus-1.3.H","Gowanbrae","0",""
 "6-wr9-mjp-1","T2_2","5.T3.6-wr9-mjp-1.2.R","6-wr9-mjp-1.2.R","Warrnambool","1",""
+"53-G01-aus-1","T2_2","58-G01--1-MF1-9942214","53-G01-aus-1.2.R","North Shore Station","0",""
+"56-83-aus-1","T2_2","56-83--1-MF2-57586310","56-83-aus-1.2.R","Warragul East","0",""
