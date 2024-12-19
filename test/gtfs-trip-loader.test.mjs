@@ -134,7 +134,7 @@ describe('The TripLoader class', () => {
     await tripLoader.loadTrips({ routeIDMap })
 
     let trip = await trips.findDocument({ tripID: '02-ALM--1-T2-2302' })
-    console.log(trip)
+
     expect(trip).to.not.be.null
     expect(trip.runID).to.equal('2302')
   })

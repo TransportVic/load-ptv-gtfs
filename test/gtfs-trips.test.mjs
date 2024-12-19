@@ -4,6 +4,7 @@ import url from 'url'
 import GTFSCalendar from '../lib/gtfs-parser/GTFSCalendar.mjs'
 import GTFSTrip from '../lib/gtfs-parser/GTFSTrip.mjs'
 import GTFSTripReader from '../lib/gtfs-parser/readers/GTFSTripReader.mjs'
+import { TRANSIT_MODES } from '../lib/constants.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -50,7 +51,7 @@ describe('The GTFSTripReader class', () => {
 
     let routeMappings = { '2-ALM-vpt-1': '2-ALM' }
 
-    let reader = new GTFSTripReader(tripsFile, calendars, routeMappings)
+    let reader = new GTFSTripReader(tripsFile, calendars, routeMappings, TRANSIT_MODES.metroTrain)
     await reader.open()
 
     let trip = await reader.getNextEntity()
