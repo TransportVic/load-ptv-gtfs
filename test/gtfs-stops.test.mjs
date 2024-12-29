@@ -164,7 +164,7 @@ describe('The GTFSStop class', () => {
         stop_lat: '-37.8597466731382',
         stop_lon: '144.98247799877'
       })
-      expect(stopData.getSuburbFromLocation()).to.equal('St. Kilda')
+      expect(stopData.getSuburbFromLocation(suburbs)).to.equal('St. Kilda')
     })
 
     it('Should return a generic Interstate suburb if it cannot identify the suburb', () => {
@@ -174,7 +174,7 @@ describe('The GTFSStop class', () => {
         stop_lat: '-34.9274852283649',
         stop_lon: '138.595751207359'
       })
-      expect(stopData.getSuburbFromLocation()).to.equal('Interstate')
+      expect(stopData.getSuburbFromLocation(suburbs)).to.equal('Interstate')
     })
   })
 
