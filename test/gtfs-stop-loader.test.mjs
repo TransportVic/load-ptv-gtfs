@@ -4,6 +4,7 @@ import { TRANSIT_MODES } from '../lib/constants.mjs'
 import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
+import fs from 'fs/promises'
 
 import uniqueStops from '../transportvic-data/excel/stops/unique-stops.json' with { type: 'json' }
 import nameOverrides from '../transportvic-data/excel/stops/name-overrides.json' with { type: 'json' }
@@ -11,6 +12,9 @@ import GTFSStopsReader from '../lib/gtfs-parser/readers/GTFSStopsReader.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+const suburbsFile = path.join(__dirname, '..', 'transportvic-data', 'geospatial', 'suburb-boundaries', 'data.geojson')
+const suburbs = JSON.parse(await fs.readFile(suburbsFile))
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'sample_stops.txt')
 
@@ -26,7 +30,7 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    let loader = new StopsLoader(stopsFile, TRANSIT_MODES.bus, database)
+    let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
 
     let stop = await stops.findDocument({
@@ -40,7 +44,7 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    let loader = new StopsLoader(stopsFile, TRANSIT_MODES.bus, database)
+    let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
 
     let wavWatson = await stops.findDocument({
@@ -66,7 +70,7 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    let loader = new StopsLoader(stopsFile, TRANSIT_MODES.bus, database)
+    let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
 
     let stop = await stops.findDocument({
@@ -82,7 +86,7 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    let loader = new StopsLoader(stopsFile, TRANSIT_MODES.bus, database)
+    let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
 
     let stop = await stops.findDocument({
@@ -98,7 +102,7 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    let loader = new StopsLoader(stopsFile, TRANSIT_MODES.bus, database)
+    let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
 
     let stop = await stops.findDocument({
@@ -119,8 +123,8 @@ describe('The GTFS Stops Loader', () => {
       if (uniqueStops.includes(stop.fullStopName)) return stop.fullStopName
     }
 
-    await (new StopsLoader(uniqueStopsBus, TRANSIT_MODES.bus, database)).loadStops({ getMergeName })
-    await (new StopsLoader(uniqueStopsTram, 'tram', database)).loadStops({ getMergeName })
+    await (new StopsLoader(uniqueStopsBus, suburbs, TRANSIT_MODES.bus, database)).loadStops({ getMergeName })
+    await (new StopsLoader(uniqueStopsTram, suburbs, 'tram', database)).loadStops({ getMergeName })
 
     let melbRoyal = await stops.findDocument({
       'bays.stopGTFSID': '16830'
@@ -151,7 +155,7 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    await (new StopsLoader(stopNameOverrides, TRANSIT_MODES.bus, database)).loadStops({
+    await (new StopsLoader(stopNameOverrides, suburbs, TRANSIT_MODES.bus, database)).loadStops({
       processStop: stop => {
         let updatedName = nameOverrides[stop.fullStopName]
         if (updatedName) stop.fullStopName = updatedName
@@ -174,7 +178,7 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    await (new StopsLoader(specialHeader, TRANSIT_MODES.bus, database)).loadStops()
+    await (new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.bus, database)).loadStops()
 
     let gumRd = await stops.findDocument({
       'bays.stopGTFSID': '10009'
@@ -188,7 +192,7 @@ describe('The GTFS Stops Loader', () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
 
-    let loader = new StopsLoader(specialHeader, TRANSIT_MODES.bus, database)
+    let loader = new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.bus, database)
     let reader = new GTFSStopsReader('')
 
     await loader.loadStop(reader.processEntity({

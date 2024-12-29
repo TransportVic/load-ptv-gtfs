@@ -7,9 +7,13 @@ import RouteLoader from '../lib/loader/RouteLoader.mjs'
 import TripLoader from '../lib/loader/TripLoader.mjs'
 import ShapeLoader from '../lib/loader/ShapeLoader.mjs'
 import { TRANSIT_MODES } from '../lib/constants.mjs'
+import fs from 'fs/promises'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+const suburbsFile = path.join(__dirname, '..', 'transportvic-data', 'geospatial', 'suburb-boundaries', 'data.geojson')
+const suburbs = JSON.parse(await fs.readFile(suburbsFile))
 
 const routesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_bus_routes.txt')
 const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
@@ -29,7 +33,7 @@ describe('The ShapeLoader class', () => {
     let routes = await database.createCollection('routes')
     let trips = await database.createCollection('gtfs timetables')
 
-    let stopLoader = new StopsLoader(stopsFile, TRANSIT_MODES.metroBus, database)
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroBus, database)
     await stopLoader.loadStops()
 
     let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroBus, database)
@@ -68,7 +72,7 @@ describe('The ShapeLoader class', () => {
     let routes = await database.createCollection('routes')
     let trips = await database.createCollection('gtfs timetables')
 
-    let stopLoader = new StopsLoader(stopsFile, TRANSIT_MODES.metroBus, database)
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroBus, database)
     await stopLoader.loadStops()
 
     let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroBus, database)

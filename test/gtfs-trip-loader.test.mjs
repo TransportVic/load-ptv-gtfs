@@ -6,9 +6,13 @@ import { LokiDatabaseConnection } from '@sbs9642p/database'
 import StopsLoader from '../lib/loader/StopsLoader.mjs'
 import RouteLoader from '../lib/loader/RouteLoader.mjs'
 import TripLoader from '../lib/loader/TripLoader.mjs'
+import fs from 'fs/promises'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+const suburbsFile = path.join(__dirname, '..', 'transportvic-data', 'geospatial', 'suburb-boundaries', 'data.geojson')
+const suburbs = JSON.parse(await fs.readFile(suburbsFile))
 
 const routesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_lines.txt')
 const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
@@ -30,7 +34,7 @@ describe('The TripLoader class', () => {
     let routes = await database.createCollection('routes')
     let trips = await database.createCollection('gtfs timetables')
 
-    let stopLoader = new StopsLoader(stopsFile, TRANSIT_MODES.metroTrain, database)
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
     await stopLoader.loadStops()
 
     let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
@@ -93,7 +97,7 @@ describe('The TripLoader class', () => {
     let routes = await database.createCollection('routes')
     let trips = await database.createCollection('gtfs timetables')
 
-    let stopLoader = new StopsLoader(stopsFile, TRANSIT_MODES.metroTrain, database)
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
     await stopLoader.loadStops()
 
     let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
@@ -118,7 +122,7 @@ describe('The TripLoader class', () => {
     let routes = await database.createCollection('routes')
     let trips = await database.createCollection('gtfs timetables')
 
-    let stopLoader = new StopsLoader(stopsFile, TRANSIT_MODES.metroTrain, database)
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
     await stopLoader.loadStops()
 
     let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
