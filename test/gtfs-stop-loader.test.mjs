@@ -6,8 +6,8 @@ import url from 'url'
 import { expect } from 'chai'
 import suburbs from './sample-data/suburbs.json' with { type: 'json' }
 
-import uniqueStops from '../transportvic-data/excel/stops/unique-stops.json' with { type: 'json' }
-import nameOverrides from '../transportvic-data/excel/stops/name-overrides.json' with { type: 'json' }
+import uniqueStops from './sample-data/stop-data/unique-stops.json' with { type: 'json' }
+import nameOverrides from './sample-data/stop-data/name-overrides.json' with { type: 'json' }
 import GTFSStopsReader from '../lib/gtfs-parser/readers/GTFSStopsReader.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
