@@ -6,13 +6,10 @@ import { LokiDatabaseConnection } from '@transportme/database'
 import StopsLoader from '../lib/loader/StopsLoader.mjs'
 import RouteLoader from '../lib/loader/RouteLoader.mjs'
 import TripLoader from '../lib/loader/TripLoader.mjs'
-import fs from 'fs/promises'
+import suburbs from './sample-data/suburbs.json' with { type: 'json' }
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
-const suburbsFile = path.join(__dirname, '..', 'transportvic-data', 'geospatial', 'suburb-boundaries', 'data.geojson')
-const suburbs = JSON.parse(await fs.readFile(suburbsFile))
 
 const routesFile = path.join(__dirname, 'sample-data', 'routes', 'metro_lines.txt')
 const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')

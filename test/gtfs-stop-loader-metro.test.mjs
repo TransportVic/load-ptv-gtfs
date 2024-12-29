@@ -4,15 +4,12 @@ import { TRANSIT_MODES } from '../lib/constants.mjs'
 import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
-import fs from 'fs/promises'
+import suburbs from './sample-data/suburbs.json' with { type: 'json' }
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'nov_2024_train_data.txt')
-
-const suburbsFile = path.join(__dirname, '..', 'transportvic-data', 'geospatial', 'suburb-boundaries', 'data.geojson')
-const suburbs = JSON.parse(await fs.readFile(suburbsFile))
 
 describe('The GTFS Stops Loader (Testing on the projected Nov 2024 data)', () => {
   it('Should process the stops and add them to the database', async () => {

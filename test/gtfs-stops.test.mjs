@@ -2,15 +2,12 @@ import { expect } from 'chai'
 import GTFSStopsReader from '../lib/gtfs-parser/readers/GTFSStopsReader.mjs'
 import path from 'path'
 import url from 'url'
-import fs from 'fs/promises'
+import suburbs from './sample-data/suburbs.json' with { type: 'json' }
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'line_reader_test.txt')
-
-const suburbsFile = path.join(__dirname, '..', 'transportvic-data', 'geospatial', 'suburb-boundaries', 'data.geojson')
-const suburbs = JSON.parse(await fs.readFile(suburbsFile))
 
 let stopInput = {
   stop_id: '1000',

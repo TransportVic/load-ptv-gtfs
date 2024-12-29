@@ -4,7 +4,7 @@ import { TRANSIT_MODES } from '../lib/constants.mjs'
 import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
-import fs from 'fs/promises'
+import suburbs from './sample-data/suburbs.json' with { type: 'json' }
 
 import uniqueStops from '../transportvic-data/excel/stops/unique-stops.json' with { type: 'json' }
 import nameOverrides from '../transportvic-data/excel/stops/name-overrides.json' with { type: 'json' }
@@ -12,9 +12,6 @@ import GTFSStopsReader from '../lib/gtfs-parser/readers/GTFSStopsReader.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
-const suburbsFile = path.join(__dirname, '..', 'transportvic-data', 'geospatial', 'suburb-boundaries', 'data.geojson')
-const suburbs = JSON.parse(await fs.readFile(suburbsFile))
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'sample_stops.txt')
 
