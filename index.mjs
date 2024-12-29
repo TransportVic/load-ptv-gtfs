@@ -12,6 +12,9 @@ import { GTFSStop, GTFSPlatformStop } from './lib/gtfs-parser/GTFSStop.mjs'
 import { GTFSStopTime } from './lib/gtfs-parser/GTFSStopTime.mjs'
 import GTFSTrip from './lib/gtfs-parser/GTFSTrip.mjs'
 
+import setRouteStops from './lib/post-processing/set-route-stops.mjs'
+import setStopServices from './lib/post-processing/set-stop-services.mjs'
+
 const GTFSTypes = {
   GTFSAgency, GTFSCalendar, GTFSCalendarDate,
   GTFSRoute, GTFSShape, GTFSShapePoint,
@@ -22,5 +25,6 @@ const GTFSTypes = {
 export {
   RouteLoader, ShapeLoader,
   StopsLoader, TripLoader,
-  GTFSTypes
+  GTFSTypes,
+  setRouteStops, setStopServices
 }
