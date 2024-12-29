@@ -1,4 +1,4 @@
-import { LokiDatabaseConnection } from '@sbs9642p/database'
+import { LokiDatabaseConnection } from '@transportme/database'
 import RouteLoader from '../lib/loader/RouteLoader.mjs'
 import GTFSAgencyReader from '../lib/gtfs-parser/readers/GTFSAgencyReader.mjs'
 

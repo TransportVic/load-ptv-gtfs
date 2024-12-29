@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import path from 'path'
 import url from 'url'
-import { LokiDatabaseConnection } from '@sbs9642p/database'
+import { LokiDatabaseConnection } from '@transportme/database'
 import StopsLoader from '../lib/loader/StopsLoader.mjs'
 import RouteLoader from '../lib/loader/RouteLoader.mjs'
 import TripLoader from '../lib/loader/TripLoader.mjs'

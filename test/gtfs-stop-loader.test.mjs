@@ -1,4 +1,4 @@
-import { LokiDatabaseConnection } from '@sbs9642p/database'
+import { LokiDatabaseConnection } from '@transportme/database'
 import StopsLoader from '../lib/loader/StopsLoader.mjs'
 import { TRANSIT_MODES } from '../lib/constants.mjs'
 import path from 'path'
