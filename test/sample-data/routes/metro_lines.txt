@@ -3,3 +3,5 @@ route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route
 "2-ALM-vpt-61","3","Alamein","Alamein - City","2","152C6B","FFFFFF"
 "2-RCE-vpt-1","3","Flemington Racecourse","City","2","95979A","000000"
 "2-STY-vpt-1","3","Stony Point","Stony Point - Frankston","2","028430","FFFFFF"
+"2-PKM-vpt-1","3","Pakenham","Pakenham - City","2","279FD5","000000"
+"2-PKM-vpt-16","3","Pakenham","Pakenham - City","2","279FD5","000000"
