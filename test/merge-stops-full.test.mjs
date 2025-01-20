@@ -58,7 +58,7 @@ describe('The GTFS Route stop merger', () => {
       expect(pakenhamRoute).to.not.be.null
       
       let city = pakenhamRoute.directions.find(dir => dir.directionName === 'City')
-      expect(city).to.not.be.null
+      expect(city).to.not.be.undefined
       expect(city.stops[0].stopName).to.equal('East Pakenham Railway Station')
       expect(city.stops[city.stops.length - 2].stopName).to.equal('Southern Cross Railway Station')
       expect(city.stops[city.stops.length - 1].stopName).to.equal('Flinders Street Railway Station')
@@ -69,29 +69,29 @@ describe('The GTFS Route stop merger', () => {
       expect(pakenhamRoute).to.not.be.null
 
       let pakenham = pakenhamRoute.directions.find(dir => dir.directionName !== 'City')
-      expect(pakenham).to.not.be.null
+      expect(pakenham).to.not.be.undefined
       expect(pakenham.directionName).to.equal('Pakenham')
       expect(pakenham.stops[0].stopName).to.equal('Flinders Street Railway Station')
       expect(pakenham.stops[pakenham.stops.length - 2].stopName).to.equal('Pakenham Railway Station')
       expect(pakenham.stops[pakenham.stops.length - 1].stopName).to.equal('East Pakenham Railway Station')
     })
 
-    it('Should detect set Stony Point to Frankston trips as Up', async () => {
+    it('Should set Stony Point to Frankston trips as Up', async () => {
       let stonyPointRoute = await routes.findDocument({ routeGTFSID: '2-STY' })
       expect(stonyPointRoute).to.not.be.null
       
       let frankston = stonyPointRoute.directions.find(dir => dir.directionName === 'Frankston')
-      expect(frankston).to.not.be.null
+      expect(frankston).to.not.be.undefined
       expect(frankston.stops[0].stopName).to.equal('Stony Point Railway Station')
       expect(frankston.stops[frankston.stops.length - 1].stopName).to.equal('Frankston Railway Station')
     })
 
-    it('Should detect set Stony Point trips as Down', async () => {
+    it('Should set Stony Point trips as Down', async () => {
       let stonyPointRoute = await routes.findDocument({ routeGTFSID: '2-STY' })
       expect(stonyPointRoute).to.not.be.null
 
       let stonyPoint = stonyPointRoute.directions.find(dir => dir.directionName === 'Stony Point')
-      expect(stonyPoint).to.not.be.null
+      expect(stonyPoint).to.not.be.undefined
       expect(stonyPoint.stops[0].stopName).to.equal('Frankston Railway Station')
       expect(stonyPoint.stops[stonyPoint.stops.length - 1].stopName).to.equal('Stony Point Railway Station')
     })
