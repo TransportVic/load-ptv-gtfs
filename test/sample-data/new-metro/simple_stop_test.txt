@@ -1,6 +1,6 @@
 stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,platform_code
-"11207","Camberwell Station","-37.82672159","145.05877266","","Parentvic:rail:CAM","1"
-"11208","Camberwell Station","-37.82656845","145.05877667","","Parentvic:rail:CAM","2"
-"11209","Camberwell Station","-37.82653224","145.05876626","","Parentvic:rail:CAM","3"
-"26130","Camberwell Rail Replacement Bus”,”-37.82633726","145.05841916","","Parentvic:rail:CAM","B"
-"Parentvic:rail:CAM","Camberwell Station","-37.82656714","145.05869718","1","",""
+"11207","Camberwell Station","-37.82669176","145.05860302","","Parentvic:rail:CAM","1"
+"11208","Camberwell Station","-37.82661913","145.05857084","","Parentvic:rail:CAM","2"
+"11209","Camberwell Station","-37.82651179","145.05861910","","Parentvic:rail:CAM","3"
+"26130","Camberwell Rail Replacement Bus”,”-37.82633726","145.05841916","","Parentvic:rail:CAM","R-Bus"
+"Parentvic:rail:CAM","Camberwell Railway Station","-37.82656714","145.05869718","1","",""
