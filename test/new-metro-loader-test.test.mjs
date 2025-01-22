@@ -124,5 +124,42 @@ describe('The GTFS Loaders with the new Metro data', () => {
       expect(nextTrip.stopTimings[0].stopName).to.equal('Flinders Street Railway Station')
       expect(nextTrip.stopTimings[0].platform).to.equal('7')
     })
+
+    it('It identify rail replacement bus trip', async () => {
+      let database = new LokiDatabaseConnection('test-db')
+      let stops = await database.createCollection('stops')
+      let routes = await database.createCollection('routes')
+      let trips = await database.createCollection('gtfs timetables')
+
+      let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
+      await stopLoader.loadStops()
+
+      let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+      await routeLoader.loadRoutes()
+
+      let routeIDMap = routeLoader.getRouteIDMap()
+
+      let tripLoader = new TripLoader({
+        tripsFile, stopTimesFile,
+        calendarFile, calendarDatesFile
+      }, TRANSIT_MODES.metroTrain, database)
+
+      await tripLoader.loadTrips({ routeIDMap })
+
+      let trip = await trips.findDocument({ runID: 'BL000' })
+
+      expect(trip).to.not.be.null
+      expect(trip.tripID).to.equal('02-LIL--13-T5_w3-BL000')
+      expect(trip.shapeID).to.equal('2-LIL-vpt-13.133.R')
+      expect(trip.routeGTFSID).to.equal('2-LIL')
+      expect(trip.block).to.equal(null)
+      expect(trip.isRailReplacementBus).to.be.true
+
+      expect(trip.stopTimings[0].stopName).to.equal('Burnley Railway Station')
+      expect(trip.stopTimings[0].platform).to.equal('RRB')
+
+      expect(trip.stopTimings[3].stopName).to.equal('Parliament Railway Station')
+      expect(trip.stopTimings[3].platform).to.equal('RRB')
+    })
   })
 })
