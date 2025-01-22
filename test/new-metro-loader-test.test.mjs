@@ -6,18 +6,23 @@ import url from 'url'
 import { expect } from 'chai'
 import suburbs from './sample-data/suburbs.json' with { type: 'json' }
 import RouteLoader from '../lib/loader/RouteLoader.mjs'
+import TripLoader from '../lib/loader/TripLoader.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
 
+const calendarFile = path.join(__dirname, 'sample-data', 'new-metro', 'calendar.txt')
+const calendarDatesFile = path.join(__dirname, 'sample-data', 'new-metro', 'calendar_dates.txt')
+
 const routesFile = path.join(__dirname, 'sample-data', 'new-metro', 'routes.txt')
 
 const stopTimesFile = path.join(__dirname, 'sample-data', 'new-metro', 'stop_times.txt')
 const tripsFile = path.join(__dirname, 'sample-data', 'new-metro', 'trips.txt')
+const stopsFile = path.join(__dirname, 'sample-data', 'new-metro', 'stops.txt')
 
-const stopsFile = path.join(__dirname, 'sample-data', 'new-metro', 'simple_stop_test.txt')
+const simpleStopsFile = path.join(__dirname, 'sample-data', 'new-metro', 'simple_stop_test.txt')
 
 describe('The GTFS Loaders with the new Metro data', () => {
   describe('The stop loader', () => {
@@ -25,7 +30,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
       let database = new LokiDatabaseConnection('test-db')
       let stops = await database.createCollection('stops')
 
-      let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
+      let loader = new StopsLoader(simpleStopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
       await loader.loadStops()
 
       let stop = await stops.findDocument({
@@ -39,7 +44,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
       let database = new LokiDatabaseConnection('test-db')
       let stops = await database.createCollection('stops')
 
-      let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
+      let loader = new StopsLoader(simpleStopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
       await loader.loadStops()
 
       let stop = await stops.findDocument({
@@ -73,7 +78,6 @@ describe('The GTFS Loaders with the new Metro data', () => {
   })
 
   describe('The trip loader', () => {
-    return
     it('It should accept trip IDs in the new format and extract the TDN from there', async () => {
       let database = new LokiDatabaseConnection('test-db')
       let stops = await database.createCollection('stops')
@@ -89,16 +93,36 @@ describe('The GTFS Loaders with the new Metro data', () => {
       let routeIDMap = routeLoader.getRouteIDMap()
 
       let tripLoader = new TripLoader({
-        tripsFile: tripsFile, stopTimesFile: stopTimesFile,
+        tripsFile, stopTimesFile,
         calendarFile, calendarDatesFile
       }, TRANSIT_MODES.metroTrain, database)
-      
+
       await tripLoader.loadTrips({ routeIDMap })
 
-      let trip = await trips.findDocument({ tripID: '02-ALM--1-T2-2302' })
+      let trip = await trips.findDocument({ runID: 'C000' })
 
       expect(trip).to.not.be.null
-      expect(trip.runID).to.equal('2302')
+      expect(trip.tripID).to.equal('02-PKM--12-T5-C000')
+      expect(trip.shapeID).to.equal('2-PKM-vpt-12.20.R')
+      expect(trip.routeGTFSID).to.equal('2-PKM')
+      expect(trip.block).to.equal('3347')
+      expect(trip.isRailReplacementBus).to.be.false
+
+      expect(trip.stopTimings[0].stopName).to.equal('East Pakenham Railway Station')
+      expect(trip.stopTimings[0].platform).to.equal('1')
+
+      expect(trip.stopTimings[22].stopName).to.equal('Richmond Railway Station')
+      expect(trip.stopTimings[22].platform).to.equal('5')
+
+      expect(trip.stopTimings[27].stopName).to.equal('Flinders Street Railway Station')
+      expect(trip.stopTimings[27].platform).to.equal('7')
+
+      let nextTrip = await trips.findDocument({ block: '3347', runID: { $ne: 'C000' } })
+      expect(nextTrip.runID).to.equal('C005')
+      expect(trip.isRailReplacementBus).to.be.false
+      
+      expect(nextTrip.stopTimings[0].stopName).to.equal('Flinders Street Railway Station')
+      expect(nextTrip.stopTimings[0].platform).to.equal('7')
     })
   })
 })
