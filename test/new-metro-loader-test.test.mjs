@@ -5,12 +5,17 @@ import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
 import suburbs from './sample-data/suburbs.json' with { type: 'json' }
+import RouteLoader from '../lib/loader/RouteLoader.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const newStopTimesFile = path.join(__dirname, 'sample-data', 'new-metro', 'stop_times.txt')
-const newTripsFile = path.join(__dirname, 'sample-data', 'new-metro', 'trips.txt')
+const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
+
+const routesFile = path.join(__dirname, 'sample-data', 'new-metro', 'routes.txt')
+
+const stopTimesFile = path.join(__dirname, 'sample-data', 'new-metro', 'stop_times.txt')
+const tripsFile = path.join(__dirname, 'sample-data', 'new-metro', 'trips.txt')
 
 const stopsFile = path.join(__dirname, 'sample-data', 'new-metro', 'simple_stop_test.txt')
 
@@ -53,6 +58,18 @@ describe('The GTFS Loaders with the new Metro data', () => {
   })
 
   describe('The route loader', () => {
+    it('Should convert the updated route ID format to the legacy format', async () => {
+      let database = new LokiDatabaseConnection('test-db')
+      let routes = await database.createCollection('routes')
+
+      let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+      await routeLoader.loadRoutes()
+
+      let pakenham = await routes.findDocument({ routeName: 'Pakenham' })
+
+      expect(pakenham).to.exist
+      expect(pakenham.routeGTFSID).to.equal('2-PKM')
+    })
   })
 
   describe('The trip loader', () => {
@@ -72,7 +89,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
       let routeIDMap = routeLoader.getRouteIDMap()
 
       let tripLoader = new TripLoader({
-        tripsFile: newTripsFile, stopTimesFile: newStopTimesFile,
+        tripsFile: tripsFile, stopTimesFile: stopTimesFile,
         calendarFile, calendarDatesFile
       }, TRANSIT_MODES.metroTrain, database)
       
