@@ -181,7 +181,7 @@ describe('The GTFS Routes Loader', () => {
     let traralgon = await routes.findDocument({
       routeGTFSID: '1-TRN'
     })
-    expect(traralgon, 'Expected 1-TRN Warragul - Nojee to exist and not be modified').to.not.be.null
+    expect(traralgon, 'Expected 1-TRN Traralgon to exist and not be modified').to.not.be.null
     expect(traralgon.mode).to.equal('regional train')
     expect(traralgon.routeNumber).to.be.null
     expect(traralgon.routeName).to.equal('Traralgon - Melbourne Via Pakenham, Moe & Morwell')
