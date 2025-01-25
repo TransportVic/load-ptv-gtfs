@@ -120,7 +120,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
 
       let nextTrip = await trips.findDocument({ block: '3347', runID: { $ne: 'C000' } })
       expect(nextTrip.runID).to.equal('C005')
-      expect(trip.direction).to.equal('Down')
+      expect(nextTrip.direction).to.equal('Down')
       expect(trip.isRailReplacementBus).to.be.false
       
       expect(nextTrip.stopTimings[0].stopName).to.equal('Flinders Street Railway Station')
