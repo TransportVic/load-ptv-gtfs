@@ -107,6 +107,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
       expect(trip.routeGTFSID).to.equal('2-PKM')
       expect(trip.block).to.equal('3347')
       expect(trip.isRailReplacementBus).to.be.false
+      expect(trip.direction).to.equal('Up')
 
       expect(trip.stopTimings[0].stopName).to.equal('East Pakenham Railway Station')
       expect(trip.stopTimings[0].platform).to.equal('1')
@@ -119,13 +120,14 @@ describe('The GTFS Loaders with the new Metro data', () => {
 
       let nextTrip = await trips.findDocument({ block: '3347', runID: { $ne: 'C000' } })
       expect(nextTrip.runID).to.equal('C005')
+      expect(trip.direction).to.equal('Down')
       expect(trip.isRailReplacementBus).to.be.false
       
       expect(nextTrip.stopTimings[0].stopName).to.equal('Flinders Street Railway Station')
       expect(nextTrip.stopTimings[0].platform).to.equal('7')
     })
 
-    it('It identify rail replacement bus trip', async () => {
+    it('It identify a rail replacement bus trip and mark it as such', async () => {
       let database = new LokiDatabaseConnection('test-db')
       let stops = await database.createCollection('stops')
       let routes = await database.createCollection('routes')
@@ -154,6 +156,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
       expect(trip.routeGTFSID).to.equal('2-LIL')
       expect(trip.block).to.equal(null)
       expect(trip.isRailReplacementBus).to.be.true
+      expect(trip.direction).to.equal('Up')
 
       expect(trip.stopTimings[0].stopName).to.equal('Burnley Railway Station')
       expect(trip.stopTimings[0].platform).to.equal('RRB')
