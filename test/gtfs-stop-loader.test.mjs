@@ -220,4 +220,74 @@ describe('The GTFS Stops Loader', () => {
     expect(huntingdale).to.not.be.null
     expect(huntingdale.stopName).to.equal('Huntingdale Railway Station')
   })
+
+  it('Should not load duplicate stops with the same mode in', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    let loader = new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.bus, database)
+    let reader = new GTFSStopsReader('')
+
+    await loader.loadStop(reader.processEntity({
+      stop_id: '51586',
+      stop_name: 'Huntingdale Station/Haughton Road (Oakleigh)',
+      stop_lat: '-37.9111998619901',
+      stop_lon: '145.103064853799'
+    }))
+
+    let huntingdale = await stops.findDocument({
+      'bays.stopGTFSID': '51586'
+    })
+    expect(huntingdale.bays.length).to.equal(1)
+    expect(huntingdale.bays[0].stopGTFSID).to.equal('51586')
+
+    await loader.loadStop(reader.processEntity({
+      stop_id: '51586',
+      stop_name: 'Huntingdale Station/Haughton Road (Oakleigh)',
+      stop_lat: '-37.9111998619901',
+      stop_lon: '145.103064853799'
+    }))
+
+    huntingdale = await stops.findDocument({
+      'bays.stopGTFSID': '51586'
+    })
+    expect(huntingdale.bays.length).to.equal(1)
+  })
+
+  it('Should load duplicate stops with the different mode in', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    let busLoader = new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.bus, database)
+    let coachLoader = new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.regionalCoach, database)
+    let reader = new GTFSStopsReader('')
+
+    await busLoader.loadStop(reader.processEntity({
+      stop_id: '51586',
+      stop_name: 'Huntingdale Station/Haughton Road (Oakleigh)',
+      stop_lat: '-37.9111998619901',
+      stop_lon: '145.103064853799'
+    }))
+
+    let huntingdale = await stops.findDocument({
+      'bays.stopGTFSID': '51586'
+    })
+    expect(huntingdale.bays.length).to.equal(1)
+    expect(huntingdale.bays[0].stopGTFSID).to.equal('51586')
+    expect(huntingdale.bays[0].mode).to.equal(TRANSIT_MODES.bus)
+
+    await coachLoader.loadStop(reader.processEntity({
+      stop_id: '51586',
+      stop_name: 'Huntingdale Station/Haughton Road (Oakleigh)',
+      stop_lat: '-37.9111998619901',
+      stop_lon: '145.103064853799'
+    }))
+
+    huntingdale = await stops.findDocument({
+      'bays.stopGTFSID': '51586'
+    })
+    expect(huntingdale.bays.length).to.equal(2)
+    expect(huntingdale.bays[1].stopGTFSID).to.equal('51586')
+    expect(huntingdale.bays[1].mode).to.equal(TRANSIT_MODES.regionalCoach)
+  })
 })
