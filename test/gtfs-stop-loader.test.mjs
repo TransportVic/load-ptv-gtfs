@@ -61,6 +61,11 @@ describe('The GTFS Stops Loader', () => {
     expect(wavWarrigal).to.not.be.null
     expect(wavWarrigal.stopName).to.equal('Waverley Road/Warrigal Road')
     expect(wavWarrigal.bays.length).to.equal(2)
+
+    expect(wavWarrigal.location.coordinates).to.deep.equal([
+      [145.091009789504, -37.879427459666],
+      [145.090653754117, -37.8795658733597]
+    ])
   })
 
   it('Should merge non street stops, and keep the secondary stop name if they are the same', async () => {
