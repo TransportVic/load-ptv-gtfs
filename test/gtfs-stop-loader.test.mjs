@@ -15,6 +15,8 @@ const __dirname = path.dirname(__filename)
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'sample_stops.txt')
 
+const generalStores = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'general-stores.txt')
+
 const uniqueStopsBus = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'force_unique_stops_bus.txt')
 const uniqueStopsTram = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'force_unique_stops_tram.txt')
 
@@ -294,5 +296,16 @@ describe('The GTFS Stops Loader', () => {
     expect(huntingdale.bays.length).to.equal(2)
     expect(huntingdale.bays[1].stopGTFSID).to.equal('51586')
     expect(huntingdale.bays[1].mode).to.equal(TRANSIT_MODES.regionalCoach)
+  })
+
+  it('Should not merge stops with the same name that are located far away from one another', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    await (new StopsLoader(generalStores, suburbs, TRANSIT_MODES.bus, database)).loadStops()
+
+    expect((await stops.findDocument({ 'bays.stopGTFSID': '17124' })).bays.length).to.equal(2) // Piangil
+    expect((await stops.findDocument({ 'bays.stopGTFSID': '17977' })).bays.length).to.equal(2) // Tempy
+    expect((await stops.findDocument({ 'bays.stopGTFSID': '43916' })).bays.length).to.equal(1) // Coronet Bay
   })
 })
