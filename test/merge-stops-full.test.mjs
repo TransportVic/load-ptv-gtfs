@@ -44,12 +44,13 @@ let tripLoader = new TripLoader({
 
 await tripLoader.loadTrips({ routeIDMap })
 let shapeIDMap = tripLoader.getShapeIDMap()
+let directionIDMap = tripLoader.getDirectionIDMap()
 
 let shapeLoader = new ShapeLoader(shapeFile, database)
 
 await shapeLoader.loadShapes({ shapeIDMap })
 
-await setRouteStops(database)
+await setRouteStops(database, directionIDMap)
 
 describe('The GTFS Route stop merger', () => {
   describe('When processing Metro routes', () => {
@@ -94,6 +95,12 @@ describe('The GTFS Route stop merger', () => {
       expect(stonyPoint).to.not.be.undefined
       expect(stonyPoint.stops[0].stopName).to.equal('Frankston Railway Station')
       expect(stonyPoint.stops[stonyPoint.stops.length - 1].stopName).to.equal('Stony Point Railway Station')
+    })
+
+    it('Should mark the PTV Route direction', async () => {
+      let stonyPointRoute = await routes.findDocument({ routeGTFSID: '2-STY' })
+      expect(stonyPointRoute.ptvDirections['Stony Point']).to.equal(0)
+      expect(stonyPointRoute.ptvDirections['Frankston']).to.equal(1)
     })
   })
 })
