@@ -109,4 +109,31 @@ describe('The TripLoader class', () => {
 
     expect(shapeIDMap['2-ALM-vpt-1.1.R']).to.equal('2-ALM')
   })
+
+  it('Should return a mapping of Route + GTFS Direction ID to PTV Direction Names', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+    let routes = await database.createCollection('routes')
+    let trips = await database.createCollection('gtfs timetables')
+
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
+    await stopLoader.loadStops()
+
+    let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+    await routeLoader.loadRoutes()
+
+    let routeIDMap = routeLoader.getRouteIDMap()
+
+    let tripLoader = new TripLoader({
+      tripsFile, stopTimesFile,
+      calendarFile, calendarDatesFile
+    }, TRANSIT_MODES.metroTrain, database)
+    
+    await tripLoader.loadTrips({ routeIDMap })
+    let directionIDMap = tripLoader.getDirectionIDMap()
+
+    expect(directionIDMap).to.deep.equal({
+      '2-ALM': { 'Alamein': 0, 'Camberwell': 1 }
+    })
+  })
 })
