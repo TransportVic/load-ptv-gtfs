@@ -1,0 +1,5 @@
+stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,platform_code
+"26535","Union  Station","-37.82247773","145.10137376","","Parentvic:rail:UNN","1"
+"26536","Union Station","-37.82245015","145.10134039","","Parentvic:rail:UNN","2"
+"26537","Union Station","-37.82236780","145.10126297","","Parentvic:rail:UNN","3"
+"Parentvic:rail:UNN","Union Railway Station ","-37.82315506","145.10034527","1","",""
