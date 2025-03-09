@@ -40,10 +40,10 @@ describe('The GTFS Loaders with the new Tram data', () => {
       let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.tram, database)
       await routeLoader.loadRoutes()
 
-      let pakenham = await routes.findDocument({ routeNumber: '109' })
+      let route109 = await routes.findDocument({ routeNumber: '109' })
 
-      expect(pakenham).to.exist
-      expect(pakenham.routeGTFSID).to.equal('3-109')
+      expect(route109).to.exist
+      expect(route109.routeGTFSID).to.equal('3-109')
     })
   })
 })
