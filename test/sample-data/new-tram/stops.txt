@@ -1,0 +1,5 @@
+stop_id,stop_name,stop_lat,stop_lon
+"10311","45-Glenferrie Rd/Wattletree Rd (Malvern)","-37.86245520","145.02850849"
+"10371","44-Duncraig Ave/Wattletree Rd (Armadale)","-37.86206934","145.02538150"
+"1083","42-Clyde St/Raleigh Rd (Maribyrnong)","-37.76969864","144.89884126"
+"11285","43-Egerton Rd/Wattletree Rd (Armadale)","-37.86170982","145.02275399"
