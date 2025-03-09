@@ -1,6 +1,6 @@
 route_id,service_id,trip_id,shape_id,trip_headsign,direction_id,block_id
-"2-PKM-vpt-1","T2_2","1.T2.2-PKM-vpt-1.1.R","2-PKM-vpt-1.1.R","Flinders Street via City Loop","1","10865"
-"2-PKM-vpt-1","T2_2","10.T2.2-PKM-vpt-1.3.H","2-PKM-vpt-1.3.H","East Pakenham","0","10867"
-"2-PKM-vpt-1","T2_2","100.T2.2-PKM-vpt-1.12.R","2-PKM-vpt-1.12.R","Flinders Street","1",""
-"2-STY-vpt-1","T2_2","1.T2.2-STY-vpt-1.1.R","2-STY-vpt-1.1.R","Frankston","1",""
-"2-STY-vpt-1","T2_2","10.T2.2-STY-vpt-1.2.H","2-STY-vpt-1.2.H","Stony Point","0",""
+"aus:vic:vic-02-PKM:","T2_2","02-PKM--12-T5-C000","2-PKM-vpt-1.1.R","Flinders Street via City Loop","1","10865"
+"aus:vic:vic-02-PKM:","T2_2","02-PKM--12-T5-C001","2-PKM-vpt-1.3.H","East Pakenham","0","10867"
+"aus:vic:vic-02-PKM:","T2_2","02-PKM--12-T5-C002","2-PKM-vpt-1.12.R","Flinders Street","1",""
+"aus:vic:vic-02-STY:","T2_2","02-STY--12-T5-8500","2-STY-vpt-1.1.R","Frankston","1",""
+"aus:vic:vic-02-STY:","T2_2","02-STY--12-T5-8501","2-STY-vpt-1.2.H","Stony Point","0",""

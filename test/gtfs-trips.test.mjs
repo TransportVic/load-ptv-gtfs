@@ -50,14 +50,14 @@ describe('The GTFSTripReader class', () => {
       })
     }
 
-    let routeMappings = { '2-ALM-vpt-1': '2-ALM' }
+    let routeMappings = { 'aus:vic:vic-02-ALM:': '2-ALM' }
 
     let reader = new GTFSTripReader(tripsFile, calendars, routeMappings, TRANSIT_MODES.metroTrain)
     await reader.open()
 
     let trip = await reader.getNextEntity()
 
-    expect(trip.getTripID()).to.equal('1.T2.2-ALM-vpt-1.1.R')
+    expect(trip.getTripID()).to.equal('02-ALM--12-T5-2000')
     expect(trip.getRouteGTFSID()).to.equal('2-ALM')
     expect(trip.getHeadsign()).to.equal('Camberwell')
     expect(trip.getOperationDays()).to.deep.equal(['20241122'])

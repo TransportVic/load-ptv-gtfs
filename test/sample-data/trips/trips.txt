@@ -1,5 +1,5 @@
 route_id,service_id,trip_id,shape_id,trip_headsign,direction_id,block_id
-"2-ALM-vpt-1","T2_2","1.T2.2-ALM-vpt-1.1.R","2-ALM-vpt-1.1.R","Camberwell","1",""
-"2-ALM-vpt-1","T2_2","10.T2.2-ALM-vpt-1.3.R","2-ALM-vpt-1.3.R","Camberwell","1",""
-"2-ALM-vpt-1","T2_2","100.T2.2-ALM-vpt-1.1.R","2-ALM-vpt-1.1.R","Camberwell","1",""
-"2-ALM-vpt-1","T2_2","101.T2.2-ALM-vpt-1.2.H","2-ALM-vpt-1.2.H","Alamein","0",""
+"aus:vic:vic-02-ALM:","T2_2","02-ALM--12-T5-2000","2-ALM-vpt-1.1.R","Camberwell","1",""
+"aus:vic:vic-02-ALM:","T2_2","02-ALM--12-T5-2002","2-ALM-vpt-1.3.R","Camberwell","1",""
+"aus:vic:vic-02-ALM:","T2_2","02-ALM--12-T5-2004","2-ALM-vpt-1.1.R","Camberwell","1",""
+"aus:vic:vic-02-ALM:","T2_2","02-ALM--12-T5-2001","2-ALM-vpt-1.2.H","Alamein","0",""

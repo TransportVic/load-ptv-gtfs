@@ -44,7 +44,7 @@ describe('The TripLoader class', () => {
       routeIDMap
     })
 
-    let trip = await trips.findDocument({ tripID: '1.T2.2-ALM-vpt-1.1.R' })
+    let trip = await trips.findDocument({ tripID: '02-ALM--12-T5-2000' })
     expect(trip).to.not.be.null
     
     expect(trip.routeName).to.equal('Alamein')
