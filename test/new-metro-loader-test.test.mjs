@@ -164,5 +164,38 @@ describe('The GTFS Loaders with the new Metro data', () => {
       expect(trip.stopTimings[3].stopName).to.equal('Parliament Railway Station')
       expect(trip.stopTimings[3].platform).to.equal('RRB')
     })
+
+    it('Should wrap times past midnight back to 00:00 NEXT DAY in the trip times', async () => {
+      let database = new LokiDatabaseConnection('test-db')
+      let stops = await database.createCollection('stops')
+      let routes = await database.createCollection('routes')
+      let trips = await database.createCollection('gtfs timetables')
+
+      let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
+      await stopLoader.loadStops()
+
+      let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+      await routeLoader.loadRoutes()
+
+      let routeIDMap = routeLoader.getRouteIDMap()
+
+      let tripLoader = new TripLoader({
+        tripsFile, stopTimesFile,
+        calendarFile, calendarDatesFile
+      }, TRANSIT_MODES.metroTrain, database)
+
+      await tripLoader.loadTrips({ routeIDMap })
+
+      let trip = await trips.findDocument({ runID: 'C999' })
+
+      expect(trip).to.not.be.null
+      expect(trip.departureTime).to.equal('23:59')
+      expect(trip.destinationArrivalTime).to.equal('24:10')
+
+      expect(trip.stopTimings[0].departureTime).to.equal('23:59')
+      expect(trip.stopTimings[1].departureTime).to.equal('00:05')
+      expect(trip.stopTimings[1].arrivalTime).to.equal('00:05')
+      expect(trip.stopTimings[2].arrivalTime).to.equal('00:10')
+    })
   })
 })
