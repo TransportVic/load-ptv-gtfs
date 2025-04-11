@@ -7,6 +7,7 @@ import { TRANSIT_MODES } from '../lib/constants.mjs'
 import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
+import GTFSAgency from '../lib/gtfs-parser/GTFSAgency.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -202,6 +203,6 @@ describe('The GTFS Routes Loader', () => {
     })
 
     expect(skybus).to.not.be.null
-    expect(skybus.operators).to.deep.equal(['Unknown']) 
+    expect(skybus.operators).to.deep.equal([GTFSAgency.UNKNOWN_AGENCY.name]) 
   })
 })
