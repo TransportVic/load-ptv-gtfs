@@ -18,6 +18,8 @@ const agencyFile = path.join(__dirname, 'sample-data', 'routes', 'agency.txt')
 const wgtFile = path.join(__dirname, 'sample-data', 'routes', 'west_gipp_transit.txt')
 const vlineFile = path.join(__dirname, 'sample-data', 'routes', 'vline.txt')
 
+const badRoutesFile_NoAgency = path.join(__dirname, 'sample-data', 'routes', 'bad_routes.txt')
+
 describe('The GTFS Agency Reader', () => {
   it('Should read the agencies one line at a time', async () => {
     let reader = new GTFSAgencyReader(agencyFile)
@@ -186,5 +188,20 @@ describe('The GTFS Routes Loader', () => {
     expect(traralgon.routeNumber).to.be.null
     expect(traralgon.routeName).to.equal('Traralgon - Melbourne Via Pakenham, Moe & Morwell')
     expect(traralgon.operators).to.have.members(['V/Line'])
+  })
+
+  it('Should handle invalid agency references', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let routes = await database.createCollection('routes')
+
+    let loader = new RouteLoader(badRoutesFile_NoAgency, agencyFile, TRANSIT_MODES.bus, database)
+    await loader.loadRoutes()
+
+    let skybus = await routes.findDocument({
+      routeGTFSID: '11-SKY'
+    })
+
+    expect(skybus).to.not.be.null
+    expect(skybus.operators).to.deep.equal(['Unknown']) 
   })
 })
