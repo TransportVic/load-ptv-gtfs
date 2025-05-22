@@ -22,7 +22,7 @@ const stopTimesFile = path.join(__dirname, 'sample-data', 'new-metro-2', 'stop_t
 const tripsFile = path.join(__dirname, 'sample-data', 'new-metro-2', 'trips.txt')
 const stopsFile = path.join(__dirname, 'sample-data', 'new-metro-2', 'stops.txt')
 
-describe('The GTFS Loaders with the new Metro data', () => {
+describe('The GTFS Loaders with the new 230525 Metro data', () => {
   describe('The route loader', () => {
     it('Should convert the updated route ID format to the legacy format', async () => {
       let database = new LokiDatabaseConnection('test-db')
