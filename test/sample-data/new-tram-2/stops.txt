@@ -1,0 +1,5 @@
+stop_id,stop_name,stop_lat,stop_lon
+"10311","Glenferrie Rd/Wattletree Rd #45","-37.86245520","145.02850849"
+"10371","Duncraig Ave/Wattletree Rd #44","-37.86206934","145.02538150"
+"1083","Clyde St/Raleigh Rd #42","-37.76969864","144.89884126"
+"11285","Egerton Rd/Wattletree Rd #43","-37.86170982","145.02275399"
