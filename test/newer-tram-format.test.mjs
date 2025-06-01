@@ -31,5 +31,21 @@ describe('The GTFS Loaders with the new Tram data', () => {
       expect(stop).to.not.be.null
       expect(stop.bays[0].stopNumber).to.equal('45')
     })
+
+    it('Should clean up extra spaces', async () => {
+      let database = new LokiDatabaseConnection('test-db')
+      let stops = await database.createCollection('stops')
+
+      let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.tram, database)
+      await loader.loadStops()
+
+      let stop = await stops.findDocument({
+        'stopName': 'Glen Huntly Railway Station/Glen Huntly Road'
+      })
+
+      expect(stop).to.not.be.null
+      expect(stop.bays[0].stopNumber).to.equal('61')
+      expect(stop.bays[0].originalName).to.equal('Glen Huntly Railway Station/Glen Huntly Rd #61')
+    })
   })
 })

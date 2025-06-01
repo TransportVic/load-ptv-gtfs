@@ -3,3 +3,4 @@ stop_id,stop_name,stop_lat,stop_lon
 "10371","Duncraig Ave/Wattletree Rd #44","-37.86206934","145.02538150"
 "1083","Clyde St/Raleigh Rd #42","-37.76969864","144.89884126"
 "11285","Egerton Rd/Wattletree Rd #43","-37.86170982","145.02275399"
+"18404","Glen Huntly Railway Station/Glen Huntly Rd  #61","-37.88954800","145.04275047","","","0","Level 0
