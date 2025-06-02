@@ -318,6 +318,6 @@ describe('The GTFS Stops Loader', () => {
     await (new StopsLoader(unionWithSpaces, suburbs, TRANSIT_MODES.bus, database)).loadStops()
 
     expect(await stops.countDocuments({})).to.equal(1)
-    expect((await stops.findDocument({ 'bays.stopGTFSID': '26535' })).bays.length).to.equal(4) // Piangil
+    expect((await stops.findDocument({ 'bays.stopGTFSID': '26535' })).bays.length).to.equal(4) // Union Station
   })
 })
