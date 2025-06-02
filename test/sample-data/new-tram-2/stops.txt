@@ -4,3 +4,5 @@ stop_id,stop_name,stop_lat,stop_lon
 "1083","Clyde St/Raleigh Rd #42","-37.76969864","144.89884126"
 "11285","Egerton Rd/Wattletree Rd #43","-37.86170982","145.02275399"
 "18404","Glen Huntly Railway Station/Glen Huntly Rd  #61","-37.88954800","145.04275047","","","0","Level 0
+"17867","Royal Melbourne Hospital-Parkville Station/Royal Pde (Melbo... #10","-37.79992871","144.95750800","","","0","Level 0"
+"17868","Royal Melbourne Hospital-Parkville Station/Royal Pde (Parkv... #10","-37.79954277","144.95759813","","","0","Level 0"
