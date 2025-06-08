@@ -22,8 +22,8 @@ const stopsFile = path.join(__dirname, 'sample-data', 'trips', 'stops.txt')
 const stopTimesFile = path.join(__dirname, 'sample-data', 'trips', 'stop_times.txt')
 const tripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips.txt')
 
-describe('The TripLoader class', () => {
-  it('Should process the trip and add it to the database', async () => {
+describe('The set stop services function', () => {
+  it('Should set stop and screen services on each bay', async () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
     let routes = await database.createCollection('routes')
@@ -47,8 +47,8 @@ describe('The TripLoader class', () => {
 
     await setStopServices(database)
 
-    let alamein = await stops.findDocument({ 'bays.stopGTFSID': '19847' })
-    let alameinPlatform = alamein.bays.find(bay => bay.stopGTFSID === '19847')
+    let alamein = await stops.findDocument({ 'bays.stopGTFSID': 'vic:rail:ALM' })
+    let alameinPlatform = alamein.bays.find(bay => bay.stopGTFSID === 'vic:rail:ALM')
     expect(alameinPlatform).to.not.be.null
     expect(alameinPlatform.services).to.deep.equal([{
       routeGTFSID: "2-ALM",
