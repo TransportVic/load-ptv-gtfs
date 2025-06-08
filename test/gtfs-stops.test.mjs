@@ -9,6 +9,8 @@ const __dirname = path.dirname(__filename)
 
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'line_reader_test.txt')
 
+const parentStopsFile = path.join(__dirname, 'sample-data', 'parent-stop', 'stops.txt')
+
 let stopInput = {
   stop_id: '1000',
   stop_name: 'Dole Ave/Cheddar Rd (Reservoir)',
@@ -51,6 +53,16 @@ describe('The GTFSStopReader class', () => {
 
       expect(stopData.suburb).to.equal('Kings Park')
       expect(stopData.stopNumber).to.equal('51A')
+    })
+
+    it('Should return the parent stop data if available', async () => {
+      let stopReader = new GTFSStopsReader(parentStopsFile, suburbs)
+      await stopReader.open()
+
+      let stopData = await stopReader.getNextEntity()
+      expect(stopData.rawStopName).to.equal('Clifton Hill Station')
+      expect(stopData.stopGTFSID).to.equal('14330')
+      expect(stopData.parentStopGTFSID).to.equal('vic:rail:CHL')
     })
   })
 
