@@ -26,6 +26,8 @@ const specialHeader = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'spe
 
 const unionWithSpaces = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'union_with_spaces.txt')
 
+const parentStopsFile = path.join(__dirname, 'sample-data', 'parent-stop', 'stops.txt')
+
 describe('The GTFS Stops Loader', () => {
   it('Should process the stops and add them to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
@@ -319,5 +321,14 @@ describe('The GTFS Stops Loader', () => {
 
     expect(await stops.countDocuments({})).to.equal(1)
     expect((await stops.findDocument({ 'bays.stopGTFSID': '26535' })).bays.length).to.equal(4) // Union Station
+  })
+
+  it('Should merge stops into their designated parent stops even if the names do not match', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    await (new StopsLoader(parentStopsFile, suburbs, TRANSIT_MODES.metroTrain, database)).loadStops()
+
+    expect(await stops.countDocuments({})).to.equal(1)
   })
 })
