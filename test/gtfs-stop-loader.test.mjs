@@ -330,5 +330,10 @@ describe('The GTFS Stops Loader', () => {
     await (new StopsLoader(parentStopsFile, suburbs, TRANSIT_MODES.metroTrain, database)).loadStops()
 
     expect(await stops.countDocuments({})).to.equal(1)
+    let stopData = await stops.findDocument({})
+    expect(stopData.bays.find(bay => bay.stopGTFSID === '14331').stopType).to.equal('stop')
+    expect(stopData.bays.find(bay => bay.stopGTFSID === 'vic:rail_CHL').stopType).to.equal('station')
+    expect(stopData.bays.find(bay => bay.stopGTFSID === 'vic:rail:CHL_DP3').stopType).to.equal('generic')
+    expect(stopData.bays.find(bay => bay.stopGTFSID === 'vic:rail:CHL_EN1').stopType).to.equal('entrance')
   })
 })
