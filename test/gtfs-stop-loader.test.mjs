@@ -336,7 +336,10 @@ describe('The GTFS Stops Loader', () => {
     expect(stopData.bays.find(bay => bay.stopGTFSID === 'vic:rail:CHL_DP3').stopType).to.equal('generic')
     expect(stopData.bays.find(bay => bay.stopGTFSID === 'vic:rail:CHL_EN1').stopType).to.equal('entrance')
 
+    expect(stopData.bays.find(bay => bay.stopGTFSID === '14331').parentStopGTFSID).to.equal('vic:rail:CHL')
+    expect(stopData.bays.find(bay => bay.stopGTFSID === 'vic:rail:CHL').parentStopGTFSID).to.be.null
+
     // TODO: Find out what the Connex stop is for
-    expect(stopData.cleanNames).to.equal(['clifton-hill-railway-station', 'connex'])
+    expect(stopData.cleanNames).to.deep.equal(['clifton-hill-railway-station', 'connex'])
   })
 })
