@@ -17,10 +17,10 @@ describe('The GTFSStopTimesReader class', () => {
     let stopTimes = await reader.getNextEntity()
     expect(stopTimes.tripID).to.equal('02-ALM--12-T5-2000')
     expect(stopTimes.stops.length).to.equal(7)
-    expect(stopTimes.stops[0].stopID).to.equal('19847')
+    expect(stopTimes.stops[0].stopID).to.equal('11197')
     expect(stopTimes.stops[0].departureTime).to.equal('04:57')
 
-    expect(stopTimes.stops[6].stopID).to.equal('19853')
+    expect(stopTimes.stops[6].stopID).to.equal('11207')
     expect(stopTimes.stops[6].departureTime).to.equal('05:08')
 
     await reader.getNextEntity()
@@ -29,7 +29,7 @@ describe('The GTFSStopTimesReader class', () => {
     let lastTrip = await reader.getNextEntity()
     expect(lastTrip.tripID).to.equal('02-ALM--12-T5-2001')
     expect(lastTrip.stops.length).to.equal(7)
-    expect(lastTrip.stops[0].stopID).to.equal('19853')
+    expect(lastTrip.stops[0].stopID).to.equal('11207')
     expect(lastTrip.stops[0].departureTime).to.equal('23:31')
     
     expect(reader.available()).to.be.false
