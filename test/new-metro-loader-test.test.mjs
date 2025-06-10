@@ -7,6 +7,8 @@ import { expect } from 'chai'
 import suburbs from './sample-data/suburbs.json' with { type: 'json' }
 import RouteLoader from '../lib/loader/RouteLoader.mjs'
 import TripLoader from '../lib/loader/TripLoader.mjs'
+import GTFSCalendar from '../lib/gtfs-parser/GTFSCalendar.mjs'
+import { MetroTrip } from '../lib/gtfs-parser/GTFSTrip.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -196,6 +198,47 @@ describe('The GTFS Loaders with the new Metro data', () => {
       expect(trip.stopTimings[1].departureTime).to.equal('00:05')
       expect(trip.stopTimings[1].arrivalTime).to.equal('00:05')
       expect(trip.stopTimings[2].arrivalTime).to.equal('00:10')
+    })
+  })
+
+  describe('The MetroTrip subclass', () => {
+    it('Should detect rail buses', () => {
+      let calendar = new GTFSCalendar({
+        id: 'T1',
+        startDay: '20241122',
+        endDay: '20241129',
+        daysOfWeek: ["0","0","0","0","1","1","0"]
+      })
+
+      expect(new MetroTrip({
+        routeGTFSID: '2-PKM',
+        calendar,
+        id: '02-PKM--54-T6-C962',
+        shapeID: '2-PKM-vpt-54.70.R',
+        headsign: 'South Yarra',
+        direction: '0',
+        block: ''
+      }).getTripData().isRailReplacementBus).to.be.false
+
+      expect(new MetroTrip({
+        routeGTFSID: '2-PKM',
+        calendar,
+        id: '02-PKM-R-6-T5_bp-BF400',
+        shapeID: '2-PKM-R-vpt-6.7.R',
+        headsign: 'South Yarra',
+        direction: '0',
+        block: ''
+      }).getTripData().isRailReplacementBus).to.be.true
+
+      expect(new MetroTrip({
+        routeGTFSID: '2-PKM',
+        calendar,
+        id: '02-PKM-R-6-T5_bp-BF22',
+        shapeID: '2-PKM-R-vpt-6.7.R',
+        headsign: 'South Yarra',
+        direction: '0',
+        block: ''
+      }).getTripData().isRailReplacementBus).to.be.true
     })
   })
 })
