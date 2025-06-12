@@ -342,4 +342,40 @@ describe('The GTFS Stops Loader', () => {
     // TODO: Find out what the Connex stop is for
     expect(stopData.cleanNames).to.deep.equal(['clifton-hill-railway-station', 'connex'])
   })
+
+  it('Should use stop and station names and suburbs', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    let data = [{
+      "stop_id": "vic:rail:THL",
+      "stop_name": "Town Hall Railway Station (Melbourne)",
+      "stop_lat": "-37.815926",
+      "stop_lon": "144.967134",
+      "parent_station": "",
+      "location_type": "1",
+      "platform_code": ""
+    },
+    {
+      "stop_id": "vic:rail:TSC",
+      "stop_name": "Town Hall Railway Station (Melbourne)",
+      "stop_lat": "-37.815926",
+      "stop_lon": "144.967134",
+      "parent_station": "",
+      "location_type": "1",
+      "platform_code": ""
+    }]
+
+    let stopLoader = new StopsLoader('', suburbs, TRANSIT_MODES.metroTrain, database)
+    let reader = new GTFSStopsReader('', suburbs)
+
+    for (let stop of data) await stopLoader.loadStop(reader.processEntity(stop))
+
+    expect(await stops.countDocuments({})).to.equal(1)
+    let stopData = await stops.findDocument({})
+    expect(stopData.stopName).to.equal('Town Hall Railway Station')
+    expect(stopData.cleanNames).to.deep.equal(['town-hall-railway-station'])
+    expect(stopData.suburb).to.deep.equal(['Melbourne'])
+    expect(stopData.cleanSuburbs).to.deep.equal(['melbourne'])
+  })
 })
