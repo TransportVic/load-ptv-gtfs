@@ -1,0 +1,4 @@
+stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,level_id
+"17799","Ararat Railway Station/High St ","-37.28243901","142.93691236","","","0",""
+"20288","Ararat Station","-37.28220485","142.93691370","","vic:rail:ART","1","Level 0"
+"vic:rail:ART","Ararat Railway Station","-37.28224082","142.93691176","1","","1",""
