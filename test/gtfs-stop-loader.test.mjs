@@ -27,6 +27,7 @@ const specialHeader = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'spe
 const unionWithSpaces = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'union_with_spaces.txt')
 
 const parentStopsFile = path.join(__dirname, 'sample-data', 'parent-stop', 'stops.txt')
+const multiParentStopFile = path.join(__dirname, 'sample-data', 'parent-stop', 'multi_stop.txt')
 
 describe('The GTFS Stops Loader', () => {
   it('Should process the stops and add them to the database', async () => {
@@ -341,6 +342,23 @@ describe('The GTFS Stops Loader', () => {
 
     // TODO: Find out what the Connex stop is for
     expect(stopData.cleanNames).to.deep.equal(['clifton-hill-railway-station', 'connex'])
+  })
+
+  it('Should handle the parent being part of a merged stop', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    await (new StopsLoader(multiParentStopFile, suburbs, TRANSIT_MODES.regionalCoach, database)).loadStops()
+
+    expect(await stops.countDocuments({})).to.equal(1)
+    let stopData = await stops.findDocument({})
+    expect(stopData.bays.find(bay => bay.stopGTFSID === '17799').mode).to.equal('regional coach')
+    expect(stopData.bays.find(bay => bay.stopGTFSID === '17799').stopType).to.equal('stop')
+    
+    expect(stopData.bays.find(bay => bay.stopGTFSID === 'vic:rail:ART').stopType).to.equal('station')
+    expect(stopData.bays.find(bay => bay.stopGTFSID === 'vic:rail:ART').parentStopGTFSID).to.be.null
+
+    expect(stopData.bays.find(bay => bay.stopGTFSID === '20288').parentStopGTFSID).to.equal('vic:rail:ART')
   })
 
   it('Should use stop and station names and suburbs', async () => {
