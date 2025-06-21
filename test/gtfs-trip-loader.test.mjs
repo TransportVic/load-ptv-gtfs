@@ -139,4 +139,50 @@ describe('The TripLoader class', () => {
       '2-ALM': { 'Alamein': 0, 'Camberwell': 1 }
     })
   })
+
+  it('Should return a mapping stop services', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+    let routes = await database.createCollection('routes')
+    let trips = await database.createCollection('gtfs timetables')
+
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
+    await stopLoader.loadStops()
+
+    let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+    await routeLoader.loadRoutes()
+
+    let routeIDMap = routeLoader.getRouteIDMap()
+
+    let tripLoader = new TripLoader({
+      tripsFile, stopTimesFile,
+      calendarFile, calendarDatesFile
+    }, TRANSIT_MODES.metroTrain, database)
+    
+    await tripLoader.loadTrips({ routeIDMap })
+
+    let stopServicesMap = tripLoader.getStopServicesMap()
+
+    expect(stopServicesMap[11197].services).to.have.members([{
+      routeGTFSID: '2-ALM',
+      gtfsDirection: '1',
+      routeNumber: null
+    }, {
+      routeGTFSID: '2-ALM',
+      gtfsDirection: '0',
+      routeNumber: null
+    }])
+
+    expect(stopServicesMap[11197].screenServices).to.have.members([{
+      routeGTFSID: '2-ALM',
+      gtfsDirection: '1',
+      routeNumber: null
+    }])
+
+    expect(stopServicesMap[11207].screenServices).to.have.members([{
+      routeGTFSID: '2-ALM',
+      gtfsDirection: '0',
+      routeNumber: null
+    }])
+  })
 })
