@@ -163,25 +163,25 @@ describe('The TripLoader class', () => {
 
     let stopServicesMap = tripLoader.getStopServicesMap()
 
-    expect(stopServicesMap[11197].services).to.have.members([{
+    expect(stopServicesMap['vic:rail:ALM'].services).to.deep.equal([{
       routeGTFSID: '2-ALM',
-      gtfsDirection: '1',
+      gtfsDirection: 1,
       routeNumber: null
     }, {
       routeGTFSID: '2-ALM',
-      gtfsDirection: '0',
+      gtfsDirection: 0,
       routeNumber: null
     }])
 
-    expect(stopServicesMap[11197].screenServices).to.have.members([{
+    expect(stopServicesMap['vic:rail:ALM'].screenServices).to.deep.equal([{
       routeGTFSID: '2-ALM',
-      gtfsDirection: '1',
+      gtfsDirection: 1,
       routeNumber: null
     }])
 
-    expect(stopServicesMap[11207].screenServices).to.have.members([{
+    expect(stopServicesMap['vic:rail:CAM'].screenServices).to.deep.equal([{
       routeGTFSID: '2-ALM',
-      gtfsDirection: '0',
+      gtfsDirection: 0,
       routeNumber: null
     }])
   })
