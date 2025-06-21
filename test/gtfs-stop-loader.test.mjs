@@ -197,6 +197,22 @@ describe('The GTFS Stops Loader', () => {
     expect(gumRd.stopName).to.equal('Gum Road/Main Road West')
   })
 
+  it('Should allow for a custom suburb hook', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('stops')
+
+    let testSuburbs = ['A', 'B', 'C', null, 'D']
+
+    let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database, () => testSuburbs.shift())
+    await loader.loadStops()
+
+    expect((await stops.findDocument({ 'bays.stopGTFSID': '1000' })).suburb[0]).to.equal('A')
+    expect((await stops.findDocument({ 'bays.stopGTFSID': '10001' })).suburb[0]).to.equal('B')
+    expect((await stops.findDocument({ 'bays.stopGTFSID': '10002' })).suburb[0]).to.equal('C')
+    expect((await stops.findDocument({ 'bays.stopGTFSID': '10009' })).suburb[0]).to.equal('Albanvale') // Null so not used
+    expect((await stops.findDocument({ 'bays.stopGTFSID': '1001' })).suburb[0]).to.equal('D')
+  })
+
   it('Should allow for individual stops to be loaded in', async () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('stops')
