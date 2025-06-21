@@ -64,6 +64,15 @@ describe('The GTFSStopReader class', () => {
       expect(stopData.stopGTFSID).to.equal('14330')
       expect(stopData.parentStopGTFSID).to.equal('vic:rail:CHL')
     })
+
+    it('Should allow a custom stop suburb hook', async () => {
+      let stopReader = new GTFSStopsReader(parentStopsFile, suburbs, () => 'Test')
+      await stopReader.open()
+
+      let stopData = await stopReader.getNextEntity()
+      expect(stopData.rawStopName).to.equal('Clifton Hill Station')
+      expect(stopData.suburb).to.equal('Test')
+    })
   })
 
   describe('The getNextEntity function', () => {
