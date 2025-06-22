@@ -50,7 +50,7 @@ let shapeLoader = new ShapeLoader(shapeFile, database)
 
 await shapeLoader.loadShapes({ shapeIDMap })
 
-await setRouteStops(database, directionIDMap)
+await setRouteStops(database, directionIDMap, () => {})
 
 describe('The GTFS Route stop merger', () => {
   describe('When processing Metro routes', () => {
