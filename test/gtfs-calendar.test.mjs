@@ -6,7 +6,7 @@ import GTFSCalendarDate from '../lib/gtfs-parser/GTFSCalendarDate.mjs'
 import path from 'path'
 import url from 'url'
 import { CALENDAR_DATES } from '../lib/constants.mjs'
-import { toGTFSDate } from '../lib/utils.mjs'
+import { dateUtils } from '@transportme/transportvic-utils'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -151,12 +151,12 @@ describe('The GTFSCalendarDatesReader class', () => {
 
     let date = await reader.getNextEntity()
     expect(date.id).to.equal('T3_2')
-    expect(toGTFSDate(date.date)).to.equal('20250126')
+    expect(dateUtils.toGTFSDate(date.date)).to.equal('20250126')
     expect(date.type).to.equal(CALENDAR_DATES.REMOVED)
 
     let date2 = await reader.getNextEntity()
     expect(date2.id).to.equal('T5_2')
-    expect(toGTFSDate(date2.date)).to.equal('20241225')
+    expect(dateUtils.toGTFSDate(date2.date)).to.equal('20241225')
     expect(date2.type).to.equal(CALENDAR_DATES.REMOVED)
   })
 })
