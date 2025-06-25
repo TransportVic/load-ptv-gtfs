@@ -103,6 +103,7 @@ describe('The GTFS Route stop merger', () => {
 
       let direction = cityCircleRoute.directions.find(dir => dir.directionName === 'City Circle (Clockwise)')
       expect(direction).to.not.be.undefined
+      expect(direction.trainDirection).to.equal('Down')
       expect(direction.stops[0].stopName).to.equal('Flinders Street Railway Station')
       expect(direction.stops[direction.stops.length - 2].stopName).to.equal('Parliament Railway Station')
       expect(direction.stops[direction.stops.length - 1].stopName).to.equal('Flinders Street Railway Station')
