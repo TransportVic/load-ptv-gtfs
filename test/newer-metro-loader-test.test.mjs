@@ -26,7 +26,7 @@ describe('The GTFS Loaders with the new 230525 Metro data', () => {
   describe('The route loader', () => {
     it('Should convert the updated route ID format to the legacy format', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let routes = await database.createCollection('routes')
+      let routes = await database.createCollection('gtfs-routes')
 
       let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
       await routeLoader.loadRoutes()
@@ -41,9 +41,9 @@ describe('The GTFS Loaders with the new 230525 Metro data', () => {
   describe('The trip loader', () => {
     it('It identify a rail replacement bus trip and mark it as such', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let stops = await database.createCollection('stops')
-      let routes = await database.createCollection('routes')
-      let trips = await database.createCollection('gtfs timetables')
+      let stops = await database.createCollection('gtfs-stops')
+      let routes = await database.createCollection('gtfs-routes')
+      let trips = await database.createCollection('gtfs-gtfs timetables')
 
       let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
       await stopLoader.loadStops()

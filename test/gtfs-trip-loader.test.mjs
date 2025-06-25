@@ -24,9 +24,9 @@ const tripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips.txt')
 describe('The TripLoader class', () => {
   it('Should process the trip and add it to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
-    let routes = await database.createCollection('routes')
-    let trips = await database.createCollection('gtfs timetables')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
 
     let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
     await stopLoader.loadStops()
@@ -90,9 +90,9 @@ describe('The TripLoader class', () => {
 
   it('It should return a mapping of Shape IDs to Route IDs', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
-    let routes = await database.createCollection('routes')
-    let trips = await database.createCollection('gtfs timetables')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
 
     let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
     await stopLoader.loadStops()
@@ -115,9 +115,9 @@ describe('The TripLoader class', () => {
 
   it('Should return a mapping of Route + GTFS Direction ID to PTV Direction Names', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
-    let routes = await database.createCollection('routes')
-    let trips = await database.createCollection('gtfs timetables')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
 
     let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
     await stopLoader.loadStops()
@@ -142,9 +142,9 @@ describe('The TripLoader class', () => {
 
   it('Should return a mapping stop services', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
-    let routes = await database.createCollection('routes')
-    let trips = await database.createCollection('gtfs timetables')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
 
     let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
     await stopLoader.loadStops()

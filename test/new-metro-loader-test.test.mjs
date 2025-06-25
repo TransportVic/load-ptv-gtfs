@@ -30,7 +30,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
   describe('The stop loader', () => {
     it('Should process the stops and add them to the database', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let stops = await database.createCollection('stops')
+      let stops = await database.createCollection('gtfs-stops')
 
       let loader = new StopsLoader(simpleStopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
       await loader.loadStops()
@@ -44,7 +44,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
 
     it('Should label the individual platforms with their platform numbers', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let stops = await database.createCollection('stops')
+      let stops = await database.createCollection('gtfs-stops')
 
       let loader = new StopsLoader(simpleStopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
       await loader.loadStops()
@@ -67,7 +67,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
   describe('The route loader', () => {
     it('Should convert the updated route ID format to the legacy format', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let routes = await database.createCollection('routes')
+      let routes = await database.createCollection('gtfs-routes')
 
       let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
       await routeLoader.loadRoutes()
@@ -82,9 +82,9 @@ describe('The GTFS Loaders with the new Metro data', () => {
   describe('The trip loader', () => {
     it('It should accept trip IDs in the new format and extract the TDN from there', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let stops = await database.createCollection('stops')
-      let routes = await database.createCollection('routes')
-      let trips = await database.createCollection('gtfs timetables')
+      let stops = await database.createCollection('gtfs-stops')
+      let routes = await database.createCollection('gtfs-routes')
+      let trips = await database.createCollection('gtfs-gtfs timetables')
 
       let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
       await stopLoader.loadStops()
@@ -131,9 +131,9 @@ describe('The GTFS Loaders with the new Metro data', () => {
 
     it('It identify a rail replacement bus trip and mark it as such', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let stops = await database.createCollection('stops')
-      let routes = await database.createCollection('routes')
-      let trips = await database.createCollection('gtfs timetables')
+      let stops = await database.createCollection('gtfs-stops')
+      let routes = await database.createCollection('gtfs-routes')
+      let trips = await database.createCollection('gtfs-gtfs timetables')
 
       let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
       await stopLoader.loadStops()
@@ -169,9 +169,9 @@ describe('The GTFS Loaders with the new Metro data', () => {
 
     it('Should wrap times past midnight back to 00:00 NEXT DAY in the trip times', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let stops = await database.createCollection('stops')
-      let routes = await database.createCollection('routes')
-      let trips = await database.createCollection('gtfs timetables')
+      let stops = await database.createCollection('gtfs-stops')
+      let routes = await database.createCollection('gtfs-routes')
+      let trips = await database.createCollection('gtfs-gtfs timetables')
 
       let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
       await stopLoader.loadStops()

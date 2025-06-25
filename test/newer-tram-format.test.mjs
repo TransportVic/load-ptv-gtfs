@@ -19,7 +19,7 @@ describe('The GTFS Loaders with the new Tram data', () => {
   describe('The stop loader', () => {
     it('Should process the stops and add them to the database', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let stops = await database.createCollection('stops')
+      let stops = await database.createCollection('gtfs-stops')
 
       let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.tram, database)
       await loader.loadStops()
@@ -34,7 +34,7 @@ describe('The GTFS Loaders with the new Tram data', () => {
 
     it('Should clean up extra spaces', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let stops = await database.createCollection('stops')
+      let stops = await database.createCollection('gtfs-stops')
 
       let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.tram, database)
       await loader.loadStops()
@@ -50,7 +50,7 @@ describe('The GTFS Loaders with the new Tram data', () => {
 
     it('Should remove half suburbs in the name', async () => {
       let database = new LokiDatabaseConnection('test-db')
-      let stops = await database.createCollection('stops')
+      let stops = await database.createCollection('gtfs-stops')
 
       let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.tram, database)
       await loader.loadStops()

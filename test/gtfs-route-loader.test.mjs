@@ -37,7 +37,7 @@ describe('The GTFS Agency Reader', () => {
 describe('The GTFS Routes Loader', () => {
   it('Should process the routes and add them to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let routes = await database.createCollection('routes')
+    let routes = await database.createCollection('gtfs-routes')
 
     let loader = new RouteLoader(regionalRoutesFile, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadRoutes()
@@ -53,7 +53,7 @@ describe('The GTFS Routes Loader', () => {
 
   it('Should open the agency.txt file and load all operators', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    await database.createCollection('routes')
+    await database.createCollection('gtfs-routes')
 
     let loader = new RouteLoader(regionalRoutesFile, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadAgencies()
@@ -66,7 +66,7 @@ describe('The GTFS Routes Loader', () => {
 
   it('Should handle smartrak routes', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let routes = await database.createCollection('routes')
+    let routes = await database.createCollection('gtfs-routes')
 
     let loader = new RouteLoader(metroRoutesFile, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadRoutes()
@@ -83,7 +83,7 @@ describe('The GTFS Routes Loader', () => {
 
   it('Should handle metro train routes', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let routes = await database.createCollection('routes')
+    let routes = await database.createCollection('gtfs-routes')
 
     let loader = new RouteLoader(metroLinesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
     await loader.loadRoutes()
@@ -101,7 +101,7 @@ describe('The GTFS Routes Loader', () => {
 
   it('Should allow for custom route rewriting', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let routes = await database.createCollection('routes')
+    let routes = await database.createCollection('gtfs-routes')
 
     let loader = new RouteLoader(wgtFile, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadRoutes({
@@ -146,7 +146,7 @@ describe('The GTFS Routes Loader', () => {
 
   it('Should return a route ID map', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let routes = await database.createCollection('routes')
+    let routes = await database.createCollection('gtfs-routes')
 
     let loader = new RouteLoader(wgtFile, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadRoutes({
@@ -167,7 +167,7 @@ describe('The GTFS Routes Loader', () => {
 
   it('Should allow for dropping of unwanted routes', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let routes = await database.createCollection('routes')
+    let routes = await database.createCollection('gtfs-routes')
 
     let loader = new RouteLoader(vlineFile, agencyFile, TRANSIT_MODES.regionalTrain, database)
     await loader.loadRoutes({
@@ -193,7 +193,7 @@ describe('The GTFS Routes Loader', () => {
 
   it('Should handle invalid agency references', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let routes = await database.createCollection('routes')
+    let routes = await database.createCollection('gtfs-routes')
 
     let loader = new RouteLoader(badRoutesFile_NoAgency, agencyFile, TRANSIT_MODES.bus, database)
     await loader.loadRoutes()

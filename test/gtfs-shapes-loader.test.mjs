@@ -26,9 +26,9 @@ const shapeFile = path.join(__dirname, 'sample-data', 'shapes', 'shapes.txt')
 describe('The ShapeLoader class', () => {
   it('Should process the shapes and append it to the route data', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
-    let routes = await database.createCollection('routes')
-    let trips = await database.createCollection('gtfs timetables')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
 
     let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroBus, database)
     await stopLoader.loadStops()
@@ -65,9 +65,9 @@ describe('The ShapeLoader class', () => {
 
   it('Should merge duplicate shapes with the same length and start/end coordinates', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
-    let routes = await database.createCollection('routes')
-    let trips = await database.createCollection('gtfs timetables')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
 
     let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroBus, database)
     await stopLoader.loadStops()

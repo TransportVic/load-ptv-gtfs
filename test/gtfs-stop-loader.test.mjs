@@ -32,7 +32,7 @@ const multiParentStopFile = path.join(__dirname, 'sample-data', 'parent-stop', '
 describe('The GTFS Stops Loader', () => {
   it('Should process the stops and add them to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
@@ -46,7 +46,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should merge street-level stops matching with the exact same name', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
@@ -77,7 +77,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should merge non street stops, and keep the secondary stop name if they are the same', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
@@ -93,7 +93,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should merge non street stops, and discard the secondary stop name if they are different', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
@@ -109,7 +109,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should update the suburb list as well', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let loader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await loader.loadStops()
@@ -126,7 +126,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should not merge stops that are forced to be unique and would otherwise be merged', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     function getMergeName(stop) {
       if (uniqueStops.includes(stop.fullStopName)) return stop.fullStopName
@@ -162,7 +162,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should override stop names if required', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     await (new StopsLoader(stopNameOverrides, suburbs, TRANSIT_MODES.bus, database)).loadStops({
       processStop: stop => {
@@ -185,7 +185,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should handle CSV blank spaces and other unicode junk', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     await (new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.bus, database)).loadStops()
 
@@ -199,7 +199,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should allow for a custom suburb hook', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let testSuburbs = ['A', 'B', 'C', null, 'D']
 
@@ -215,7 +215,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should allow for individual stops to be loaded in', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let loader = new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.bus, database)
     let reader = new GTFSStopsReader('')
@@ -251,7 +251,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should not load duplicate stops with the same mode in', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let loader = new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.bus, database)
     let reader = new GTFSStopsReader('')
@@ -284,7 +284,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should load duplicate stops with the different mode in', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let busLoader = new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.bus, database)
     let coachLoader = new StopsLoader(specialHeader, suburbs, TRANSIT_MODES.regionalCoach, database)
@@ -321,7 +321,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should not merge stops with the same name that are located far away from one another', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     await (new StopsLoader(generalStores, suburbs, TRANSIT_MODES.bus, database)).loadStops()
 
@@ -332,7 +332,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should handle extra spaces within the stop name', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     await (new StopsLoader(unionWithSpaces, suburbs, TRANSIT_MODES.bus, database)).loadStops()
 
@@ -342,7 +342,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should merge stops into their designated parent stops even if the names do not match', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     await (new StopsLoader(parentStopsFile, suburbs, TRANSIT_MODES.metroTrain, database)).loadStops()
 
@@ -362,7 +362,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should handle the parent being part of a merged stop', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     await (new StopsLoader(multiParentStopFile, suburbs, TRANSIT_MODES.regionalCoach, database)).loadStops()
 
@@ -379,7 +379,7 @@ describe('The GTFS Stops Loader', () => {
 
   it('Should use stop and station names and suburbs', async () => {
     let database = new LokiDatabaseConnection('test-db')
-    let stops = await database.createCollection('stops')
+    let stops = await database.createCollection('gtfs-stops')
 
     let data = [{
       "stop_id": "vic:rail:THL",
