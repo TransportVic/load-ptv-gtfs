@@ -4,3 +4,4 @@ route_id,service_id,trip_id,shape_id,trip_headsign,direction_id,block_id
 "aus:vic:vic-02-PKM:","T2_2","02-PKM--12-T5-C002","2-PKM-vpt-1.12.R","Flinders Street","1",""
 "aus:vic:vic-02-STY:","T2_2","02-STY--12-T5-8500","2-STY-vpt-1.1.R","Frankston","1",""
 "aus:vic:vic-02-STY:","T2_2","02-STY--12-T5-8501","2-STY-vpt-1.2.H","Stony Point","0",""
+"aus:vic:vic-02-CCL:","T2_2","02-CCL--38-T5_cw-0837","2-CCL-vpt-38.5.H","Flinders Street via City Loop","0",""

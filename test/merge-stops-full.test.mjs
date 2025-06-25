@@ -97,6 +97,17 @@ describe('The GTFS Route stop merger', () => {
       expect(stonyPoint.stops[stonyPoint.stops.length - 1].stopName).to.equal('Stony Point Railway Station')
     })
 
+    it('Should set City Circle trips as Down', async () => {
+      let cityCircleRoute = await routes.findDocument({ routeGTFSID: '2-CCL' })
+      expect(cityCircleRoute).to.not.be.null
+
+      let direction = cityCircleRoute.directions.find(dir => dir.directionName === 'City Circle (Clockwise)')
+      expect(direction).to.not.be.undefined
+      expect(direction.stops[0].stopName).to.equal('Flinders Street Railway Station')
+      expect(direction.stops[direction.stops.length - 2].stopName).to.equal('Parliament Railway Station')
+      expect(direction.stops[direction.stops.length - 1].stopName).to.equal('Flinders Street Railway Station')
+    })
+
     it('Should mark the PTV Route direction', async () => {
       let stonyPointRoute = await routes.findDocument({ routeGTFSID: '2-STY' })
       expect(stonyPointRoute.ptvDirections['Stony Point']).to.equal(0)

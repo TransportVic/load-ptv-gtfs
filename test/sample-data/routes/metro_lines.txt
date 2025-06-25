@@ -5,3 +5,4 @@ route_id,agency_id,route_short_name,route_long_name,route_type,route_color,route
 "aus:vic:vic-02-STY:","3","Stony Point","Stony Point - Frankston","2","028430","FFFFFF"
 "aus:vic:vic-02-PKM:","3","Pakenham","Pakenham - City","2","279FD5","000000"
 "aus:vic:vic-02-PKM:","3","Pakenham","Pakenham - City","2","279FD5","000000"
+"aus:vic:vic-02-CCL:","","City Circle","","2","0072CE","FFFFFF"
