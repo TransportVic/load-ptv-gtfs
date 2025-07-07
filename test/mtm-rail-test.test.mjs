@@ -60,17 +60,29 @@ describe('The GTFS Loaders with the MTM Website Rail data', () => {
 
       await tripLoader.loadTrips({ routeIDMap })
 
-      let trip = await trips.findDocument({
+      let donricTrip = await trips.findDocument({
         operationDays: '20250616',
         origin: 'MoorabbinUP', // Note that Station Street gets parsed as the suburb
         departureTime: '24:13'
       })
 
-      expect(trip).to.not.be.null
-      expect(trip.tripID).to.equal('Mon - Wed_0416t91')
-      expect(trip.routeGTFSID).to.equal('2-RRB')
-      expect(trip.block).to.equal('DON604')
-      expect(trip.isRailReplacementBus).to.be.true
+      expect(donricTrip).to.not.be.null
+      expect(donricTrip.tripID).to.equal('Mon - Wed_0416t91')
+      expect(donricTrip.routeGTFSID).to.equal('2-RRB')
+      expect(donricTrip.block).to.equal('DON604')
+      expect(donricTrip.isRailReplacementBus).to.be.true
+
+      let dysonsTrip = await trips.findDocument({
+        operationDays: '20250616',
+        origin: 'Werribee_Up',
+        departureTime: '20:22'
+      })
+
+      expect(dysonsTrip).to.not.be.null
+      expect(dysonsTrip.tripID).to.equal('46332')
+      expect(dysonsTrip.routeGTFSID).to.equal('2-RRB')
+      expect(dysonsTrip.block).to.equal('51')
+      expect(dysonsTrip.isRailReplacementBus).to.be.true
     })
   })
 })
