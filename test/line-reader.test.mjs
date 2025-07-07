@@ -9,6 +9,8 @@ const __dirname = path.dirname(__filename)
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'line_reader_test.txt')
 const oneLineFile = path.join(__dirname, 'sample-data', 'one_line.csv')
 
+const noQuotesFile = path.join(__dirname, 'sample-data', 'mtm-rail', 'stops.txt')
+
 describe('The CSVLineReader class', () => {
   it('Should open a CSV file and identify the headers', async () => {
     let reader = new CSVLineReader(stopsFile)
@@ -18,6 +20,30 @@ describe('The CSVLineReader class', () => {
       'stop_id', 'stop_name', 'stop_lat', 'stop_lon'
     ])
 
+    await reader.close()
+  })
+
+  it('Can handle files that are not quoted', async () => {
+    let reader = new CSVLineReader(noQuotesFile)
+    await reader.open()
+
+    let line = await reader.nextLine()
+    expect(line).to.deep.equal({
+      stop_id: '77945',
+      stop_code: '',
+      stop_name: 'Alamein_Up',
+      stop_desc: '',
+      stop_lat: '-37.868383',
+      stop_lon: '145.079837',
+      zone_id: '',
+      stop_url: '',
+      location_type: '0',
+      parent_station: '',
+      stop_timezone: '',
+      wheelchair_boarding: '',
+      platform_code: '',
+      tts_stop_name: ''
+    })
     await reader.close()
   })
 
