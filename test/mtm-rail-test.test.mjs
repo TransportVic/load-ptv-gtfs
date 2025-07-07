@@ -37,4 +37,36 @@ describe('The GTFS Loaders with the MTM Website Rail data', () => {
       expect(railBus.routeName).to.equal('Rail Replacement Bus')
     })
   })
+
+  describe('The trip loader', () => {
+    it('Is able to ingest trip data', async () => {
+      let database = new LokiDatabaseConnection('test-db')
+      let stops = await database.createCollection('gtfs-stops')
+      let routes = await database.createCollection('gtfs-routes')
+      let trips = await database.createCollection('gtfs-gtfs timetables')
+
+      let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database, () => 'Suburb')
+      await stopLoader.loadStops()
+
+      let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+      await routeLoader.loadRoutes()
+
+      let routeIDMap = routeLoader.getRouteIDMap()
+
+      let tripLoader = new TripLoader({
+        tripsFile, stopTimesFile,
+        calendarFile, calendarDatesFile: null
+      }, TRANSIT_MODES.metroTrain, database)
+
+      await tripLoader.loadTrips({ routeIDMap })
+
+      let trip = await trips.findDocument({
+        operationDays: '20250616',
+        origin: 'MoorabbinUP (Station St)',
+        departureTime: '24:13'
+      })
+
+      expect(trip).to.not.be.null
+    })
+  })
 })
