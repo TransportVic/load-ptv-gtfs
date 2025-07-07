@@ -72,6 +72,8 @@ describe('The GTFS Loaders with the MTM Website Rail data', () => {
       expect(donricTrip.block).to.equal('DON604')
       expect(donricTrip.isRailReplacementBus).to.be.true
 
+      expect(donricTrip.stopTimings[0].stopConditions.pickup).to.equal(0)
+
       let dysonsTrip = await trips.findDocument({
         operationDays: '20250616',
         origin: 'Werribee_Up',
