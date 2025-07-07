@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename)
 const stopsFile = path.join(__dirname, 'sample-data', 'gtfs-splitting', 'line_reader_test.txt')
 const oneLineFile = path.join(__dirname, 'sample-data', 'one_line.csv')
 
+const dysonsFile = path.join(__dirname, 'sample-data', 'mtm-rail', 'stops_dysons.txt')
 const noQuotesFile = path.join(__dirname, 'sample-data', 'mtm-rail', 'stops.txt')
 
 describe('The CSVLineReader class', () => {
@@ -44,6 +45,27 @@ describe('The CSVLineReader class', () => {
       platform_code: '',
       tts_stop_name: ''
     })
+    await reader.close()
+  })
+
+  it('Can handle files that have a mix of quotes and no quotes', async () => {
+    let reader = new CSVLineReader(dysonsFile)
+    await reader.open()
+
+    let line = await reader.nextLine()
+    expect(line).to.deep.equal({
+      stop_id: '96',
+      stop_code: '',
+      stop_name: 'Aircraft_Down',
+      stop_desc: '',
+      stop_lat: '-37.867134',
+      stop_lon: '144.760717',
+      zone_id: '',
+      stop_url: '',
+      location_type: '',
+      parent_station: ''
+    })
+
     await reader.close()
   })
 
