@@ -62,11 +62,15 @@ describe('The GTFS Loaders with the MTM Website Rail data', () => {
 
       let trip = await trips.findDocument({
         operationDays: '20250616',
-        origin: 'MoorabbinUP (Station St)',
+        origin: 'MoorabbinUP', // Note that Station Street gets parsed as the suburb
         departureTime: '24:13'
       })
 
       expect(trip).to.not.be.null
+      expect(trip.tripID).to.equal('Mon - Wed_0416t91')
+      expect(trip.routeGTFSID).to.equal('2-RRB')
+      expect(trip.block).to.equal('DON604')
+      expect(trip.isRailReplacementBus).to.be.true
     })
   })
 })
