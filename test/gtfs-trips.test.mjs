@@ -32,6 +32,7 @@ describe('The GTFSTrip class', () => {
       block: ''
     })
 
+    expect(trip.getCalendarName()).to.equal('T1')
     expect(trip.getOperationDays()).to.have.members([
       '20241122', '20241123', '20241129'
     ])
