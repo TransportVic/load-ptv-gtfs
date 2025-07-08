@@ -1,0 +1,13 @@
+stop_id,stop_code,stop_name,stop_desc,stop_lat,stop_lon,zone_id,stop_url,location_type,parent_station
+96,,"Aircraft_Down",,-37.867134,144.760717,,,,
+97,ACF_U,"Aircraft_Up",,-37.867160,144.760636,,,,
+101,,"Albion_Down",,-37.777184,144.825579,,,,
+102,,"Albion_Up",,-37.777063,144.825879,,,,
+111,,"Altona_Down",,-37.867262,144.830283,,,,
+112,,"Altona_Up",,-37.866663,144.830597,,,,
+130,,"Anstey_Down",,-37.761105,144.963133,,,,
+131,,"Anstey_Up",,-37.761040,144.962998,,,,
+134,,"Batman_Down",,-37.733595,144.965214,,,,
+135,,"Batman_Up",,-37.733574,144.965044,,,,
+172,,"Brunswick_Down",,-37.767607,144.962060,,,,
+173,,"Brunswick_Up",,-37.767559,144.961891,,,,
