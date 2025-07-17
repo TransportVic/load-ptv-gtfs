@@ -84,6 +84,7 @@ describe('The GTFSTripReader class', () => {
     expect(trip.getTripID()).to.equal('43-490--1-MF4-1111914')
     expect(trip.getRouteGTFSID()).to.equal('4-490')
     expect(trip.getDepotID()).to.equal(43)
+    expect(trip.getTripData().runID).to.equal(trip.getTripID())
 
     trip = await reader.getNextEntity()
 
