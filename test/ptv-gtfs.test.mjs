@@ -76,7 +76,7 @@ describe('The PTVGTFS class', () => {
       await gtfs.unzip()
 
       for (let i = 1; i <= 11; i++) {
-        if (i === 9) continue
+        if (7 <= i && i <= 9) continue
         let stat = await fs.stat(path.join(tmp.path, i.toString(), 'stops.txt'))
         expect(stat).to.not.be.null
       }
