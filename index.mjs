@@ -23,6 +23,8 @@ import GTFSStopsReader from './lib/gtfs-parser/readers/GTFSStopsReader.mjs'
 import GTFSStopTimesReader from './lib/gtfs-parser/readers/GTFSStopTimesReader.mjs'
 import GTFSTripReader from './lib/gtfs-parser/readers/GTFSTripReader.mjs'
 
+import PTVGTFS from './lib/gtfs-package/PTVGTFS.mjs'
+
 const GTFSTypes = {
   GTFSAgency, GTFSCalendar, GTFSCalendarDate,
   GTFSRoute, GTFSShape, GTFSShapePoint,
@@ -40,5 +42,5 @@ export {
   RouteLoader, ShapeLoader,
   StopsLoader, TripLoader,
   GTFSTypes, GTFSReaders,
-  setRouteStops
+  setRouteStops, PTVGTFS
 }
