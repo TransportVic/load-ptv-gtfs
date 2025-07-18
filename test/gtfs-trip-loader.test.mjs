@@ -21,6 +21,8 @@ const stopsFile = path.join(__dirname, 'sample-data', 'trips', 'stops.txt')
 const stopTimesFile = path.join(__dirname, 'sample-data', 'trips', 'stop_times.txt')
 const tripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips.txt')
 
+const emptyTrips = path.join(__dirname, 'sample-data', 'trips', 'empty_trips.txt')
+
 describe('The TripLoader class', () => {
   it('Should process the trip and add it to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
@@ -184,5 +186,29 @@ describe('The TripLoader class', () => {
       gtfsDirection: 0,
       routeNumber: null
     }])
+  })
+
+  it('Should return a mapping stop services', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
+
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
+    await stopLoader.loadStops()
+
+    let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+    await routeLoader.loadRoutes()
+
+    let routeIDMap = routeLoader.getRouteIDMap()
+
+    let tripLoader = new TripLoader({
+      tripsFile: emptyTrips, stopTimesFile,
+      calendarFile, calendarDatesFile
+    }, TRANSIT_MODES.metroTrain, database)
+    
+    await tripLoader.loadTrips({ routeIDMap })
+
+    // If we got here then everything worked out
   })
 })
