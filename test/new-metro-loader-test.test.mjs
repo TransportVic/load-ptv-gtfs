@@ -8,7 +8,7 @@ import suburbs from './sample-data/suburbs.json' with { type: 'json' }
 import RouteLoader from '../lib/loader/RouteLoader.mjs'
 import TripLoader from '../lib/loader/TripLoader.mjs'
 import GTFSCalendar from '../lib/gtfs-parser/GTFSCalendar.mjs'
-import { MetroTrip } from '../lib/gtfs-parser/GTFSTrip.mjs'
+import { IdentifiableTrip } from '../lib/gtfs-parser/GTFSTrip.mjs'
 
 const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -201,7 +201,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
     })
   })
 
-  describe('The MetroTrip subclass', () => {
+  describe('The IdentifiableTrip subclass', () => {
     it('Should detect rail buses', () => {
       let calendar = new GTFSCalendar({
         id: 'T1',
@@ -210,7 +210,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
         daysOfWeek: ["0","0","0","0","1","1","0"]
       })
 
-      expect(new MetroTrip({
+      expect(new IdentifiableTrip({
         routeGTFSID: '2-PKM',
         calendar,
         id: '02-PKM--54-T6-C962',
@@ -220,7 +220,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
         block: ''
       }).getTripData().isRailReplacementBus).to.be.false
 
-      expect(new MetroTrip({
+      expect(new IdentifiableTrip({
         routeGTFSID: '2-PKM',
         calendar,
         id: '02-PKM-R-6-T5_bp-BF400',
@@ -230,7 +230,7 @@ describe('The GTFS Loaders with the new Metro data', () => {
         block: ''
       }).getTripData().isRailReplacementBus).to.be.true
 
-      expect(new MetroTrip({
+      expect(new IdentifiableTrip({
         routeGTFSID: '2-PKM',
         calendar,
         id: '02-PKM-R-6-T5_bp-BF22',
