@@ -1,6 +1,6 @@
 {
   "name": "@transportme/load-ptv-gtfs",
-  "version": "1.4.22",
+  "version": "1.4.23",
   "description": "",
   "main": "index.mjs",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@transportme/database": "^1.0.27",
+    "@transportme/database": "^1.0.41",
     "@transportme/transportvic-utils": "^1.0.4",
     "@turf/boolean-point-in-polygon": "^7.1.0",
     "adm-zip": "^0.5.14",
