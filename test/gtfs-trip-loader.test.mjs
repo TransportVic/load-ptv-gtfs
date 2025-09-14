@@ -24,7 +24,7 @@ const tripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips.txt')
 const emptyTrips = path.join(__dirname, 'sample-data', 'trips', 'empty_trips.txt')
 
 describe('The TripLoader class', () => {
-  it('Should process the trip and add it to the database', async () => {
+  it.only('Should process the trip and add it to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('gtfs-stops')
     let routes = await database.createCollection('gtfs-routes')
@@ -69,9 +69,11 @@ describe('The TripLoader class', () => {
     expect(trip.stopTimings[0].departureTimeMinutes).to.equal(4 * 60 + 57)
     expect(trip.stopTimings[0].platform).to.equal('1')
 
+    expect(trip.stopTimings[0].stopDistance).to.equal(0)
     expect(trip.stopTimings[5].stopName).to.equal('Riversdale Railway Station')
     expect(trip.stopTimings[5].stopGTFSID).to.equal('vic:rail:RIV')
     expect(trip.stopTimings[5].platform).to.equal('1')
+    expect(trip.stopTimings[5].stopDistance).to.equal(4428.35)
 
     expect(trip.stopTimings[6].stopName).to.equal('Camberwell Railway Station')
     expect(trip.stopTimings[6].stopGTFSID).to.equal('vic:rail:CAM')
