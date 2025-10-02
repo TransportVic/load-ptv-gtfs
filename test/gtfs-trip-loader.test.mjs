@@ -224,13 +224,13 @@ describe('The TripLoader class', () => {
     // If we got here then everything worked out
   })
 
-  it.only('Picks the stop data from the trip\'s mode, taking into account duplicated stop IDs across modes', async () => {
+  it('Picks the stop data from the trip\'s mode, taking into account duplicated stop IDs across modes', async () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('gtfs-stops')
     let routes = await database.createCollection('gtfs-routes')
     let trips = await database.createCollection('gtfs-gtfs timetables')
 
-    let stopLoader1 = new StopsLoader(duplicateStops.stopsFile1, suburbs, TRANSIT_MODES.metroTrain, database)
+    let stopLoader1 = new StopsLoader(duplicateStops.stopsFile1, suburbs, TRANSIT_MODES.regionalTrain, database)
     await stopLoader1.loadStops()
     let stopLoader2 = new StopsLoader(duplicateStops.stopsFile2, suburbs, TRANSIT_MODES.metroTrain, database)
     await stopLoader2.loadStops()
