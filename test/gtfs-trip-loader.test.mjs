@@ -23,8 +23,18 @@ const tripsFile = path.join(__dirname, 'sample-data', 'trips', 'trips.txt')
 
 const emptyTrips = path.join(__dirname, 'sample-data', 'trips', 'empty_trips.txt')
 
+const duplicateStops = {
+  stopsFile1: path.join(__dirname, 'sample-data', 'duplicate-stops', 'stops-1.txt'),
+  stopsFile2: path.join(__dirname, 'sample-data', 'duplicate-stops', 'stops-2.txt'),
+  calendarFile: path.join(__dirname, 'sample-data', 'duplicate-stops', 'calendar.txt'),
+  calendarDatesFile: path.join(__dirname, 'sample-data', 'duplicate-stops', 'calendar_dates.txt'),
+  routesFile: path.join(__dirname, 'sample-data', 'duplicate-stops', 'routes.txt'),
+  tripsFile: path.join(__dirname, 'sample-data', 'duplicate-stops', 'trips.txt'),
+  stopTimesFile: path.join(__dirname, 'sample-data', 'duplicate-stops', 'stop_times.txt'),
+}
+
 describe('The TripLoader class', () => {
-  it.only('Should process the trip and add it to the database', async () => {
+  it('Should process the trip and add it to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
     let stops = await database.createCollection('gtfs-stops')
     let routes = await database.createCollection('gtfs-routes')
@@ -212,5 +222,32 @@ describe('The TripLoader class', () => {
     await tripLoader.loadTrips({ routeIDMap })
 
     // If we got here then everything worked out
+  })
+
+  it.only('Picks the stop data from the trip\'s mode, taking into account duplicated stop IDs across modes', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
+
+    let stopLoader1 = new StopsLoader(duplicateStops.stopsFile1, suburbs, TRANSIT_MODES.metroTrain, database)
+    await stopLoader1.loadStops()
+    let stopLoader2 = new StopsLoader(duplicateStops.stopsFile2, suburbs, TRANSIT_MODES.metroTrain, database)
+    await stopLoader2.loadStops()
+
+    let routeLoader = new RouteLoader(duplicateStops.routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+    await routeLoader.loadRoutes()
+
+    let routeIDMap = routeLoader.getRouteIDMap()
+
+    let tripLoader = new TripLoader(duplicateStops, TRANSIT_MODES.metroTrain, database)
+    await tripLoader.loadTrips({ routeIDMap })
+
+    const tripData = await trips.findDocument({})
+    expect(tripData).to.exist
+    expect(tripData.runID).to.equal('C000')
+    const rmd = tripData.stopTimings.find(stop => stop.stopName === 'Richmond Railway Station')
+    expect(rmd).to.exist
+    expect(rmd.platform).to.equal('5')
   })
 })
