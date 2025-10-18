@@ -65,6 +65,7 @@ describe('The TripLoader class', () => {
     expect(trip.operationDays[0]).to.equal('20241123')
 
     expect(trip.shapeID).to.equal('2-ALM-vpt-1.1.R')
+    expect(trip.calendarID).to.equal('T2_2')
     expect(trip.block).to.be.null
     expect(trip.gtfsDirection).to.equal(1)
 
