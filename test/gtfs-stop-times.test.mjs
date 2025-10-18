@@ -47,7 +47,7 @@ describe('The GTFSStopTimesReader class', () => {
     expect(stopTimes.stops[0].stopID).to.equal('20043')
     expect(stopTimes.stops[0].departureTime).to.equal('07:07')
 
-    expect(stopTimes.stops[6].stopID).to.equal('22254')
-    expect(stopTimes.stops[6].departureTime).to.equal('07:35')
+    expect(stopTimes.stops[1].stopID).to.equal('22254')
+    expect(stopTimes.stops[1].departureTime).to.equal('07:35')
   })
 })
