@@ -10,7 +10,7 @@ import GTFSRoute from './lib/gtfs-parser/GTFSRoute.mjs'
 import { GTFSShape, GTFSShapePoint } from './lib/gtfs-parser/GTFSShape.mjs'
 import { GTFSStop, GTFSPlatformStop } from './lib/gtfs-parser/GTFSStop.mjs'
 import { GTFSStopTime } from './lib/gtfs-parser/GTFSStopTime.mjs'
-import GTFSTrip from './lib/gtfs-parser/GTFSTrip.mjs'
+import GTFSTrip, { IdentifiableTrip, SmartrakTrip } from './lib/gtfs-parser/GTFSTrip.mjs'
 
 import setRouteStops from './lib/post-processing/set-route-stops.mjs'
 
@@ -29,7 +29,7 @@ const GTFSTypes = {
   GTFSAgency, GTFSCalendar, GTFSCalendarDate,
   GTFSRoute, GTFSShape, GTFSShapePoint,
   GTFSStop, GTFSPlatformStop,
-  GTFSStopTime, GTFSTrip
+  GTFSStopTime, GTFSTrip, SmartrakTrip, IdentifiableTrip
 }
 
 const GTFSReaders = {
