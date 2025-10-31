@@ -57,6 +57,7 @@ describe('The SmartrakTrip class', () => {
     })
 
     expect(trip.getRunID()).to.equal('57-W83--MF-29263711')
+    expect(trip.getTripData().runID).to.equal('57-W83--MF-29263711')
   })
 
   it('Handles the 695F', () => {
@@ -76,6 +77,7 @@ describe('The SmartrakTrip class', () => {
     })
 
     expect(trip.getRunID()).to.equal('21-695-F-Sat-10')
+    expect(trip.getTripData().runID).to.equal('21-695-F-Sat-10')
   })
 })
 
@@ -103,15 +105,17 @@ describe('The GTFSTripReader class', () => {
     expect(trip.getOperationDays()).to.deep.equal(['20241122'])
   })
 
-  it('Should return a Smartrak bus trip instance where appropriate', async () => {
-    let calendars = {
-      'T2_2': new GTFSCalendar({
-        id: 'T2_2',
-        startDay: '20241122',
-        endDay: '20241122',
-        daysOfWeek: ["0","0","0","0","1","0","0"]
-      })
-    }
+  it('Should return a Smartrak bus trip instance where appropriate', async () => { 
+    const cal = n => new GTFSCalendar({
+      id: n,
+      startDay: '20241122',
+      endDay: '20241122',
+      daysOfWeek: ["0","0","0","0","1","0","0"]
+    })
+
+    const calendars = [
+      'T2_2', 'MF4-43-490-aus', 'MF1-53-G01-aus', 'MF2-57-W83-aus'
+    ].reduce((acc, n) => ({ ...acc, [n]: cal(n)}), {})
 
     let routeMappings = { '43-490-aus-1': '4-490', '6-wr9-mjp-1': '6-wr9', '53-G01-aus-1': '4-G01', '57-W83-aus-1': '4-W83' }
 
@@ -124,7 +128,7 @@ describe('The GTFSTripReader class', () => {
     expect(trip.getTripID()).to.equal('43-490--1-MF4-1111914')
     expect(trip.getRouteGTFSID()).to.equal('4-490')
     expect(trip.getDepotID()).to.equal(43)
-    expect(trip.getTripData().runID).to.equal(trip.getTripID())
+    expect(trip.getTripData().runID).to.equal('43-490--MF-1111914')
 
     trip = await reader.getNextEntity()
 
@@ -139,6 +143,7 @@ describe('The GTFSTripReader class', () => {
     expect(trip.getTripID()).to.equal('53-G01--1-MF1-9942214')
     expect(trip.getDepotID()).to.equal(53)
     expect(trip.getRouteGTFSID()).to.equal('4-G01')
+    expect(trip.getRunID()).to.equal('53-G01--MF-9942214')
 
     trip = await reader.getNextEntity()
 
@@ -146,5 +151,6 @@ describe('The GTFSTripReader class', () => {
     expect(trip.getTripID()).to.equal('57-W83--1-MF2-57586310')
     expect(trip.getDepotID()).to.equal(57)
     expect(trip.getRouteGTFSID()).to.equal('4-W83')
+    expect(trip.getRunID()).to.equal('57-W83--MF-57586310')
   })
 })
