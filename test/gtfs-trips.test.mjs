@@ -39,6 +39,46 @@ describe('The GTFSTrip class', () => {
   })
 })
 
+describe('The SmartrakTrip class', () => {
+  it('Extracts the depot, route, roster, and tripID to form a runID', () => {
+    let trip = new SmartrakTrip({
+      routeGTFSID: '57-W83-aus-1',
+      calendar: new GTFSCalendar({
+        id: 'MF1-57-W83-aus',
+        startDay: '20241122',
+        endDay: '20241129',
+        daysOfWeek: ["0","0","0","0","1","1","0"]
+      }),
+      id: '57-W83--1-MF1-29263711',
+      shapeID: '57-W83-aus-1.3.H',
+      headsign: 'Warragul East',
+      direction: '0',
+      block: ''
+    })
+
+    expect(trip.getRunID()).to.equal('57-W83--MF-29263711')
+  })
+
+  it('Handles the 695F', () => {
+    let trip = new SmartrakTrip({
+      routeGTFSID: '21-695-F-aus-1',
+      calendar: new GTFSCalendar({
+        id: 'Sat13-21-695-F-aus',
+        startDay: '20241122',
+        endDay: '20241129',
+        daysOfWeek: ["0","0","0","0","1","1","0"]
+      }),
+      id: '21-695-F-1-Sat13-10',
+      shapeID: '21-695-F-aus-1.2.R',
+      headsign: 'Belgrave',
+      direction: '1',
+      block: ''
+    })
+
+    expect(trip.getRunID()).to.equal('21-695-F-Sat-10')
+  })
+})
+
 describe('The GTFSTripReader class', () => {
   it('Should read the trips.txt file and return a GTFSTrip object', async () => {
     let calendars = {
@@ -73,7 +113,7 @@ describe('The GTFSTripReader class', () => {
       })
     }
 
-    let routeMappings = { '43-490-aus-1': '4-490', '6-wr9-mjp-1': '6-wr9' }
+    let routeMappings = { '43-490-aus-1': '4-490', '6-wr9-mjp-1': '6-wr9', '53-G01-aus-1': '4-G01', '57-W83-aus-1': '4-W83' }
 
     let reader = new GTFSTripReader(busTripsFile, calendars, routeMappings, TRANSIT_MODES.bus)
     await reader.open()
@@ -96,15 +136,15 @@ describe('The GTFSTripReader class', () => {
     trip = await reader.getNextEntity()
 
     expect(trip).to.be.instanceOf(SmartrakTrip)
-    expect(trip.getTripID()).to.equal('58-G01--1-MF1-9942214')
-    expect(trip.getDepotID()).to.equal(58)
-    // expect(trip.getRouteGTFSID()).to.equal('6-G01') // Not entirely sure how to handle duplicates
+    expect(trip.getTripID()).to.equal('53-G01--1-MF1-9942214')
+    expect(trip.getDepotID()).to.equal(53)
+    expect(trip.getRouteGTFSID()).to.equal('4-G01')
 
     trip = await reader.getNextEntity()
 
     expect(trip).to.be.instanceOf(SmartrakTrip)
-    expect(trip.getTripID()).to.equal('57-83--1-MF2-57586310')
+    expect(trip.getTripID()).to.equal('57-W83--1-MF2-57586310')
     expect(trip.getDepotID()).to.equal(57)
-    // expect(trip.getRouteGTFSID()).to.equal('6-083')
+    expect(trip.getRouteGTFSID()).to.equal('4-W83')
   })
 })
