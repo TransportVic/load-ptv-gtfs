@@ -17,6 +17,13 @@ let regionalBusRoute = {
   route_long_name: 'Alfredton - Ballarat Station Via Wendouree'
 }
 
+let brokenSmartrakRoute = {
+  route_id: '70->r2-aus-1',
+  agency_id: '43',
+  route_short_name: '>r2',
+  route_long_name: ''
+}
+
 describe('The GTFSRouteReader class', () => {
   describe('The processRoute function', () => {
     it('Should take in the raw CSV line and process it', () => {
@@ -26,6 +33,14 @@ describe('The GTFSRouteReader class', () => {
       expect(routeData.agencyID).to.equal(regionalBusRoute.agency_id)
       expect(routeData.routeNumber).to.equal(regionalBusRoute.route_short_name)
       expect(routeData.routeName).to.equal(regionalBusRoute.route_long_name)
+    })
+
+    it('Replaces invalid characters with a \'z\'', () => {
+      let routeData = new GTFSRouteReader('', TRANSIT_MODES.bus).processEntity(brokenSmartrakRoute)
+
+      expect(routeData.routeGTFSID).to.equal('4-zr2')
+      expect(routeData.originalRouteGTFSID).to.equal(brokenSmartrakRoute.route_id)
+      expect(routeData.routeNumber).to.equal(brokenSmartrakRoute.route_short_name)
     })
   })
 
