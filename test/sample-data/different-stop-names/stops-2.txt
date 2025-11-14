@@ -1,0 +1,3 @@
+﻿stop_id,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,level_id,platform_code
+"11217","Not Flinders Street Station","-37.81843476","144.96664271","","vic:rail:FSS","1","Level 0","6"
+"vic:rail:FSS","Not Flinders Street Station","-37.81843476","144.96664271","","","","Level 0",""

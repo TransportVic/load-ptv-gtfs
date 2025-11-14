@@ -33,6 +33,16 @@ const duplicateStops = {
   stopTimesFile: path.join(__dirname, 'sample-data', 'duplicate-stops', 'stop_times.txt'),
 }
 
+const differentStopNames = {
+  stopsFile1: path.join(__dirname, 'sample-data', 'different-stop-names', 'stops-1.txt'),
+  stopsFile2: path.join(__dirname, 'sample-data', 'different-stop-names', 'stops-2.txt'),
+  calendarFile: path.join(__dirname, 'sample-data', 'different-stop-names', 'calendar.txt'),
+  calendarDatesFile: path.join(__dirname, 'sample-data', 'different-stop-names', 'calendar_dates.txt'),
+  routesFile: path.join(__dirname, 'sample-data', 'different-stop-names', 'routes.txt'),
+  tripsFile: path.join(__dirname, 'sample-data', 'different-stop-names', 'trips.txt'),
+  stopTimesFile: path.join(__dirname, 'sample-data', 'different-stop-names', 'stop_times.txt'),
+}
+
 describe('The TripLoader class', () => {
   it('Should process the trip and add it to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
@@ -250,5 +260,32 @@ describe('The TripLoader class', () => {
     const rmd = tripData.stopTimings.find(stop => stop.stopName === 'Richmond Railway Station')
     expect(rmd).to.exist
     expect(rmd.platform).to.equal('5')
+  })
+
+  it('Looks for the specific bay for that mode, in case they have different names across modes', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
+
+    let stopLoader1 = new StopsLoader(differentStopNames.stopsFile1, suburbs, TRANSIT_MODES.regionalTrain, database)
+    await stopLoader1.loadStops()
+    let stopLoader2 = new StopsLoader(differentStopNames.stopsFile2, suburbs, TRANSIT_MODES.metroTrain, database)
+    await stopLoader2.loadStops()
+
+    let routeLoader = new RouteLoader(differentStopNames.routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+    await routeLoader.loadRoutes()
+
+    let routeIDMap = routeLoader.getRouteIDMap()
+
+    let tripLoader = new TripLoader(differentStopNames, TRANSIT_MODES.metroTrain, database)
+    await tripLoader.loadTrips({ routeIDMap })
+
+    const tripData = await trips.findDocument({})
+    expect(tripData, 'Trip was not created').to.exist
+    expect(tripData.runID).to.equal('C000')
+    const fss = tripData.stopTimings.find(stop => stop.stopName === 'Not Flinders Street Railway Station')
+    expect(fss).to.exist
+    expect(fss.platform).to.equal('6')
   })
 })
