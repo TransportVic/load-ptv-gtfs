@@ -30,10 +30,10 @@ describe('The ShapeLoader class', () => {
     let routes = await database.createCollection('gtfs-routes')
     let trips = await database.createCollection('gtfs-gtfs timetables')
 
-    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroBus, database)
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await stopLoader.loadStops()
 
-    let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroBus, database)
+    let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.bus, database)
     await routeLoader.loadRoutes()
 
     let routeIDMap = routeLoader.getRouteIDMap()
@@ -41,7 +41,7 @@ describe('The ShapeLoader class', () => {
     let tripLoader = new TripLoader({
       tripsFile, stopTimesFile,
       calendarFile, calendarDatesFile
-    }, TRANSIT_MODES.metroBus, database)
+    }, TRANSIT_MODES.bus, database)
    
     await tripLoader.loadTrips({ routeIDMap })
     let shapeIDMap = tripLoader.getShapeIDMap()
@@ -69,10 +69,10 @@ describe('The ShapeLoader class', () => {
     let routes = await database.createCollection('gtfs-routes')
     let trips = await database.createCollection('gtfs-gtfs timetables')
 
-    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.metroBus, database)
+    let stopLoader = new StopsLoader(stopsFile, suburbs, TRANSIT_MODES.bus, database)
     await stopLoader.loadStops()
 
-    let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.metroBus, database)
+    let routeLoader = new RouteLoader(routesFile, agencyFile, TRANSIT_MODES.bus, database)
     await routeLoader.loadRoutes()
 
     let routeIDMap = routeLoader.getRouteIDMap()
@@ -80,7 +80,7 @@ describe('The ShapeLoader class', () => {
     let tripLoader = new TripLoader({
       tripsFile, stopTimesFile,
       calendarFile, calendarDatesFile
-    }, TRANSIT_MODES.metroBus, database)
+    }, TRANSIT_MODES.bus, database)
 
     await tripLoader.loadTrips({ routeIDMap })
     let shapeIDMap = tripLoader.getShapeIDMap()

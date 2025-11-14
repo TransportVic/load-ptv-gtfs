@@ -1,4 +1,4 @@
-stop_id,stop_name,stop_lat,stop_lon
-"21611","Monash University (Clayton)","-37.9139064388162","145.131978988767"
-"7098","Milgate St/North Rd (Oakleigh South)","-37.912515519291","145.109218966528"
-"51587","Huntingdale Station/Haughton Rd (Oakleigh)","-37.910940302153","145.102616537489"
+stop_id,stop_code,stop_name,stop_lat,stop_lon,location_type,parent_station,wheelchair_boarding,level_id,platform_code
+"21611","21611","Monash University","-37.91391545","145.13197876","","","0","Level 0","Bay C"
+"7098","7098","Milgate St/North Rd","-37.91248923","145.10926514","","","0","Level 0",""
+"51587","51587","Huntingdale Station/Haughton Rd","-37.91094030","145.10261654","","","0","Level 0","Bay B"
