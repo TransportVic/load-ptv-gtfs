@@ -1,0 +1,3 @@
+shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled
+CDFN0028,-37.877163,145.041278,10001,0.000
+CDFN0028,-38.144006,145.126168,200044,40.045

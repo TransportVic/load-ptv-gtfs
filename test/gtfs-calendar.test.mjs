@@ -179,4 +179,21 @@ describe('The GTFSCalendarReader class', () => {
     expect(allCalendars['T3_2'].getOperationDays()).to.contain("20250209")
     expect(allCalendars['T3_2'].getOperationDays()).to.not.contain("20250126")
   })
+
+  it('Should returns GTFSCalendar objects for calendars defined in dates but not the main file', async () => {
+    const calendarFile = path.join(__dirname, 'sample-data', 'no-calendar', 'calendar.txt')
+    const calendarDatesFile = path.join(__dirname, 'sample-data', 'no-calendar', 'calendar_dates.txt')
+
+    let reader = new GTFSCalendarReader(calendarFile, calendarDatesFile)
+    await reader.open()
+
+    let allCalendars = {}
+    while (reader.available()) {
+      let calendar = await reader.getNextEntity()
+      allCalendars[calendar.id] = calendar
+    }
+
+    expect(allCalendars['RR25-3011-RR2511-7-days-X'].getOperationDays()).to.deep.equal(["20251128"])
+    expect(allCalendars['RR25-3011-RR2511-7-days-01'].getOperationDays()).to.deep.equal(["20251130"])
+  })
 })
