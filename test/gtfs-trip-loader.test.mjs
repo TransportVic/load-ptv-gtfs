@@ -43,6 +43,15 @@ const differentStopNames = {
   stopTimesFile: path.join(__dirname, 'sample-data', 'different-stop-names', 'stop_times.txt'),
 }
 
+const noCalendar = {
+  stopsFile: path.join(__dirname, 'sample-data', 'no-calendar', 'stops.txt'),
+  calendarFile: path.join(__dirname, 'sample-data', 'no-calendar', 'calendar.txt'),
+  calendarDatesFile: path.join(__dirname, 'sample-data', 'no-calendar', 'calendar_dates.txt'),
+  routesFile: path.join(__dirname, 'sample-data', 'no-calendar', 'routes.txt'),
+  tripsFile: path.join(__dirname, 'sample-data', 'no-calendar', 'trips.txt'),
+  stopTimesFile: path.join(__dirname, 'sample-data', 'no-calendar', 'stop_times.txt'),
+}
+
 describe('The TripLoader class', () => {
   it('Should process the trip and add it to the database', async () => {
     let database = new LokiDatabaseConnection('test-db')
@@ -287,5 +296,27 @@ describe('The TripLoader class', () => {
     const fss = tripData.stopTimings.find(stop => stop.stopName === 'Not Flinders Street Railway Station')
     expect(fss).to.exist
     expect(fss.platform).to.equal('6')
+  })
+
+  it('Accepts GTFS files where calendar.txt is not defined and individual service dates are set in calendar_dates.txt', async () => {
+    let database = new LokiDatabaseConnection('test-db')
+    let stops = await database.createCollection('gtfs-stops')
+    let routes = await database.createCollection('gtfs-routes')
+    let trips = await database.createCollection('gtfs-gtfs timetables')
+
+    let stopLoader = new StopsLoader(noCalendar.stopsFile, suburbs, TRANSIT_MODES.metroTrain, database)
+    await stopLoader.loadStops()
+
+    let routeLoader = new RouteLoader(noCalendar.routesFile, agencyFile, TRANSIT_MODES.metroTrain, database)
+    await routeLoader.loadRoutes()
+
+    let routeIDMap = routeLoader.getRouteIDMap()
+
+    let tripLoader = new TripLoader(noCalendar, TRANSIT_MODES.metroTrain, database)
+    await tripLoader.loadTrips({ routeIDMap })
+
+    const tripData = await trips.findDocument({})
+    expect(tripData, 'Trip was not created').to.exist
+    expect(tripData.tripID).to.equal('11635249')
   })
 })
