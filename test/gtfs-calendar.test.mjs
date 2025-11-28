@@ -195,5 +195,6 @@ describe('The GTFSCalendarReader class', () => {
 
     expect(allCalendars['RR25-3011-RR2511-7-days-X'].getOperationDays()).to.deep.equal(["20251128"])
     expect(allCalendars['RR25-3011-RR2511-7-days-01'].getOperationDays()).to.deep.equal(["20251130"])
+    expect(allCalendars['RR25-3011-RR2511-7-days-04'].getOperationDays()).to.deep.equal(["20251201", "20251202"])
   })
 })
